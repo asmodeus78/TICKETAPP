@@ -5,12 +5,13 @@ import android.os.Bundle;
 import android.view.Menu;
 
 
-public class MainActivity extends Activity {
+
+public class SplashActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_splash);
     }
 
     @Override
@@ -18,5 +19,4 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.splash,menu);
         return true;
     }
-
 }
