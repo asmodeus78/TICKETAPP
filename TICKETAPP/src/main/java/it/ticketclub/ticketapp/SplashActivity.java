@@ -13,10 +13,13 @@ public class SplashActivity extends Activity {
 
     private static final String TAG_LOG = SplashActivity.class.getName();
 
+    private static final String START_TIME_KEY ="it.ticketclub.ticketapp.key.START_TIME_KEY";
+    private static final String IS_DONE_KEY ="it.ticketclub.ticketapp.key.IS_DONE_KEY";
+
     private static final long MIN_WAIT_INTERVAL = 1500L;
     private static final long MAX_WAIT_INTERVAL = 3000L;
     private static final int GO_HEAD_WHAT = 1;
-    private long mStartTime;
+    private long mStartTime = -1L;
     private boolean mIsDone;
 
     private Handler mHandler = new Handler() {
@@ -34,29 +37,46 @@ public class SplashActivity extends Activity {
         }
     };
 
-    @Override
-    protected void onStart(){
-        super.onStart();
-        mStartTime = SystemClock.uptimeMillis();
-        final Message goAheadMessage = mHandler.obtainMessage(GO_HEAD_WHAT);
-        mHandler.sendMessageAtTime(goAheadMessage, mStartTime + MAX_WAIT_INTERVAL);
-        Log.d(TAG_LOG, "Handler message sent!");
-    }
 
     private void goAhead(){
-        // We create the explicit Intent
-        final Intent intent = new Intent(this,MainActivity.class);
-        // Launch the Intent
-        startActivity(intent);
-        // We finish the current Activity
-        finish();
+        final Intent intent = new Intent(this,MainActivity.class); // We create the explicit Intent
+        startActivity(intent); // Launch the Intent
+        finish(); // We finish the current Activity
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        if (savedInstanceState != null){
+            this.mStartTime = savedInstanceState.getLong(START_TIME_KEY);
+        }
     }
 
+    @Override
+    protected void onStart(){
+        super.onStart();
+        if(mStartTime==-1){
+            mStartTime = SystemClock.uptimeMillis();
+        }
+        final Message goAheadMessage = mHandler.obtainMessage(GO_HEAD_WHAT);
+        mHandler.sendMessageAtTime(goAheadMessage, mStartTime + MAX_WAIT_INTERVAL);
+        Log.d(TAG_LOG, "Handler message sent!");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(IS_DONE_KEY,mIsDone);
+        outState.putLong(START_TIME_KEY,mStartTime);
+    }
+
+    @Override
+    protected  void onRestoreInstanceState(Bundle savedInstanceState){
+        super.onRestoreInstanceState(savedInstanceState);
+        this.mIsDone = savedInstanceState.getBoolean(IS_DONE_KEY);
+    }
 
 }
