@@ -11,6 +11,9 @@ import android.util.Log;
 
 public class SplashActivity extends Activity {
 
+    private static final int UPDATE_REQUEST_ID = 1;
+
+
     private static final String TAG_LOG = SplashActivity.class.getName();
 
     private static final String START_TIME_KEY ="it.ticketclub.ticketapp.key.START_TIME_KEY";
@@ -19,8 +22,13 @@ public class SplashActivity extends Activity {
     private static final long MIN_WAIT_INTERVAL = 1500L;
     private static final long MAX_WAIT_INTERVAL = 3000L;
     private static final int GO_HEAD_WHAT = 1;
+
+
     private long mStartTime = -1L;
     private boolean mIsDone;
+
+    public String risultato = "a";
+
 
     private Handler mHandler = new Handler() {
         @Override
@@ -62,6 +70,11 @@ public class SplashActivity extends Activity {
             mStartTime = SystemClock.uptimeMillis();
         }
         final Message goAheadMessage = mHandler.obtainMessage(GO_HEAD_WHAT);
+
+        final Intent updateIntent = new Intent(this,UpdateTicketList.class);
+        startActivityForResult(updateIntent,UPDATE_REQUEST_ID);
+
+
         mHandler.sendMessageAtTime(goAheadMessage, mStartTime + MAX_WAIT_INTERVAL);
         Log.d(TAG_LOG, "Handler message sent!");
     }
@@ -77,6 +90,22 @@ public class SplashActivity extends Activity {
     protected  void onRestoreInstanceState(Bundle savedInstanceState){
         super.onRestoreInstanceState(savedInstanceState);
         this.mIsDone = savedInstanceState.getBoolean(IS_DONE_KEY);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == UPDATE_REQUEST_ID) {
+
+            if (resultCode == RESULT_CANCELED) {
+                return;
+            }
+
+            if(resultCode == RESULT_OK){
+                risultato = data.getStringExtra("result");
+            }
+
+
+        }
     }
 
 }
