@@ -27,7 +27,7 @@ public class SplashActivity extends Activity {
     private long mStartTime = -1L;
     private boolean mIsDone;
 
-    public String risultato = "a";
+    //public String risultato = "a";
 
 
     private Handler mHandler = new Handler() {
@@ -71,8 +71,8 @@ public class SplashActivity extends Activity {
         }
         final Message goAheadMessage = mHandler.obtainMessage(GO_HEAD_WHAT);
 
-        final Intent updateIntent = new Intent(this,UpdateTicketList.class);
-        startActivityForResult(updateIntent,UPDATE_REQUEST_ID);
+        /*final Intent updateIntent = new Intent(this,UpdateTicketList.class);
+        startActivityForResult(updateIntent,UPDATE_REQUEST_ID);*/
 
 
         mHandler.sendMessageAtTime(goAheadMessage, mStartTime + MAX_WAIT_INTERVAL);
@@ -92,6 +92,7 @@ public class SplashActivity extends Activity {
         this.mIsDone = savedInstanceState.getBoolean(IS_DONE_KEY);
     }
 
+    /*
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == UPDATE_REQUEST_ID) {
@@ -106,6 +107,6 @@ public class SplashActivity extends Activity {
 
 
         }
-    }
+    }*/
 
 }
