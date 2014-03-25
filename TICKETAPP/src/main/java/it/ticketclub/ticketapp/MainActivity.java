@@ -4,10 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.webkit.*;
-import android.view.Display;
-import android.view.WindowManager;
-import android.content.Context;
-import android.content.Intent;
+
 
 
 public class MainActivity extends Activity {
@@ -19,6 +16,8 @@ public class MainActivity extends Activity {
 
         final WebView webview = new WebView(this);
         setContentView(webview);
+
+        final String url;
 
 
         webview.setWebViewClient(new WebViewClient(){
@@ -35,6 +34,8 @@ public class MainActivity extends Activity {
                 webview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
                 webview.setScrollbarFadingEnabled(false);
                 webview.loadUrl(url);
+
+
                 return true;
             }
 
@@ -46,25 +47,10 @@ public class MainActivity extends Activity {
         webview.getSettings().setUseWideViewPort(true);
         webview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         webview.setScrollbarFadingEnabled(false);
+        //url = "http://m.ticketclub.it/index.php?display=VGA&device=SAMSUNG/";
+        url = "http://m.ticketclub.it/index.php?display=HD&device=IPHONE/";
 
-
-        String url;
-        if (getIntent().hasExtra("url")) {
-            url = getIntent().getStringExtra("url");
-        } else {
-            //url = "http://m.ticketclub.it/index.php?display=VGA&device=SAMSUNG/";
-            url = "http://m.ticketclub.it/index.php?display=HD&device=IPHONE/";
-
-        }
         webview.loadUrl(url);
-
-
-
-
-
-        //webview.clearView();
-        //webview.resolveSize(10,10);
-
     }
 
 
