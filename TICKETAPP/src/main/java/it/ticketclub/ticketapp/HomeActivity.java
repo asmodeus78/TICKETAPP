@@ -47,12 +47,6 @@ public class HomeActivity extends ListActivity {
     private static final String TAG_TITOLO = "titoloSup";
     private static final String TAG_IMAGE = "image";
 
-    /*private static final String TAG_GENDER = "gender";
-    private static final String TAG_PHONE = "phone";
-    private static final String TAG_PHONE_MOBILE = "mobile";
-    private static final String TAG_PHONE_HOME = "home";
-    private static final String TAG_PHONE_OFFICE = "office";*/
-
     // tickets JSONArray
     JSONArray tickets = null;
 
@@ -72,8 +66,6 @@ public class HomeActivity extends ListActivity {
         new GetTickets().execute();
 
     }
-
-
 
     private class GetTickets extends AsyncTask<Void, Void, Void> {
 
@@ -103,7 +95,7 @@ public class HomeActivity extends ListActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
 
                     // Getting JSON Array node
-                    tickets = jsonObj.getJSONArray("TICKET");
+                    tickets = jsonObj.getJSONArray(TAG_LISTA);
 
                     // looping through All Tickets
                     for (int i = 0; i < tickets.length(); i++) {
@@ -127,8 +119,6 @@ public class HomeActivity extends ListActivity {
                             Log.e("Error", e.getMessage());
                             e.printStackTrace();
                         }
-
-
 
                         // tmp hashmap for single contact
                         HashMap<String, Object> ticket = new HashMap<String, Object>();
@@ -179,6 +169,5 @@ public class HomeActivity extends ListActivity {
         }
 
     }
-
 
 }
