@@ -12,7 +12,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/image"
-        android:src="@drawable/ticket"/>
+        android:src="@drawable/sfumatura_ticket"/>
 
     <TextView
         android:id="@+id/name"

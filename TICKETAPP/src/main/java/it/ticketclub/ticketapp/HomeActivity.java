@@ -2,19 +2,14 @@ package it.ticketclub.ticketapp;
 
 import android.app.ListActivity;
 import android.app.ProgressDialog;
-import android.graphics.drawable.Drawable;
+
 import android.os.Bundle;
 import android.os.AsyncTask;
-import android.widget.ListView;
+
 import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
-import android.widget.SimpleAdapter.ViewBinder;
-
-
 
 import android.util.Log;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 
 import org.json.JSONObject;
@@ -22,10 +17,9 @@ import org.json.JSONException;
 
 import org.json.JSONArray;
 
-import java.net.URL;
+
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.io.InputStream;
 
 
 //http://developer.android.com/reference/android/util/JsonReader.html
@@ -40,7 +34,6 @@ public class HomeActivity extends ListActivity {
     private static String url = "http://www.ticketclub.it/APP/gateway2.php?CMD=TK";
 
     // JSON Node names
-    private static final String TAG_LISTA = "TICKET";
     private static final String TAG_ID = "idTicket";
     private static final String TAG_CODICE = "codice";
     private static final String TAG_OGGETTO = "oggetto";
@@ -84,6 +77,7 @@ public class HomeActivity extends ListActivity {
         protected Void doInBackground(Void... arg0) {
             // Creating service handler class instance
             ServiceHandler sh = new ServiceHandler();
+            BitmapUtils Bu = new BitmapUtils();
 
             // Making a request to url and getting response
             String jsonStr = sh.makeServiceCall(url, ServiceHandler.GET);
@@ -95,7 +89,7 @@ public class HomeActivity extends ListActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
 
                     // Getting JSON Array node
-                    tickets = jsonObj.getJSONArray(TAG_LISTA);
+                    tickets = jsonObj.getJSONArray("TICKET");
 
                     // looping through All Tickets
                     for (int i = 0; i < tickets.length(); i++) {
@@ -105,20 +99,10 @@ public class HomeActivity extends ListActivity {
                         String codice = c.getString(TAG_CODICE);
                         String titolo = c.getString(TAG_TITOLO);
                         String oggetto = c.getString(TAG_OGGETTO);
-
-                        Drawable imgticket = null;
-
                         String photo = "http://www.ticketclub.it/TICKET_NEW/biglietti/" + c.getString(TAG_CODICE) + ".jpg";
+                        //Bitmap imgticket = Bu.loadBitmap(photo);
 
-                        try {
-                            InputStream in = (InputStream) new URL(photo).getContent();
-                            imgticket = Drawable.createFromStream(in,codice);
-                            //InputStream in = new java.net.URL(photo).openStream();
-                            //imgticket = BitmapFactory.decodeStream(in);
-                        } catch (Exception e) {
-                            Log.e("Error", e.getMessage());
-                            e.printStackTrace();
-                        }
+                        Log.d("COLONNA",photo);
 
                         // tmp hashmap for single contact
                         HashMap<String, Object> ticket = new HashMap<String, Object>();
@@ -128,7 +112,12 @@ public class HomeActivity extends ListActivity {
                         ticket.put(TAG_CODICE, codice);
                         ticket.put(TAG_TITOLO, titolo);
                         ticket.put(TAG_OGGETTO, oggetto);
-                        ticket.put(TAG_IMAGE, imgticket);
+                        ticket.put(TAG_IMAGE, Bu.loadBitmap(photo));
+
+                        //BitmapFactory.decodeResource(context.)
+
+
+
 
                         // adding contact to contact list
                         ticketList.add(ticket);
@@ -154,20 +143,30 @@ public class HomeActivity extends ListActivity {
              * */
 
 
+            String[] from = { TAG_CODICE, TAG_TITOLO, TAG_OGGETTO, TAG_IMAGE };
+            int[] views = { R.id.name, R.id.email, R.id.mobile, R.id.image };
 
              ListAdapter adapter = new SimpleAdapter(
-                    HomeActivity.this, ticketList,
-                    R.layout.list_item, new String[] { TAG_CODICE, TAG_TITOLO,
-                    TAG_OGGETTO, TAG_IMAGE }, new int[] { R.id.name,
-                    R.id.email, R.id.mobile, R.id.image });
+                    HomeActivity.this,
+                    ticketList,
+                    R.layout.list_item,
+                    from,
+                    views);
 
-
-
-            setListAdapter(adapter);
+             setListAdapter(adapter);
 
 
         }
 
+
+
     }
+
+
+
+
+
+
+
 
 }
