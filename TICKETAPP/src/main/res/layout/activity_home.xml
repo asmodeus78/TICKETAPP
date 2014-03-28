@@ -5,6 +5,13 @@
     android:background="#f99d1c"
     tools:context="HomeActivity">
 
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/horizontalScrollView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true" />
+
     <ListView
         android:id="@android:id/list"
         android:layout_width="fill_parent"

@@ -1,5 +1,8 @@
 package it.ticketclub.ticketapp;
 
+import android.app.ActionBar;
+import android.app.Activity;
+import android.app.Fragment;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 
@@ -50,6 +53,26 @@ public class HomeActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        /*ActionBar bar = getActionBar();
+
+        bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        ActionBar.Tab tabA = bar.newTab().setText("Ristorazione");
+        ActionBar.Tab tabB = bar.newTab().setText("Benessere");
+        ActionBar.Tab tabC = bar.newTab().setText("Viaggi e Svago");
+        ActionBar.Tab tabD = bar.newTab().setText("Casa e Servizi");
+        ActionBar.Tab tabE = bar.newTab().setText("Sport e Motori");
+        ActionBar.Tab tabF = bar.newTab().setText("Shopping");
+        ActionBar.Tab tabG = bar.newTab().setText("Eventi");*/
+
+ /*
+        bar.addTab(tabA);
+        bar.addTab(tabB);
+       bar.addTab(tabC);
+        bar.addTab(tabD);
+        bar.addTab(tabE);
+        bar.addTab(tabF);
+        bar.addTab(tabG);*/
 
         ticketList = new ArrayList<HashMap<String, Object>>();
 
