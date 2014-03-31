@@ -2,7 +2,6 @@ package it.ticketclub.ticketapp;
 
 import java.util.Locale;
 
-import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -11,7 +10,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -72,32 +70,68 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
             // this tab is selected.
             actionBar.addTab(
                     actionBar.newTab()
+                            .setCustomView(R.layout.tab_ico_1)
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }*/
 
-       // final View firstCustomView = new View(this);
-       // firstCustomView.setBackgroundColor(R.drawable.tab_ico_ristorazione);  // or with drawable or resource
+       //final View firstCustomView = new View(this);
+       //firstCustomView.setBackgroundColor("#ccc");  // or with drawable or resource
+
+        //firstCustomView.setAlpha(20);
+
+
 
         actionBar.addTab(
                 actionBar.newTab()
-                        .setText("Ristorazione")
-                        .setIcon(R.drawable.ico_ristorazione)
-                        //.setCustomView(firstCustomView)
+                        .setText("")
+                        .setCustomView(R.layout.tab_ico_0)
                         .setTabListener(this)
         );
 
+
         actionBar.addTab(
                 actionBar.newTab()
-                        .setIcon(R.drawable.tab_ico_benessere)
+                        .setCustomView(R.layout.tab_ico_1)
                         .setText("")
                         .setTabListener(this));
 
         actionBar.addTab(
                 actionBar.newTab()
-                        .setIcon(R.drawable.tab_ico_viaggi)
+                        .setCustomView(R.layout.tab_ico_2)
                         .setText("")
                         .setTabListener(this));
+
+        actionBar.addTab(
+                actionBar.newTab()
+                        .setCustomView(R.layout.tab_ico_3)
+                        .setText("")
+                        .setTabListener(this));
+
+        actionBar.addTab(
+                actionBar.newTab()
+                        .setCustomView(R.layout.tab_ico_4)
+                        .setText("")
+                        .setTabListener(this));
+
+        actionBar.addTab(
+                actionBar.newTab()
+                        .setCustomView(R.layout.tab_ico_5)
+                        .setText("")
+                        .setTabListener(this));
+
+        actionBar.addTab(
+                actionBar.newTab()
+                        .setCustomView(R.layout.tab_ico_6)
+                        .setText("")
+                        .setTabListener(this));
+
+        actionBar.addTab(
+                actionBar.newTab()
+                        .setCustomView(R.layout.tab_ico_7)
+                        .setText("")
+                        .setTabListener(this));
+
 
     }
 
@@ -166,21 +200,21 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
 
             switch (position) {
                 case 0:
-                    return getString(R.string.title_section1).toString(); //.toUpperCase(l);
+                    return "Tutte le categorie"; //getString(R.string.title_section1).toString(); //.toUpperCase(l);
                 case 1:
-                    return getString(R.string.title_section2).toString(); //.toUpperCase(l);
+                    return "Ristorazione"; //.toUpperCase(l);
                 case 2:
-                    return getString(R.string.title_section3).toString(); //.toUpperCase(l);
+                    return "Benessere;"; //.toUpperCase(l);
                 case 3:
-                    return getString(R.string.title_section4).toString(); //.toUpperCase(l);
+                    return getString(R.string.title_section4); //.toString(); //.toUpperCase(l);
                 case 4:
-                    return getString(R.string.title_section5).toString(); //.toUpperCase(l);
+                    return "Casa e Servizi"; //getString(R.string.title_section5).toString(); //.toUpperCase(l);
                 case 5:
-                    return getString(R.string.title_section6).toString(); //.toUpperCase(l);
+                    return getString(R.string.title_section6); //.toString(); //.toUpperCase(l);
                 case 6:
-                    return getString(R.string.title_section7).toString(); //.toUpperCase(l);
+                    return "Shopping"; //getString(R.string.title_section7).toString(); //.toUpperCase(l);
                 case 7:
-                    return getString(R.string.title_section8).toString(); //.toUpperCase(l);
+                    return "Eventi";//getString(R.string.title_section8).toString(); //.toUpperCase(l);
             }
             return null;
         }
