@@ -1,7 +1,13 @@
 package it.ticketclub.ticketapp;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
+import android.app.ListActivity;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -10,15 +16,25 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.SearchView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class FirstActivity extends ActionBarActivity implements ActionBar.TabListener {
+
+
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -86,8 +102,8 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                 actionBar.newTab()
                         .setText("")
                         .setCustomView(R.layout.tab_ico_0)
-                        .setTabListener(this)
-        );
+                        .setTabListener(this));
+
 
 
         actionBar.addTab(
@@ -141,6 +157,9 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.first, menu);
+        //MenuItem searchItem = menu.findItem(R.id.action_search);
+        //SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        //configurare l'event listners sul tasto ricerca
         return true;
     }
 
@@ -224,6 +243,8 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
+
+
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -248,11 +269,25 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
+
+
+
+            // Calling async task to get json
+            //new HomeActivity();
+
+
+
+
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            //View rootView = inflater.inflate(R.layout.activity_home, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
         }
+
+
     }
+
+
 
 }

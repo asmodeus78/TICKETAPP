@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.AsyncTask;
 
@@ -21,8 +22,12 @@ import org.json.JSONException;
 import org.json.JSONArray;
 
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.net.MalformedURLException;
 
 
 //http://developer.android.com/reference/android/util/JsonReader.html
@@ -54,29 +59,7 @@ public class HomeActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        /*ActionBar bar = getActionBar();
-
-        bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        ActionBar.Tab tabA = bar.newTab().setText("Ristorazione");
-        ActionBar.Tab tabB = bar.newTab().setText("Benessere");
-        ActionBar.Tab tabC = bar.newTab().setText("Viaggi e Svago");
-        ActionBar.Tab tabD = bar.newTab().setText("Casa e Servizi");
-        ActionBar.Tab tabE = bar.newTab().setText("Sport e Motori");
-        ActionBar.Tab tabF = bar.newTab().setText("Shopping");
-        ActionBar.Tab tabG = bar.newTab().setText("Eventi");*/
-
- /*
-        bar.addTab(tabA);
-        bar.addTab(tabB);
-       bar.addTab(tabC);
-        bar.addTab(tabD);
-        bar.addTab(tabE);
-        bar.addTab(tabF);
-        bar.addTab(tabG);*/
-
         ticketList = new ArrayList<HashMap<String, Object>>();
-
-        //ListView lv = getListView();
 
         // Calling async task to get json
         new GetTickets().execute();
@@ -123,8 +106,21 @@ public class HomeActivity extends ListActivity {
                         String titolo = c.getString(TAG_TITOLO);
                         String oggetto = c.getString(TAG_OGGETTO);
                         String photo = "http://www.ticketclub.it/TICKET_NEW/biglietti/" + c.getString(TAG_CODICE) + ".jpg";
-                        //Bitmap imgticket = Bu.loadBitmap(photo);
+                        Drawable d1 = null;
+                        try {
 
+                            InputStream is1 = (InputStream) new URL(photo).getContent();
+                            d1 = Drawable.createFromStream(is1, "src name");
+
+                            //Bitmap imgticket = Bu.loadBitmap(photo);
+
+                        } catch (MalformedURLException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                         Log.d("COLONNA",photo);
 
                         // tmp hashmap for single contact
@@ -135,7 +131,8 @@ public class HomeActivity extends ListActivity {
                         ticket.put(TAG_CODICE, codice);
                         ticket.put(TAG_TITOLO, titolo);
                         ticket.put(TAG_OGGETTO, oggetto);
-                        ticket.put(TAG_IMAGE, Bu.loadBitmap(photo));
+                        //ticket.put(TAG_IMAGE, Bu.loadBitmap(photo));
+                        ticket.put(TAG_IMAGE, d1);
 
                         //BitmapFactory.decodeResource(context.)
 

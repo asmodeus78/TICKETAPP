@@ -8,5 +8,19 @@
         android:orderInCategory="100"
         app:showAsAction="never" />
 
+    <item android:id="@+id/action_search"
+        android:title="Cerca ticket"
+        android:icon="@drawable/ic_action_action_search"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        />
+
+    <item android:id="@+id/action_profilo"
+        android:title="Profilo"
+        android:icon="@drawable/ic_action_device_access_storage_1"
+        app:showAsAction="ifRoom"
+        />
+
+
 
 </menu>
