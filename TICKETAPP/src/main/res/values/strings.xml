@@ -18,4 +18,9 @@
 
     <string name="title_activity_first">Ticket Club</string>
 
+
+
+
+    <string name="txt_city">Città</string>
+
 </resources>

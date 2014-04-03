@@ -22,9 +22,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
+import android.widget.TabHost;
+import android.widget.TabWidget;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -59,6 +64,11 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        //actionBar.setDisplayShowTitleEnabled(false);
+        //actionBar.setDisplayShowHomeEnabled (false);
+
+
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -157,6 +167,25 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.first, menu);
+
+        /*final MenuItem menuCity = menu.findItem(R.id.menu_city);
+        final Spinner spinner = (Spinner) menuCity.getActionView()
+                .findViewById(R.id.menu_city);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> spinner, View view,
+                                       int position, long id) {
+                //Log.i(TAG_LOG,"In Spinner selected item " + spinner.getItemAtPosition(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> spinner) {
+                //Log.i(TAG_LOG,"Nothing selected in Spinner");
+            }
+        });*/
+
+
         //MenuItem searchItem = menu.findItem(R.id.action_search);
         //SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         //configurare l'event listners sul tasto ricerca
@@ -180,6 +209,12 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         // When the given tab is selected, switch to the corresponding page in
         // the ViewPager.
         mViewPager.setCurrentItem(tab.getPosition());
+        //TabHost mTabHost = getTabHost();
+        //actionBar.getTabWidget().getChildAt(tab.getPosition()).setLayoutParams(new LinearLayout.LayoutParams((display.getWidth()/2)-2,50));
+
+
+
+
     }
 
     @Override

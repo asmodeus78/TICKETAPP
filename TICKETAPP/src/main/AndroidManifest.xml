@@ -25,11 +25,11 @@
             android:name="it.ticketclub.ticketapp.HomeActivity"
             android:label=""
         />
-        <activity
-            android:name="it.ticketclub.ticketapp.FirstActivity"
-            android:label=""
-        />
+        <activity android:name="it.ticketclub.ticketapp.FirstActivity" android:label="" android:uiOptions="splitActionBarWhenNarrow">
 
+            <meta-data android:name="android.support.UI_OPTIONS" android:value="splitActionBarWhenNarrow" />
+
+        </activity>
 
 
     </application>

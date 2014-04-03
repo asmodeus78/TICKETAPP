@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string-array name="city_options">
+        <item>Tutte le Città</item>
+        <item>Avellino</item>
+        <item>Benevento</item>
+        <item>Caserta</item>
+        <item>Napoli</item>
+        <item>Salerno</item>
+    </string-array>
+
+</resources>

@@ -2,11 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="it.ticketclub.ticketapp.FirstActivity" >
-    
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
+
+
+  
 
     <item android:id="@+id/action_search"
         android:title="Cerca ticket"
@@ -15,11 +13,20 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         />
 
+
+
     <item android:id="@+id/action_profilo"
         android:title="Profilo"
         android:icon="@drawable/ic_action_device_access_storage_1"
         app:showAsAction="ifRoom"
         />
+
+
+    <item android:id="@+id/action_citta"
+        android:title="Seleziona Citta"
+        app:showAsAction="ifRoom"
+        />
+
 
 
 
