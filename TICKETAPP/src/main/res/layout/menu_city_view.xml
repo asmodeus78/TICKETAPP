@@ -4,5 +4,5 @@
     android:layout_height="wrap_content"
     android:id="@+id/menu_city"
     android:layout_gravity="center_horizontal"
-    android:entries="@array/city_options"
+    android:entries="@array/spinner_data"
 />

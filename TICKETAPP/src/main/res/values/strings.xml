@@ -23,4 +23,13 @@
 
     <string name="txt_city">Città</string>
 
+    <string-array name="spinner_data">
+        <item>Tutte le Città</item>
+        <item>Avellino</item>
+        <item>Benevento</item>
+        <item>Caserta</item>
+        <item>Napoli</item>
+        <item>Salerno</item>
+    </string-array>
+
 </resources>

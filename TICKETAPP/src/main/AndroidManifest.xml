@@ -11,9 +11,9 @@
         android:logo="@drawable/logo_top"
         android:label="@string/app_name"
         android:theme="@style/Theme.Apptheme" >
-        <activity android:name="it.ticketclub.ticketapp.MainActivity" />
+        <activity android:name=".MainActivity" />
         <activity
-            android:name="it.ticketclub.ticketapp.SplashActivity"
+            android:name=".SplashActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,10 +22,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="it.ticketclub.ticketapp.HomeActivity"
+            android:name=".HomeActivity"
             android:label=""
         />
-        <activity android:name="it.ticketclub.ticketapp.FirstActivity" android:label="" android:uiOptions="splitActionBarWhenNarrow">
+        <activity android:name=".FirstActivity" android:label="" android:uiOptions="splitActionBarWhenNarrow">
 
             <meta-data android:name="android.support.UI_OPTIONS" android:value="splitActionBarWhenNarrow" />
 

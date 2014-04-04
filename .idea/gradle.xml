@@ -7,8 +7,8 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/TICKETAPP" />
+            <option value="C:\Users\TicketClub\AndroidStudioProjects\TICKETAPP" />
+            <option value="C:\Users\TicketClub\AndroidStudioProjects\TICKETAPP\TICKETAPP" />
           </set>
         </option>
       </GradleProjectSettings>

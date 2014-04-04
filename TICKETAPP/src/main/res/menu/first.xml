@@ -23,8 +23,9 @@
 
 
     <item android:id="@+id/action_citta"
-        android:title="Seleziona Citta"
-        app:showAsAction="ifRoom"
+        android:title="CITTA"
+        app:showAsAction="always"
+        app:actionViewClass="android.widget.Spinner"
         />
 
 

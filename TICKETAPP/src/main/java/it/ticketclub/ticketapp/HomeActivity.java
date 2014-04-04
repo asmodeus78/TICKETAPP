@@ -1,8 +1,5 @@
 package it.ticketclub.ticketapp;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.app.Fragment;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 

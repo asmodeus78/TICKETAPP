@@ -1,13 +1,8 @@
 package it.ticketclub.ticketapp;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Locale;
 
-import android.app.ListActivity;
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
-import android.support.v4.view.MenuItemCompat;
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -16,29 +11,23 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.SearchView;
-import android.widget.SimpleAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TabHost;
-import android.widget.TabWidget;
 import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+
+
 
 
 public class FirstActivity extends ActionBarActivity implements ActionBar.TabListener {
 
+    private MenuItem mSpinnerItem = null;
 
 
     /**
@@ -166,7 +155,20 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
     public boolean onCreateOptionsMenu(Menu menu) {
         
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.first, menu);
+
+        MenuInflater minf = getMenuInflater();
+        minf.inflate(R.menu.first,menu);
+
+        mSpinnerItem = menu.findItem(R.id.action_citta);
+
+        setupSpinner(mSpinnerItem);
+
+        //mSpinnerItem = menu.findItem(R.id.menu_city);
+        //setupSpinner(mSpinnerItem);
+
+        return super.onCreateOptionsMenu(menu);
+
+        //getMenuInflater().inflate(R.menu.first, menu);
 
         /*final MenuItem menuCity = menu.findItem(R.id.menu_city);
         final Spinner spinner = (Spinner) menuCity.getActionView()
@@ -189,7 +191,7 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         //MenuItem searchItem = menu.findItem(R.id.action_search);
         //SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         //configurare l'event listners sul tasto ricerca
-        return true;
+        //return true;
     }
 
     @Override
@@ -203,6 +205,8 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
@@ -323,6 +327,24 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
 
     }
 
+    private void setupSpinner(MenuItem item) {
+        //  item.setVisible(getSupportActionBar().getNavigationMode() == ActionBar.NAVIGATION_MODE_LIST);
+        //item.setVisible(ab.getNavigationMode() == ActionBar.NAVIGATION_MODE_LIST);
+
+        View view = item.getActionView();
+        Context context = getSupportActionBar().getThemedContext(); //to get the declared theme
+        if (view instanceof Spinner) {
+            Spinner spinner = (Spinner) view;
+
+            ArrayAdapter<CharSequence> listAdapter = ArrayAdapter.createFromResource(context,
+                    R.array.spinner_data,
+                    R.layout.support_simple_spinner_dropdown_item);
+            listAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+            spinner.setAdapter(listAdapter);
+
+
+        }
+    }
 
 
 }
