@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 
+import android.app.LauncherActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -30,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,12 +43,7 @@ import org.json.JSONObject;
 
 public class FirstActivity extends ActionBarActivity implements ActionBar.TabListener {
 
-
-
-
-
     private MenuItem mSpinnerItem = null;
-
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -71,13 +68,6 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-
-
-        //actionBar.setDisplayShowTitleEnabled(false);
-        //actionBar.setDisplayShowHomeEnabled (false);
-
-
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -226,8 +216,6 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         return super.onOptionsItemSelected(item);
     }
 
-
-
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in
@@ -284,11 +272,11 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                 case 2:
                     return "Benessere;"; //.toUpperCase(l);
                 case 3:
-                    return getString(R.string.title_section4); //.toString(); //.toUpperCase(l);
+                    return "Viaggi e Svago";//getString(R.string.title_section4); //.toString(); //.toUpperCase(l);
                 case 4:
                     return "Casa e Servizi"; //getString(R.string.title_section5).toString(); //.toUpperCase(l);
                 case 5:
-                    return getString(R.string.title_section6); //.toString(); //.toUpperCase(l);
+                    return "Sport e Motori"; //.toString(); //.toUpperCase(l);
                 case 6:
                     return "Shopping"; //getString(R.string.title_section7).toString(); //.toUpperCase(l);
                 case 7:
@@ -332,9 +320,6 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
          * fine TEST
          */
 
-
-
-
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -360,23 +345,36 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
 
-
-
             // Calling async task to get json
-            //new HomeActivity();
 
             ticketList = new ArrayList<HashMap<String, Object>>();
 
             // Calling async task to get json
             new GetTickets().execute();
 
+/*
+            ArrayAdapter adapter = new ArrayAdapter(
+                    getActivity(),
+                    R.layout.list_item,
+                    ticketList
+                    );
+*/
+            //View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+            View rootView = inflater.inflate(R.layout.activity_home, container, false);
 
+            //String[] from = { TAG_CODICE, TAG_TITOLO, TAG_OGGETTO, TAG_IMAGE };
+            //int[] views = { R.id.name, R.id.email, R.id.mobile, R.id.image };
 
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            //ListView Alpha = (ListView) rootView.findViewById(R.id.list_item);
+
+            //ListAdapter adapter = new SimpleAdapter(getActivity(),ticketList,R.id.list_item,from,views);
+
+            //setListAdapter(adapter);
+
             //View rootView = inflater.inflate(R.layout.activity_home, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+            //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            //textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
         }
 
@@ -388,7 +386,7 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                 // Showing progress dialog
                 pDialog = new ProgressDialog(getActivity());
                 pDialog.setMessage("Please wait...");
-                pDialog.setCancelable(false);
+                pDialog.setCancelable(true);
                 pDialog.show();
 
             }
@@ -441,7 +439,7 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                             HashMap<String, Object> ticket = new HashMap<String, Object>();
 
                             // adding each child node to HashMap key => value
-                            ticket.put(TAG_ID, id);
+                            //ticket.put(TAG_ID, id);
                             ticket.put(TAG_CODICE, codice);
                             ticket.put(TAG_TITOLO, titolo);
                             ticket.put(TAG_OGGETTO, oggetto);
@@ -472,12 +470,10 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                 // Dismiss the progress dialog
                 if (pDialog.isShowing())
                     pDialog.dismiss();
-                /**
-                 * Updating parsed JSON data into ListView
-                 * */
 
 
-                String[] from = { TAG_CODICE, TAG_TITOLO, TAG_OGGETTO, TAG_IMAGE };
+
+                /*String[] from = { TAG_CODICE, TAG_TITOLO, TAG_OGGETTO, TAG_IMAGE };
                 int[] views = { R.id.name, R.id.email, R.id.mobile, R.id.image };
 
                 ListAdapter adapter = new SimpleAdapter(
@@ -486,8 +482,23 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                         R.layout.list_item,
                         from,
                         views);
+*/
+                //return adapter;
 
-               // setListAdapter(adapter);
+                //setListAdapter(adapter);
+
+
+                //Fragment Alpha = getLayoutInflater();
+                //Alpha.inflate(R.layout.fragment_main,menu);
+
+
+                //getLayoutInflater().inflate(R.layout.fragment_main,);
+
+
+                //View rootView = inflater.inflate(R.layout.activity_home, container, false);
+                //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+                //textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+                //return rootView;
 
 
             }
