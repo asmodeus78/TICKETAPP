@@ -29,6 +29,7 @@
             android:name=".HomeActivity"
             android:screenOrientation="portrait"
             android:label=""
+            android:uiOptions="splitActionBarWhenNarrow"
         />
         <activity android:name=".FirstActivity" android:screenOrientation="portrait" android:label="" android:uiOptions="splitActionBarWhenNarrow">
 

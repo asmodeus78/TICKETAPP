@@ -352,29 +352,11 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
             // Calling async task to get json
             new GetTickets().execute();
 
-/*
-            ArrayAdapter adapter = new ArrayAdapter(
-                    getActivity(),
-                    R.layout.list_item,
-                    ticketList
-                    );
-*/
-            //View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
 
             View rootView = inflater.inflate(R.layout.activity_home, container, false);
 
-            //String[] from = { TAG_CODICE, TAG_TITOLO, TAG_OGGETTO, TAG_IMAGE };
-            //int[] views = { R.id.name, R.id.email, R.id.mobile, R.id.image };
 
-            //ListView Alpha = (ListView) rootView.findViewById(R.id.list_item);
-
-            //ListAdapter adapter = new SimpleAdapter(getActivity(),ticketList,R.id.list_item,from,views);
-
-            //setListAdapter(adapter);
-
-            //View rootView = inflater.inflate(R.layout.activity_home, container, false);
-            //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            //textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
         }
 
@@ -510,12 +492,6 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
 
     }
 
-
-    private void loadTicket(){
-
-
-
-    }
 
     private void setupSpinner(MenuItem item) {
         //  item.setVisible(getSupportActionBar().getNavigationMode() == ActionBar.NAVIGATION_MODE_LIST);
