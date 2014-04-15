@@ -2,11 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
-    tools:context="HomeActivity">
+    android:background="#fff">
 
     <ListView
-        android:id="@android:id/list"
+        android:id="@+id/ListViewDemo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
 

@@ -198,7 +198,15 @@ public class HomeActivity extends ActionBarActivity implements ActionBar.TabList
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
 
+
+            LoadTicket Ticket = new LoadTicket();
             View rootView = inflater.inflate(R.layout.activity_home, container, false);
+
+
+
+
+
+
 
 
             return rootView;

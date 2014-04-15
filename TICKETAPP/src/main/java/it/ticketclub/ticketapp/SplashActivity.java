@@ -48,8 +48,10 @@ public class SplashActivity extends Activity {
 
     private void goAhead(){
         //final Intent intent = new Intent(this,MainActivity.class); // WEB VIEW
-        final Intent intent = new Intent(this,HomeActivity.class); // JSON TICKET DOWNLOAD
+        ///final Intent intent = new Intent(this,HomeActivity.class); // JSON TICKET DOWNLOAD
         ////final Intent intent = new Intent(this,FirstActivity.class); // SWIPE E TAB
+
+        final Intent intent = new Intent(this,DemoActivity2.class); // JSON TICKET DOWNLOAD
         startActivity(intent); // Launch the Intent
         finish(); // We finish the current Activity
     }

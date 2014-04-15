@@ -147,16 +147,14 @@ public class LoadTicket extends ListActivity {
             ListAdapter adapter = new SimpleAdapter(
                     LoadTicket.this,
                     ticketList,
-                    R.layout.list_item,
+                    R.layout.row_item,
                     from,
-                    views);
+                    views
+            );
 
             setListAdapter(adapter);
 
 
         }
-
-
-
     }
 }

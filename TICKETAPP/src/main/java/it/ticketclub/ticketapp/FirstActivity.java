@@ -461,7 +461,7 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                 ListAdapter adapter = new SimpleAdapter(
                         getActivity(),
                         ticketList,
-                        R.layout.list_item,
+                        R.layout.row_item,
                         from,
                         views);
 */

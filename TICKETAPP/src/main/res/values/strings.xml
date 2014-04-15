@@ -15,12 +15,7 @@
     <string name="title_section6">Sport e Motori</string>
     <string name="title_section7">Shopping</string>
     <string name="title_section8">Eventi</string>
-
     <string name="title_activity_first">Ticket Club</string>
-
-
-
-
     <string name="txt_city">Città</string>
 
     <string-array name="spinner_data">
@@ -31,5 +26,7 @@
         <item>Napoli</item>
         <item>Salerno</item>
     </string-array>
+
+    <string name="title_activity_demo_activity2">DemoActivity2</string>
 
 </resources>
