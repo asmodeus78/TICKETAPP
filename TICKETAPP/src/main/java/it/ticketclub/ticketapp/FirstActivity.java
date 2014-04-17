@@ -6,6 +6,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 import android.app.LauncherActivity;
@@ -452,6 +454,15 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                 // Dismiss the progress dialog
                 if (pDialog.isShowing())
                     pDialog.dismiss();
+
+                ListView listView = (ListView)getActivity().findViewById(R.id.ListViewDemo);
+                List list = new LinkedList();
+                list.add(new Ticket("001","STELLA FILM","TC104140219046.jpg"));
+                list.add(new Ticket("002","BUSINESS ORIENTED","TC104140184049.jpg"));
+                list.add(new Ticket("003","UN POSTO AL SOLE","TC104140217020.jpg"));
+
+                CustomAdapter adapter = new CustomAdapter(getActivity(), R.layout.row_ticket, list);
+                listView.setAdapter(adapter);
 
 
 

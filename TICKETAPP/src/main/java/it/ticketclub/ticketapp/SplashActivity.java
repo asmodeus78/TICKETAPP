@@ -3,16 +3,22 @@ package it.ticketclub.ticketapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
 
+import java.io.File;
+import java.io.IOException;
+
 
 public class SplashActivity extends Activity {
 
-    private static final int UPDATE_REQUEST_ID = 1;
+    public static final File root = Environment.getExternalStorageDirectory();
+    private static final String NOMEDIA_FILE = "sample.nomedia";
 
+    private static final int UPDATE_REQUEST_ID = 1;
 
     private static final String TAG_LOG = SplashActivity.class.getName();
 
@@ -26,8 +32,6 @@ public class SplashActivity extends Activity {
 
     private long mStartTime = -1L;
     private boolean mIsDone;
-
-    //public String risultato = "a";
 
 
     private Handler mHandler = new Handler() {
@@ -48,15 +52,13 @@ public class SplashActivity extends Activity {
 
     private void goAhead(){
         //final Intent intent = new Intent(this,MainActivity.class); // WEB VIEW
-        ///final Intent intent = new Intent(this,HomeActivity.class); // JSON TICKET DOWNLOAD
-        ////final Intent intent = new Intent(this,FirstActivity.class); // SWIPE E TAB
-
-        final Intent intent = new Intent(this,DemoActivity2.class); // JSON TICKET DOWNLOAD
+        //final Intent intent = new Intent(this,HomeActivity.class); // ONLY SWIBE E TAB
+        final Intent intent = new Intent(this,FirstActivity.class); // SWIPE E TAB + JSON NOT VIEW
+        //final Intent intent = new Intent(this,DemoActivity3.class); // JSON TICKET DOWNLOAD
+        //final Intent intent = new Intent(this,DemoActivity2.class); // TICKET FOTO DOWNLOAD ED ADAPTER CUSTOM VIEW
         startActivity(intent); // Launch the Intent
         finish(); // We finish the current Activity
     }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,26 @@ public class SplashActivity extends Activity {
     @Override
     protected void onStart(){
         super.onStart();
+
+        if(isExternalStorageWritable()){
+
+
+            File path = new File(root.getAbsolutePath()+ "/Android/data/" + getApplicationInfo().packageName + "/cache/");
+            path.mkdirs();
+
+            File file= new File(path,NOMEDIA_FILE);
+            if (!file.exists()){
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+
+        }
+
         if(mStartTime==-1){
             mStartTime = SystemClock.uptimeMillis();
         }
@@ -96,21 +118,24 @@ public class SplashActivity extends Activity {
         this.mIsDone = savedInstanceState.getBoolean(IS_DONE_KEY);
     }
 
-    /*
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == UPDATE_REQUEST_ID) {
-
-            if (resultCode == RESULT_CANCELED) {
-                return;
-            }
-
-            if(resultCode == RESULT_OK){
-                risultato = data.getStringExtra("result");
-            }
-
-
+    /* Checks if external storage is available for read and write */
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
         }
-    }*/
+        return false;
+    }
+
+    /* Checks if external storage is available to at least read */
+    public boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return true;
+        }
+        return false;
+    }
 
 }

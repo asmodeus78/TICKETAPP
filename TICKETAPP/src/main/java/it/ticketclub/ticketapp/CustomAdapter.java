@@ -2,6 +2,9 @@ package it.ticketclub.ticketapp;
 
 import android.content.Context;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import it.ticketclub.ticketapp.Ticket;
@@ -19,6 +25,10 @@ import it.ticketclub.ticketapp.Ticket;
  * Created by Gio on 15/04/2014.
  */
 public class CustomAdapter extends ArrayAdapter<Ticket> {
+
+    public static final File root = Environment.getExternalStorageDirectory();
+    File path = new File(root.getAbsolutePath()+ "/Android/data/" + getContext().getApplicationInfo().packageName + "/cache/");
+
 
     public CustomAdapter(Context context, int textViewResourceId,
                                  List<Ticket> objects) {
@@ -46,23 +56,19 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
         Ticket ticket = getItem(position);
         viewHolder.TK_codice.setText(ticket.getCodice());
         viewHolder.TK_titolo.setText(ticket.getTitolo());
-        //viewHolder.TK_image.setImageBitmap(getBitmapFromURL(ticket.getFoto()));
 
-        Log.d("colonna",ticket.getFoto());
-        new DownloadImageTask(viewHolder.TK_image).execute(ticket.getFoto());
-        //new DownloadImageTask((ImageView)convertView.findViewById(R.id.TK_image)).execute(ticket.getFoto());
+        String CheckFile = ticket.getFoto();
 
-        /*URL newurl = null;
-        try {
-            newurl = new URL(ticket.getFoto());
-            viewHolder.TK_image.setImageBitmap(BitmapFactory.decodeStream(newurl.openConnection() .getInputStream()));
-        } catch (MalformedURLException e) {
-            ///Log.e("aaa",ticket.getFoto());
-            e.printStackTrace();
-        } catch (IOException e) {
-           /// Log.e("aaa",e.getMessage());
-            e.printStackTrace();
-        }*/
+        if (new File(path,CheckFile).exists()){
+            Bitmap bMap = BitmapFactory.decodeFile(path + "/" + CheckFile);
+            viewHolder.TK_image.setImageBitmap(bMap);
+            Log.d("colonna","carico foto da sd");
+        }else {
+            new DownloadImageTask(viewHolder.TK_image).execute(ticket.getFoto());
+            Log.d("colonna","scarico il file della foto da internet");
+        }
+
+
 
        // profile_photo.setImageBitmap(mIcon_val);
 

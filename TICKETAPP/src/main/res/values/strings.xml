@@ -28,5 +28,6 @@
     </string-array>
 
     <string name="title_activity_demo_activity2">DemoActivity2</string>
+    <string name="title_activity_demo_activity3">DemoActivity3</string>
 
 </resources>

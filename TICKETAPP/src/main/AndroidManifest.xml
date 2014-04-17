@@ -43,6 +43,14 @@
             android:name="it.ticketclub.ticketapp.DemoActivity2"
             android:label="@string/title_activity_demo_activity2" >
         </activity>
+        <activity
+            android:name="it.ticketclub.ticketapp.LoadTicket"
+            android:label="@string/title_activity_demo_activity2" >
+        </activity>
+        <activity
+            android:name="it.ticketclub.ticketapp.DemoActivity3"
+            android:label="@string/title_activity_demo_activity3" >
+        </activity>
     </application>
 
 </manifest>
