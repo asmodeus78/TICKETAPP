@@ -1,19 +1,13 @@
 package it.ticketclub.ticketapp;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-import android.app.LauncherActivity;
+
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -32,9 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -89,23 +81,6 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
             }
         });
 
-        // For each of the sections in the app, add a tab to the action bar.
-        /*for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-            // Create a tab with text corresponding to the page title defined by
-            // the adapter. Also specify this Activity object, which implements
-            // the TabListener interface, as the callback (listener) for when
-            // this tab is selected.
-            actionBar.addTab(
-                    actionBar.newTab()
-                            .setCustomView(R.layout.tab_ico_1)
-                            .setText(mSectionsPagerAdapter.getPageTitle(i))
-                            .setTabListener(this));
-        }*/
-
-       //final View firstCustomView = new View(this);
-       //firstCustomView.setBackgroundColor("#ccc");  // or with drawable or resource
-
-        //firstCustomView.setAlpha(20);
 
 
 
@@ -175,35 +150,7 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
 
         setupSpinner(mSpinnerItem);
 
-        //mSpinnerItem = menu.findItem(R.id.menu_city);
-        //setupSpinner(mSpinnerItem);
-
         return super.onCreateOptionsMenu(menu);
-
-        //getMenuInflater().inflate(R.menu.first, menu);
-
-        /*final MenuItem menuCity = menu.findItem(R.id.menu_city);
-        final Spinner spinner = (Spinner) menuCity.getActionView()
-                .findViewById(R.id.menu_city);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> spinner, View view,
-                                       int position, long id) {
-                //Log.i(TAG_LOG,"In Spinner selected item " + spinner.getItemAtPosition(position));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> spinner) {
-                //Log.i(TAG_LOG,"Nothing selected in Spinner");
-            }
-        });*/
-
-
-        //MenuItem searchItem = menu.findItem(R.id.action_search);
-        //SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        //configurare l'event listners sul tasto ricerca
-        //return true;
     }
 
     @Override
@@ -223,10 +170,6 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         // When the given tab is selected, switch to the corresponding page in
         // the ViewPager.
         mViewPager.setCurrentItem(tab.getPosition());
-        //TabHost mTabHost = getTabHost();
-        //actionBar.getTabWidget().getChildAt(tab.getPosition()).setLayoutParams(new LinearLayout.LayoutParams((display.getWidth()/2)-2,50));
-
-
 
 
     }
@@ -253,7 +196,10 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
+            //return PlaceholderFragment.newInstance(position + 1);
             return PlaceholderFragment.newInstance(position + 1);
+
+
         }
 
         @Override
@@ -293,34 +239,25 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
      */
     public static class PlaceholderFragment extends Fragment {
 
-
-
-        /***************************************
-         TEST INSERIMENTO TICKET LOADING
-         ********************************************/
         private ProgressDialog pDialog;
 
         // URL to get tickets JSON
-        //private static String url = "http://api.androidhive.info/contacts/";
-        private static String url = "http://www.ticketclub.it/APP/gateway2.php?CMD=TK";
+        private static String url = "http://www.ticketclub.it/APP/ticket_view.php?CMD=TK";
 
         // JSON Node names
         private static final String TAG_ID = "idTicket";
         private static final String TAG_CODICE = "codice";
-        private static final String TAG_OGGETTO = "oggetto";
-        private static final String TAG_TITOLO = "titoloSup";
-        private static final String TAG_IMAGE = "image";
+        private static final String TAG_TITOLO = "titolo";
+        private static final String TAG_TITOLO_SUP = "titoloSup";
+        //private static final String TAG_TICKET_SCARICATI = "nTicket";
+        //private static final String TAG_VOTO = "mediaVoti";
 
 
         // tickets JSONArray
         JSONArray tickets = null;
 
-        // Hashmap for ListView
-        ArrayList<HashMap<String, Object>> ticketList;
-
-        /***************************************
-         * fine TEST
-         */
+        // Nuova Gestione Liste
+        List list = new LinkedList();
 
         /**
          * The fragment argument representing the section number for this
@@ -340,25 +277,40 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
             return fragment;
         }
 
-        public PlaceholderFragment() {
-        }
-
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
 
-            // Calling async task to get json
 
-            ticketList = new ArrayList<HashMap<String, Object>>();
+
+            Log.d("colonna","HO CREATO LA VISTA");
+
+            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+
+
+
+            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
 
             // Calling async task to get json
             new GetTickets().execute();
 
+            //list.add(new Ticket(1,"001","STELLA FILM","TC104140219046.jpg"));
+            //list.add(new Ticket(2,"002","BUSINESS ORIENTED","TC104140184049.jpg"));
+            //list.add(new Ticket(3,"003","UN POSTO AL SOLE","TC104140217020.jpg"));
+
+            /*ListView listView = (ListView)rootView.findViewById(R.id.ListViewDemo);
+            CustomAdapter adapter = new CustomAdapter(this.getActivity(), R.layout.row_ticket, list);
+            adapter.notifyDataSetChanged();
+            listView.setAdapter(adapter);*/
 
 
-            View rootView = inflater.inflate(R.layout.activity_home, container, false);
 
 
+
+
+            //View rootView = inflater.inflate(R.layout.activity_home, container, false);
             return rootView;
         }
 
@@ -372,7 +324,6 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                 pDialog.setMessage("Please wait...");
                 pDialog.setCancelable(true);
                 pDialog.show();
-
             }
 
             @Override
@@ -397,46 +348,13 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                         for (int i = 0; i < tickets.length(); i++) {
                             JSONObject c = tickets.getJSONObject(i);
 
-                            String id = c.getString(TAG_ID);
-                            String codice = c.getString(TAG_CODICE);
+                            Integer id = c.getInt(TAG_ID);
                             String titolo = c.getString(TAG_TITOLO);
-                            String oggetto = c.getString(TAG_OGGETTO);
-                            String photo = "http://www.ticketclub.it/TICKET_NEW/biglietti/" + c.getString(TAG_CODICE) + ".jpg";
-                            Drawable d1 = null;
-                            try {
+                            String titoloSup = c.getString(TAG_TITOLO_SUP);
+                            String photo = c.getString(TAG_CODICE) + ".jpg";
 
-                                InputStream is1 = (InputStream) new URL(photo).getContent();
-                                d1 = Drawable.createFromStream(is1, "src name");
+                            list.add(new Ticket(id,titolo,titoloSup,photo));
 
-                                //Bitmap imgticket = Bu.loadBitmap(photo);
-
-                            } catch (MalformedURLException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            }
-                            Log.d("COLONNA",photo);
-
-                            // tmp hashmap for single contact
-                            HashMap<String, Object> ticket = new HashMap<String, Object>();
-
-                            // adding each child node to HashMap key => value
-                            //ticket.put(TAG_ID, id);
-                            ticket.put(TAG_CODICE, codice);
-                            ticket.put(TAG_TITOLO, titolo);
-                            ticket.put(TAG_OGGETTO, oggetto);
-                            //ticket.put(TAG_IMAGE, Bu.loadBitmap(photo));
-                            ticket.put(TAG_IMAGE, d1);
-
-                            //BitmapFactory.decodeResource(context.)
-
-
-
-
-                            // adding contact to contact list
-                            ticketList.add(ticket);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -456,42 +374,19 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                     pDialog.dismiss();
 
                 ListView listView = (ListView)getActivity().findViewById(R.id.ListViewDemo);
-                List list = new LinkedList();
-                list.add(new Ticket("001","STELLA FILM","TC104140219046.jpg"));
-                list.add(new Ticket("002","BUSINESS ORIENTED","TC104140184049.jpg"));
-                list.add(new Ticket("003","UN POSTO AL SOLE","TC104140217020.jpg"));
 
                 CustomAdapter adapter = new CustomAdapter(getActivity(), R.layout.row_ticket, list);
                 listView.setAdapter(adapter);
 
 
 
-                /*String[] from = { TAG_CODICE, TAG_TITOLO, TAG_OGGETTO, TAG_IMAGE };
-                int[] views = { R.id.name, R.id.email, R.id.mobile, R.id.image };
-
-                ListAdapter adapter = new SimpleAdapter(
-                        getActivity(),
-                        ticketList,
-                        R.layout.row_item,
-                        from,
-                        views);
-*/
-                //return adapter;
-
-                //setListAdapter(adapter);
 
 
-                //Fragment Alpha = getLayoutInflater();
-                //Alpha.inflate(R.layout.fragment_main,menu);
 
 
-                //getLayoutInflater().inflate(R.layout.fragment_main,);
 
 
-                //View rootView = inflater.inflate(R.layout.activity_home, container, false);
-                //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-                //textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
-                //return rootView;
+
 
 
             }

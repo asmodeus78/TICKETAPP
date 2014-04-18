@@ -181,7 +181,7 @@ public class LoadTicket extends ListActivity {
             //setListAdapter(adapter);
             ListView listView = (ListView)findViewById(R.id.ListViewDemo);
             List list = new LinkedList();
-            list.add(new Ticket("001","STELLA FILM","TC104140219046.jpg"));
+            //list.add(new Ticket("001","STELLA FILM","TC104140219046.jpg"));
 
             CustomAdapter adapter = new CustomAdapter(getBaseContext(), R.layout.row_ticket, list);
             listView.setAdapter(adapter);

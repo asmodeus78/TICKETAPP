@@ -21,10 +21,10 @@ public class DemoActivity2 extends ActionBarActivity {
 
         List list = new LinkedList();
 
-        list.add(new Ticket("001","STELLA FILM","TC104140219046.jpg"));
+        /*list.add(new Ticket("001","STELLA FILM","TC104140219046.jpg"));
         list.add(new Ticket("002","BUSINESS ORIENTED","TC104140184049.jpg"));
         list.add(new Ticket("003","UN POSTO AL SOLE","TC104140217020.jpg"));
-
+*/
         CustomAdapter adapter = new CustomAdapter(this, R.layout.row_ticket, list);
         listView.setAdapter(adapter);
 

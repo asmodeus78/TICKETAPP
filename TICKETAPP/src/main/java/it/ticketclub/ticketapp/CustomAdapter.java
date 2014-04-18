@@ -46,16 +46,16 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.row_ticket, null);
             viewHolder = new ViewHolder();
-            viewHolder.TK_codice = (TextView)convertView.findViewById(R.id.TK_codice);
             viewHolder.TK_titolo = (TextView)convertView.findViewById(R.id.TK_titolo);
+            viewHolder.TK_titoloSup = (TextView)convertView.findViewById(R.id.TK_titoloSup);
             viewHolder.TK_image  = (ImageView)convertView.findViewById(R.id.TK_image);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         Ticket ticket = getItem(position);
-        viewHolder.TK_codice.setText(ticket.getCodice());
         viewHolder.TK_titolo.setText(ticket.getTitolo());
+        viewHolder.TK_titoloSup.setText(ticket.getTitoloSup());
 
         String CheckFile = ticket.getFoto();
 
@@ -76,8 +76,8 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
     }
 
     private class ViewHolder {
-        public TextView TK_codice;
         public TextView TK_titolo;
+        public TextView TK_titoloSup;
         public ImageView TK_image;
     }
 
