@@ -308,18 +308,10 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         public static PlaceholderFragment newInstance(int sectionNumber, String Categoria) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
-            if (Categoria!="") {
-                url = "http://www.ticketclub.it/APP/ticket_view.php?CMD=TK&categoria=" + Categoria;
-            }else{
-                url = "http://www.ticketclub.it/APP/ticket_view.php?CMD=TK";
-            }
-            Log.d("colonna","LINK: " + url);
+
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             args.putString(ARG_SECTION_STRING,Categoria);
-            args.putString(ARG_SECTION_STRING2,url);
             fragment.setArguments(args);
-
-
 
             return fragment;
         }
@@ -332,57 +324,37 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
 
             final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             //textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_STRING)));
-            textView.setText(getArguments().getString(ARG_SECTION_STRING));
-
-            //ARG_SECTION_STRING2
-
-            // Calling async task to get json
-            ////new GetTickets().execute();
-            //LinkedList list2 = new LinkedList();
-            //new DownloadTicketTask().execute(ARG_SECTION_STRING2);
+            //textView.setText(getArguments().getString(ARG_SECTION_STRING));
 
             LinkedList listaa = new LinkedList();
 
-            new GetTickets(listaa) {
+            new GetTickets() {
 
-
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
+                    url = "http://www.ticketclub.it/APP/ticket_view.php?CMD=TK&categoria=" + getArguments().getString(ARG_SECTION_STRING);
+                    Log.d("DRAGON",url);
+                }
 
                 @Override
                 protected void onPostExecute(LinkedList result) {
-                    super.onPostExecute(result);
+                    //super.onPostExecute(result);
+
                     ListView listView = (ListView)vista.findViewById(R.id.ListViewDemo);
                     CustomAdapter adapter = new CustomAdapter(getActivity(), R.layout.row_ticket, result);
                     adapter.notifyDataSetChanged();
                     listView.setAdapter(adapter);
+
+                    pDialog.dismiss();
                 }
 
 
             }.execute(rootView);
 
-            /*if (getArguments().getString(ARG_SECTION_STRING)=="Ristorazione") {
-                list.add(new Ticket(1,"001","STELLA FILM","TC104140219046.jpg"));
-                list.add(new Ticket(1,"001","STELLA FILM","TC104140219046.jpg"));
-                list.add(new Ticket(1,"001","STELLA FILM","TC104140219046.jpg"));
-            }
-
-            if (getArguments().getString(ARG_SECTION_STRING)=="Benessere") {
-                list.add(new Ticket(3,"003","UN POSTO AL SOLE","TC104140217020.jpg"));
-                list.add(new Ticket(3,"003","UN POSTO AL SOLE","TC104140217020.jpg"));
-                list.add(new Ticket(3,"003","UN POSTO AL SOLE","TC104140217020.jpg"));
-            }
-
-            if (getArguments().getString(ARG_SECTION_STRING)=="") {
-                list.add(new Ticket(1,"001","STELLA FILM","TC104140219046.jpg"));
-                list.add(new Ticket(2,"002","BUSINESS ORIENTED","TC104140184049.jpg"));
-                list.add(new Ticket(3,"003","UN POSTO AL SOLE","TC104140217020.jpg"));
-            }*/
-
-            //list.add(new Ticket(1,"001","STELLA FILM","TC104140219046.jpg"));
-            //list.add(new Ticket(2,"002","BUSINESS ORIENTED","TC104140184049.jpg"));
-            //list.add(new Ticket(3,"003","UN POSTO AL SOLE","TC104140217020.jpg"));
-
+            pDialog.dismiss();
 
 
             //View rootView = inflater.inflate(R.layout.activity_home, container, false);
@@ -394,7 +366,7 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
             LinkedList list;
             View vista;
 
-            public GetTickets(LinkedList list) {
+            public GetTickets() {
                 this.list = list;
                 this.vista = null;
             }
@@ -403,8 +375,9 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
             protected void onPreExecute() {
                 super.onPreExecute();
                 // Showing progress dialog
+
                 pDialog = new ProgressDialog(getActivity());
-                pDialog.setMessage("Please wait...");
+                pDialog.setMessage("Attendere prego...");
                 pDialog.setCancelable(true);
                 pDialog.show();
             }
@@ -413,7 +386,6 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
             protected LinkedList doInBackground(View... arg0) {
                 // Creating service handler class instance
                 ServiceHandler sh = new ServiceHandler();
-                BitmapUtils Bu = new BitmapUtils();
 
                 // Nuova Gestione Liste
                 LinkedList listx = new LinkedList();
@@ -461,12 +433,7 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                 if (pDialog.isShowing())
                     pDialog.dismiss();
 
-                list = result;
-
-                /*ListView listView = (ListView)getActivity().findViewById(R.id.ListViewDemo);
-
-                CustomAdapter adapter = new CustomAdapter(getActivity(), R.layout.row_ticket, list);
-                listView.setAdapter(adapter);*/
+                    list = result;
             }
         }
     }
