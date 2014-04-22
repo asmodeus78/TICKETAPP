@@ -197,7 +197,39 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             //return PlaceholderFragment.newInstance(position + 1);
-            return PlaceholderFragment.newInstance(position + 1);
+            //return PlaceholderFragment.newInstance(position + 1);
+
+            switch (position){
+
+                case 0:
+                    //TUTTI I TICKET
+                    return PlaceholderFragment.newInstance(0,"");
+                    //return FragmentAll.newInstance();
+                case 1:
+                    //Ristorazione
+                    return PlaceholderFragment.newInstance(1,"Ristorazione");
+                    //return fragmaint_risto.newInstance("","");
+                case 2:
+                    //Benessere
+                    return PlaceholderFragment.newInstance(2,"Benessere");
+                case 3:
+                    //Viaggi e Svago
+                    return PlaceholderFragment.newInstance(3,"Viaggi e Svago");
+                case 4:
+                    //Casa e Servizi
+                    return PlaceholderFragment.newInstance(4,"Casa e Servizi");
+                case 5:
+                    //Sport Motori
+                    return PlaceholderFragment.newInstance(5,"Sport e Motori");
+                case 6:
+                    //Shopping
+                    return PlaceholderFragment.newInstance(6,"Shopping");
+                case 7:
+                    //Eventi
+                    return PlaceholderFragment.newInstance(7,"Eventi");
+            }
+
+            return null;
 
 
         }
@@ -239,10 +271,10 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
      */
     public static class PlaceholderFragment extends Fragment {
 
-        private ProgressDialog pDialog;
+        private static ProgressDialog pDialog;
 
         // URL to get tickets JSON
-        private static String url = "http://www.ticketclub.it/APP/ticket_view.php?CMD=TK";
+        public static String url = "http://www.ticketclub.it/APP/ticket_view.php?CMD=TK";
 
         // JSON Node names
         private static final String TAG_ID = "idTicket";
@@ -254,26 +286,41 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
 
 
         // tickets JSONArray
-        JSONArray tickets = null;
+        static JSONArray tickets = null;
 
         // Nuova Gestione Liste
-        List list = new LinkedList();
+        //static List list;
+
+
 
         /**
          * The fragment argument representing the section number for this
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
+        private static final String ARG_SECTION_STRING = "section_string";
+        private static final String ARG_SECTION_STRING2 = "section_string2";
 
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
+        public static PlaceholderFragment newInstance(int sectionNumber, String Categoria) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
+            if (Categoria!="") {
+                url = "http://www.ticketclub.it/APP/ticket_view.php?CMD=TK&categoria=" + Categoria;
+            }else{
+                url = "http://www.ticketclub.it/APP/ticket_view.php?CMD=TK";
+            }
+            Log.d("colonna","LINK: " + url);
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            args.putString(ARG_SECTION_STRING,Categoria);
+            args.putString(ARG_SECTION_STRING2,url);
             fragment.setArguments(args);
+
+
+
             return fragment;
         }
 
@@ -281,32 +328,60 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
 
-
-
             Log.d("colonna","HO CREATO LA VISTA");
 
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-
-
+            final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+            //textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_STRING)));
+            textView.setText(getArguments().getString(ARG_SECTION_STRING));
+
+            //ARG_SECTION_STRING2
 
             // Calling async task to get json
-            new GetTickets().execute();
+            ////new GetTickets().execute();
+            //LinkedList list2 = new LinkedList();
+            //new DownloadTicketTask().execute(ARG_SECTION_STRING2);
+
+            LinkedList listaa = new LinkedList();
+
+            new GetTickets(listaa) {
+
+
+
+                @Override
+                protected void onPostExecute(LinkedList result) {
+                    super.onPostExecute(result);
+                    ListView listView = (ListView)vista.findViewById(R.id.ListViewDemo);
+                    CustomAdapter adapter = new CustomAdapter(getActivity(), R.layout.row_ticket, result);
+                    adapter.notifyDataSetChanged();
+                    listView.setAdapter(adapter);
+                }
+
+
+            }.execute(rootView);
+
+            /*if (getArguments().getString(ARG_SECTION_STRING)=="Ristorazione") {
+                list.add(new Ticket(1,"001","STELLA FILM","TC104140219046.jpg"));
+                list.add(new Ticket(1,"001","STELLA FILM","TC104140219046.jpg"));
+                list.add(new Ticket(1,"001","STELLA FILM","TC104140219046.jpg"));
+            }
+
+            if (getArguments().getString(ARG_SECTION_STRING)=="Benessere") {
+                list.add(new Ticket(3,"003","UN POSTO AL SOLE","TC104140217020.jpg"));
+                list.add(new Ticket(3,"003","UN POSTO AL SOLE","TC104140217020.jpg"));
+                list.add(new Ticket(3,"003","UN POSTO AL SOLE","TC104140217020.jpg"));
+            }
+
+            if (getArguments().getString(ARG_SECTION_STRING)=="") {
+                list.add(new Ticket(1,"001","STELLA FILM","TC104140219046.jpg"));
+                list.add(new Ticket(2,"002","BUSINESS ORIENTED","TC104140184049.jpg"));
+                list.add(new Ticket(3,"003","UN POSTO AL SOLE","TC104140217020.jpg"));
+            }*/
 
             //list.add(new Ticket(1,"001","STELLA FILM","TC104140219046.jpg"));
             //list.add(new Ticket(2,"002","BUSINESS ORIENTED","TC104140184049.jpg"));
             //list.add(new Ticket(3,"003","UN POSTO AL SOLE","TC104140217020.jpg"));
-
-            /*ListView listView = (ListView)rootView.findViewById(R.id.ListViewDemo);
-            CustomAdapter adapter = new CustomAdapter(this.getActivity(), R.layout.row_ticket, list);
-            adapter.notifyDataSetChanged();
-            listView.setAdapter(adapter);*/
-
-
-
 
 
 
@@ -314,7 +389,15 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
             return rootView;
         }
 
-        private class GetTickets extends AsyncTask<Void, Void, Void> {
+        private class GetTickets extends AsyncTask<View, Void, LinkedList> {
+
+            LinkedList list;
+            View vista;
+
+            public GetTickets(LinkedList list) {
+                this.list = list;
+                this.vista = null;
+            }
 
             @Override
             protected void onPreExecute() {
@@ -327,13 +410,18 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
             }
 
             @Override
-            protected Void doInBackground(Void... arg0) {
+            protected LinkedList doInBackground(View... arg0) {
                 // Creating service handler class instance
                 ServiceHandler sh = new ServiceHandler();
                 BitmapUtils Bu = new BitmapUtils();
 
+                // Nuova Gestione Liste
+                LinkedList listx = new LinkedList();
+
                 // Making a request to url and getting response
                 String jsonStr = sh.makeServiceCall(url, ServiceHandler.GET);
+
+                vista = arg0[0];
 
                 Log.d("Response: ", "> " + jsonStr);
 
@@ -353,7 +441,7 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                             String titoloSup = c.getString(TAG_TITOLO_SUP);
                             String photo = c.getString(TAG_CODICE) + ".jpg";
 
-                            list.add(new Ticket(id,titolo,titoloSup,photo));
+                            listx.add(new Ticket(id,titolo,titoloSup,photo));
 
                         }
                     } catch (JSONException e) {
@@ -363,39 +451,24 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                     Log.e("ServiceHandler", "Couldn't get any data from the url");
                 }
 
-                return null;
+                return listx;
             }
 
             @Override
-            protected void onPostExecute(Void result) {
+            protected void onPostExecute(LinkedList result) {
                 super.onPostExecute(result);
                 // Dismiss the progress dialog
                 if (pDialog.isShowing())
                     pDialog.dismiss();
 
-                ListView listView = (ListView)getActivity().findViewById(R.id.ListViewDemo);
+                list = result;
+
+                /*ListView listView = (ListView)getActivity().findViewById(R.id.ListViewDemo);
 
                 CustomAdapter adapter = new CustomAdapter(getActivity(), R.layout.row_ticket, list);
-                listView.setAdapter(adapter);
-
-
-
-
-
-
-
-
-
-
-
-
+                listView.setAdapter(adapter);*/
             }
-
-
-
         }
-
-
     }
 
 
