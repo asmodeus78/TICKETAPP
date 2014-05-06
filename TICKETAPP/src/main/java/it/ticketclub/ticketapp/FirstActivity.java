@@ -81,75 +81,25 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
             }
         });
 
-
-
-
-        actionBar.addTab(
-                actionBar.newTab()
-                        .setText("")
-                        .setCustomView(R.layout.tab_ico_0)
-                        .setTabListener(this));
-
-
-
-        actionBar.addTab(
-                actionBar.newTab()
-                        .setCustomView(R.layout.tab_ico_1)
-                        .setText("")
-                        .setTabListener(this));
-
-        actionBar.addTab(
-                actionBar.newTab()
-                        .setCustomView(R.layout.tab_ico_2)
-                        .setText("")
-                        .setTabListener(this));
-
-        actionBar.addTab(
-                actionBar.newTab()
-                        .setCustomView(R.layout.tab_ico_3)
-                        .setText("")
-                        .setTabListener(this));
-
-        actionBar.addTab(
-                actionBar.newTab()
-                        .setCustomView(R.layout.tab_ico_4)
-                        .setText("")
-                        .setTabListener(this));
-
-        actionBar.addTab(
-                actionBar.newTab()
-                        .setCustomView(R.layout.tab_ico_5)
-                        .setText("")
-                        .setTabListener(this));
-
-        actionBar.addTab(
-                actionBar.newTab()
-                        .setCustomView(R.layout.tab_ico_6)
-                        .setText("")
-                        .setTabListener(this));
-
-        actionBar.addTab(
-                actionBar.newTab()
-                        .setCustomView(R.layout.tab_ico_7)
-                        .setText("")
-                        .setTabListener(this));
-
-
+        actionBar.addTab(actionBar.newTab().setText("").setCustomView(R.layout.tab_ico_0).setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setCustomView(R.layout.tab_ico_1).setText("").setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setCustomView(R.layout.tab_ico_2).setText("").setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setCustomView(R.layout.tab_ico_3).setText("").setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setCustomView(R.layout.tab_ico_4).setText("").setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setCustomView(R.layout.tab_ico_5).setText("").setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setCustomView(R.layout.tab_ico_6).setText("").setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setCustomView(R.layout.tab_ico_7).setText("").setTabListener(this));
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
         // Inflate the menu; this adds items to the action bar if it is present.
-
         MenuInflater minf = getMenuInflater();
         minf.inflate(R.menu.first,menu);
 
         mSpinnerItem = menu.findItem(R.id.action_citta);
-
         setupSpinner(mSpinnerItem);
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -170,8 +120,6 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         // When the given tab is selected, switch to the corresponding page in
         // the ViewPager.
         mViewPager.setCurrentItem(tab.getPosition());
-
-
     }
 
     @Override
@@ -204,11 +152,9 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                 case 0:
                     //TUTTI I TICKET
                     return PlaceholderFragment.newInstance(0,"");
-                    //return FragmentAll.newInstance();
                 case 1:
                     //Ristorazione
                     return PlaceholderFragment.newInstance(1,"Ristorazione");
-                    //return fragmaint_risto.newInstance("","");
                 case 2:
                     //Benessere
                     return PlaceholderFragment.newInstance(2,"Benessere");
@@ -281,8 +227,8 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         private static final String TAG_CODICE = "codice";
         private static final String TAG_TITOLO = "titolo";
         private static final String TAG_TITOLO_SUP = "titoloSup";
-        //private static final String TAG_TICKET_SCARICATI = "nTicket";
-        //private static final String TAG_VOTO = "mediaVoti";
+        private static final String TAG_TICKET_SCARICATI = "scaricati";
+        private static final String TAG_VOTO = "mediaVoti";
 
 
         // tickets JSONArray
@@ -412,8 +358,10 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                             String titolo = c.getString(TAG_TITOLO);
                             String titoloSup = c.getString(TAG_TITOLO_SUP);
                             String photo = c.getString(TAG_CODICE) + ".jpg";
+                            Integer scaricati = c.getInt(TAG_TICKET_SCARICATI);
+                            float mediaVoto = Float.parseFloat(c.getString(TAG_VOTO));
 
-                            listx.add(new Ticket(id,titolo,titoloSup,photo));
+                            listx.add(new Ticket(id,titolo,titoloSup,photo,scaricati,mediaVoto));
 
                         }
                     } catch (JSONException e) {

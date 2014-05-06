@@ -36,7 +36,7 @@
         android:textSize="14dp"
         android:textStyle="bold"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="132dp"
     />
 
     <TextView
@@ -48,16 +48,34 @@
         android:textSize="14dp"
         android:textStyle="normal"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="175dp"
+        android:layout_marginTop="152dp"
         android:autoText="false"
     />
 
+    <TextView
+        android:id="@+id/TK_scaricati"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Scaricati 800"
+        android:textColor="#fff"
+        android:textSize="14dp"
+        android:textStyle="normal"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="172dp"
+        android:autoText="false"
+        android:enabled="false" />
 
 
+    <RatingBar
+        android:id="@+id/TK_voto"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="175dp"
+        android:layout_marginLeft="195dp"
+        android:rating="3"
+        style="@style/RatingBarSmallAppTheme"
 
-
-
-
+        />
 
 
 </RelativeLayout>

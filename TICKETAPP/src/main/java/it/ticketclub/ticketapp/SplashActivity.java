@@ -74,8 +74,6 @@ public class SplashActivity extends Activity {
         super.onStart();
 
         if(isExternalStorageWritable()){
-
-
             File path = new File(root.getAbsolutePath()+ "/Android/data/" + getApplicationInfo().packageName + "/cache/");
             path.mkdirs();
 
@@ -87,9 +85,6 @@ public class SplashActivity extends Activity {
                     e.printStackTrace();
                 }
             }
-
-
-
         }
 
         if(mStartTime==-1){

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 
@@ -49,6 +50,8 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
             viewHolder.TK_titolo = (TextView)convertView.findViewById(R.id.TK_titolo);
             viewHolder.TK_titoloSup = (TextView)convertView.findViewById(R.id.TK_titoloSup);
             viewHolder.TK_image  = (ImageView)convertView.findViewById(R.id.TK_image);
+            viewHolder.TK_voto  = (RatingBar)convertView.findViewById(R.id.TK_voto);
+            viewHolder.TK_scaricati  = (TextView)convertView.findViewById(R.id.TK_scaricati);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -56,6 +59,12 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
         Ticket ticket = getItem(position);
         viewHolder.TK_titolo.setText(ticket.getTitolo());
         viewHolder.TK_titoloSup.setText(ticket.getTitoloSup());
+        viewHolder.TK_scaricati.setText("Scaricati: " + ticket.getScaricati().toString());
+
+        Log.d("colonna1",ticket.getMediaVoti().toString());
+
+        viewHolder.TK_voto.setRating(ticket.getMediaVoti());
+        //viewHolder.TK_voto.setRating(3);
 
         String CheckFile = ticket.getFoto();
 
@@ -79,6 +88,8 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
         public TextView TK_titolo;
         public TextView TK_titoloSup;
         public ImageView TK_image;
+        public RatingBar TK_voto;
+        public TextView TK_scaricati;
     }
 
 
