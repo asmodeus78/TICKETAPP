@@ -30,5 +30,6 @@
     <string name="title_activity_demo_activity2">DemoActivity2</string>
     <string name="title_activity_demo_activity3">DemoActivity3</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_second">SecondActivity</string>
 
 </resources>

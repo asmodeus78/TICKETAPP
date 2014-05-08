@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -33,6 +34,9 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 
 public class FirstActivity extends ActionBarActivity implements ActionBar.TabListener {
@@ -234,11 +238,6 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         // tickets JSONArray
         static JSONArray tickets = null;
 
-        // Nuova Gestione Liste
-        //static List list;
-
-
-
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -270,11 +269,7 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
 
             final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-            //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            //textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_STRING)));
-            //textView.setText(getArguments().getString(ARG_SECTION_STRING));
-
-            LinkedList listaa = new LinkedList();
+            //LinkedList listaa = new LinkedList();
 
             new GetTickets() {
 
@@ -293,6 +288,29 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                     CustomAdapter adapter = new CustomAdapter(getActivity(), R.layout.row_ticket, result);
                     adapter.notifyDataSetChanged();
                     listView.setAdapter(adapter);
+
+                    listView.setOnItemClickListener(new OnItemClickListener() {
+                        public void onItemClick(AdapterView<?> parent, View view,
+                                                int position, long id) {
+                           // When clicked, show a toast with the TextView text
+                           /* Toast.makeText(getActivity().getApplicationContext(),
+                                    ((TextView) view.findViewById(R.id.TK_id)).getText(), Toast.LENGTH_SHORT).show();
+                           */
+
+
+                            //********************************************************************************************************
+
+
+                            final Intent intent2 = new Intent(getActivity(),SecondActivity.class); // SWIPE E TAB + JSON NOT VIEW
+                            intent2.putExtra("id",((TextView) view.findViewById(R.id.TK_id)).getText());
+                            intent2.putExtra("codice",((TextView) view.findViewById(R.id.TK_codice)).getText());
+
+                            startActivity(intent2); // Launch the Intent
+                            //getActivity().finish(); // We finish the current Activity
+                            //********************************************************************************************************
+
+                        }
+                    });
 
                     pDialog.dismiss();
                 }
@@ -356,12 +374,13 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
 
                             Integer id = c.getInt(TAG_ID);
                             String titolo = c.getString(TAG_TITOLO);
+                            String codice = c.getString(TAG_CODICE);
                             String titoloSup = c.getString(TAG_TITOLO_SUP);
                             String photo = c.getString(TAG_CODICE) + ".jpg";
                             Integer scaricati = c.getInt(TAG_TICKET_SCARICATI);
                             float mediaVoto = Float.parseFloat(c.getString(TAG_VOTO));
 
-                            listx.add(new Ticket(id,titolo,titoloSup,photo,scaricati,mediaVoto));
+                            listx.add(new Ticket(id,codice,titolo,titoloSup,photo,scaricati,mediaVoto));
 
                         }
                     } catch (JSONException e) {

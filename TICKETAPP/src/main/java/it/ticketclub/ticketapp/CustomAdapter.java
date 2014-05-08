@@ -47,6 +47,9 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.row_ticket, null);
             viewHolder = new ViewHolder();
+
+            viewHolder.TK_id = (TextView)convertView.findViewById(R.id.TK_id);
+            viewHolder.TK_codice = (TextView)convertView.findViewById(R.id.TK_codice);
             viewHolder.TK_titolo = (TextView)convertView.findViewById(R.id.TK_titolo);
             viewHolder.TK_titoloSup = (TextView)convertView.findViewById(R.id.TK_titoloSup);
             viewHolder.TK_image  = (ImageView)convertView.findViewById(R.id.TK_image);
@@ -57,6 +60,9 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         Ticket ticket = getItem(position);
+
+        viewHolder.TK_id.setText(ticket.getId().toString());
+        viewHolder.TK_codice.setText(ticket.getCodice().toString());
         viewHolder.TK_titolo.setText(ticket.getTitolo());
         viewHolder.TK_titoloSup.setText(ticket.getTitoloSup());
         viewHolder.TK_scaricati.setText("Scaricati: " + ticket.getScaricati().toString());
@@ -64,7 +70,8 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
         Log.d("colonna1",ticket.getMediaVoti().toString());
 
         viewHolder.TK_voto.setRating(ticket.getMediaVoti());
-        //viewHolder.TK_voto.setRating(3);
+        viewHolder.TK_voto.setIsIndicator(true);
+
 
         String CheckFile = ticket.getFoto();
 
@@ -85,6 +92,8 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
     }
 
     private class ViewHolder {
+        public TextView TK_id;
+        public TextView TK_codice;
         public TextView TK_titolo;
         public TextView TK_titoloSup;
         public ImageView TK_image;

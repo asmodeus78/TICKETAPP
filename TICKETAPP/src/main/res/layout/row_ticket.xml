@@ -26,6 +26,15 @@
         android:src="@drawable/sfumatura_ticket"
     />
 
+    <RatingBar
+        android:id="@+id/TK_voto"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="175dp"
+        android:layout_marginLeft="215dp"
+        android:rating="3"
+        style="@style/RatingBarSmallAppTheme"
+        android:numStars="5"/>
 
     <TextView
         android:id="@+id/TK_titoloSup"
@@ -66,16 +75,37 @@
         android:enabled="false" />
 
 
-    <RatingBar
-        android:id="@+id/TK_voto"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="175dp"
-        android:layout_marginLeft="195dp"
-        android:rating="3"
-        style="@style/RatingBarSmallAppTheme"
 
-        />
+    <TextView
+        android:id="@+id/TK_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID"
+        android:textColor="#ff0000"
+        android:textSize="14dp"
+        android:textStyle="normal"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:autoText="false"
+        android:enabled="false"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/TK_codice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CODICE"
+        android:textColor="#ff0000"
+        android:textSize="14dp"
+        android:textStyle="normal"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:autoText="false"
+        android:enabled="false"
+        android:visibility="invisible" />
+
+
+
 
 
 </RelativeLayout>

@@ -51,6 +51,12 @@
             android:name="it.ticketclub.ticketapp.DemoActivity3"
             android:label="@string/title_activity_demo_activity3" >
         </activity>
+        <activity
+            android:name="it.ticketclub.ticketapp.SecondActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:uiOptions="splitActionBarWhenNarrow">
+        </activity>
     </application>
 
 </manifest>
