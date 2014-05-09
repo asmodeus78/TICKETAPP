@@ -226,7 +226,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
-        private static final String ARG_SECTION_STRING = "codice";
+        private static final String ARG_SECTION_CODICE = "codice";
 
         /**
          * Returns a new instance of this fragment for the given section
@@ -236,7 +236,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             PlaceholderFragmentOfferta fragment = new PlaceholderFragmentOfferta();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            args.putString(ARG_SECTION_STRING, codice);
+            args.putString(ARG_SECTION_CODICE, codice);
             fragment.setArguments(args);
             return fragment;
         }
@@ -254,7 +254,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
             Setup conf = new Setup();
 
-            Bitmap bMap = BitmapFactory.decodeFile(conf.getPath() + "/" +  getArguments().getString(ARG_SECTION_STRING) + ".jpg");
+            Bitmap bMap = BitmapFactory.decodeFile(conf.getPath() + "/" +  getArguments().getString(ARG_SECTION_CODICE) + ".jpg");
             imageView.setImageBitmap(bMap);
 
 

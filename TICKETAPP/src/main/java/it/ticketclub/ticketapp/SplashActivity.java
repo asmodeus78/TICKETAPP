@@ -1,16 +1,24 @@
 package it.ticketclub.ticketapp;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.View;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 
 
 public class SplashActivity extends Activity {
@@ -32,6 +40,29 @@ public class SplashActivity extends Activity {
 
     private long mStartTime = -1L;
     private boolean mIsDone;
+
+
+
+    /***************************************************/
+    private static ProgressDialog pDialog;
+
+    // URL to get tickets JSON
+    public static String url = "http://www.ticketclub.it/APP/ticket_view.php?CMD=TK";
+
+    // JSON Node names
+    private static final String TAG_ID = "idTicket";
+    private static final String TAG_CATEGORIA ="categoria";
+    private static final String TAG_CODICE = "codice";
+    private static final String TAG_TITOLO = "titolo";
+    private static final String TAG_TITOLO_SUP = "titoloSup";
+    private static final String TAG_TICKET_SCARICATI = "scaricati";
+    private static final String TAG_VOTO = "mediaVoti";
+
+
+    // tickets JSONArray
+    static JSONArray tickets = null;
+    /***************************************************/
+
 
 
     private Handler mHandler = new Handler() {
@@ -67,6 +98,25 @@ public class SplashActivity extends Activity {
         if (savedInstanceState != null){
             this.mStartTime = savedInstanceState.getLong(START_TIME_KEY);
         }
+
+        MyDatabase db=new MyDatabase(getApplicationContext());
+        db.open();  //apriamo il db
+
+        db.deleteTicket();
+
+        db.close();
+
+        new GetTickets().execute();
+
+
+
+
+
+
+
+
+
+
     }
 
     @Override
@@ -96,7 +146,7 @@ public class SplashActivity extends Activity {
         startActivityForResult(updateIntent,UPDATE_REQUEST_ID);*/
 
 
-        mHandler.sendMessageAtTime(goAheadMessage, mStartTime + MAX_WAIT_INTERVAL);
+        /////////////mHandler.sendMessageAtTime(goAheadMessage, mStartTime + MAX_WAIT_INTERVAL);
         Log.d(TAG_LOG, "Handler message sent!");
     }
 
@@ -131,6 +181,116 @@ public class SplashActivity extends Activity {
             return true;
         }
         return false;
+    }
+
+
+
+    private class GetTickets extends AsyncTask<Void, Void, Void> {
+
+        LinkedList list;
+        View vista;
+
+        public GetTickets() {
+            this.list = list;
+            this.vista = null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // Showing progress dialog
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            // Creating service handler class instance
+            ServiceHandler sh = new ServiceHandler();
+
+            // Nuova Gestione Liste
+            //LinkedList listx = new LinkedList();
+
+            // Making a request to url and getting response
+            String jsonStr = sh.makeServiceCall(url, ServiceHandler.GET);
+
+            MyDatabase db=new MyDatabase(getApplicationContext());
+            db.open();  //apriamo il db
+
+            Log.d("Response: ", "> " + jsonStr);
+
+            if (jsonStr != null) {
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+
+                    // Getting JSON Array node
+                    tickets = jsonObj.getJSONArray("TICKET");
+
+                    // looping through All Tickets
+
+
+
+                    for (int i = 0; i < tickets.length(); i++) {
+                        JSONObject c = tickets.getJSONObject(i);
+
+                        Integer id = c.getInt(TAG_ID);
+                        String categoria = c.getString(TAG_CATEGORIA);
+                        String titolo = c.getString(TAG_TITOLO);
+                        String codice = c.getString(TAG_CODICE);
+                        String titoloSup = c.getString(TAG_TITOLO_SUP);
+                        String photo = c.getString(TAG_CODICE) + ".jpg";
+                        String scaricati = c.getString(TAG_TICKET_SCARICATI);
+                        String mediaVoto = c.getString(TAG_VOTO);
+
+
+
+                        if (mediaVoto==""){
+                            mediaVoto = "0";
+                        }
+
+                        if (mediaVoto==null){
+                            mediaVoto = "0";
+                        }
+
+                        if (mediaVoto=="null"){
+                            mediaVoto = "0";
+                        }
+
+                        if (scaricati=="null"){
+                            scaricati="0";
+                        }
+
+
+
+
+
+
+                        //listx.add(new Ticket(id,categoria,codice,titolo,titoloSup,photo,scaricati,mediaVoto));
+
+
+                        db.insertTicket(id,categoria,codice,titolo,titoloSup,Float.parseFloat(mediaVoto),Integer.parseInt(scaricati));
+
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.e("ServiceHandler", "Couldn't get any data from the url");
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+
+            goAhead();
+            // Dismiss the progress dialog
+            //if (pDialog.isShowing())
+           //     pDialog.dismiss();
+
+           // list = result;
+        }
     }
 
 }

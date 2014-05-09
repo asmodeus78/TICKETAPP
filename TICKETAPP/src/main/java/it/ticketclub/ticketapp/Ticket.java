@@ -6,6 +6,7 @@ package it.ticketclub.ticketapp;
 public class Ticket {
     private Integer id;
     private String codice;
+    private String categoria;
     private String titolo;
     private String titoloSup;
     private String foto;
@@ -14,8 +15,9 @@ public class Ticket {
     private Float mediaVoti;
 
 
-    public Ticket(Integer id, String codice, String titolo, String titoloSup, String foto, Integer scaricati, Float mediaVoti){
+    public Ticket(Integer id, String categoria, String codice, String titolo, String titoloSup, String foto, Integer scaricati, Float mediaVoti){
         this.id = id;
+        this.categoria = categoria;
         this.codice = codice;
         this.titolo = titolo;
         this.titoloSup = titoloSup;
@@ -26,6 +28,9 @@ public class Ticket {
 
     public Integer getId(){
         return id;
+    }
+    public String getCategoria(){
+        return categoria;
     }
     public String getCodice(){
         return codice;
@@ -44,6 +49,9 @@ public class Ticket {
 
     public void setId(Integer id){
         this.id = id;
+    }
+    public void setCategoria(String categoria){
+        this.categoria = categoria;
     }
     public void setCodice(String codice){
         this.codice = codice;

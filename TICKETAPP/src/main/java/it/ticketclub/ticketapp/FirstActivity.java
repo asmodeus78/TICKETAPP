@@ -9,6 +9,7 @@ import java.util.Locale;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -223,21 +224,8 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
 
         private static ProgressDialog pDialog;
 
-        // URL to get tickets JSON
-        public static String url = "http://www.ticketclub.it/APP/ticket_view.php?CMD=TK";
 
-        // JSON Node names
-        private static final String TAG_ID = "idTicket";
-        private static final String TAG_CODICE = "codice";
-        private static final String TAG_TITOLO = "titolo";
-        private static final String TAG_TITOLO_SUP = "titoloSup";
-        private static final String TAG_TICKET_SCARICATI = "scaricati";
-        private static final String TAG_VOTO = "mediaVoti";
-
-
-        // tickets JSONArray
-        static JSONArray tickets = null;
-
+        public static String categoria="";
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -265,24 +253,37 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
 
+
+
+
             Log.d("colonna","HO CREATO LA VISTA");
 
             final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
             //LinkedList listaa = new LinkedList();
 
-            new GetTickets() {
+            new GetTicketsFromDb() {
 
                 @Override
                 protected void onPreExecute() {
                     super.onPreExecute();
-                    url = "http://www.ticketclub.it/APP/ticket_view.php?CMD=TK&categoria=" + getArguments().getString(ARG_SECTION_STRING);
-                    Log.d("DRAGON",url);
+                    pDialog = new ProgressDialog(getActivity());
+                    pDialog.setMessage("Attendere prego...");
+                    pDialog.setCancelable(true);
+                    pDialog.show();
+
+                    if (pDialog.getProgress()==100){
+                        pDialog.dismiss();
+                    }
+
+
+                    categoria = getArguments().getString(ARG_SECTION_STRING);
+                    Log.d("DRAGON",categoria);
                 }
 
                 @Override
                 protected void onPostExecute(LinkedList result) {
-                    //super.onPostExecute(result);
+                   // super.onPostExecute(result);
 
                     ListView listView = (ListView)vista.findViewById(R.id.ListViewDemo);
                     CustomAdapter adapter = new CustomAdapter(getActivity(), R.layout.row_ticket, result);
@@ -312,25 +313,37 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                         }
                     });
 
-                    pDialog.dismiss();
+                    if (pDialog.isShowing()) {
+                        pDialog.dismiss();
+                    }
                 }
 
 
             }.execute(rootView);
 
-            pDialog.dismiss();
+
 
 
             //View rootView = inflater.inflate(R.layout.activity_home, container, false);
             return rootView;
         }
 
-        private class GetTickets extends AsyncTask<View, Void, LinkedList> {
+
+
+
+
+
+
+
+
+
+        /*********************************************************/
+        private class GetTicketsFromDb extends AsyncTask<View, Void, LinkedList> {
 
             LinkedList list;
             View vista;
 
-            public GetTickets() {
+            public GetTicketsFromDb() {
                 this.list = list;
                 this.vista = null;
             }
@@ -339,56 +352,57 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
             protected void onPreExecute() {
                 super.onPreExecute();
                 // Showing progress dialog
-
-                pDialog = new ProgressDialog(getActivity());
-                pDialog.setMessage("Attendere prego...");
-                pDialog.setCancelable(true);
-                pDialog.show();
             }
 
             @Override
             protected LinkedList doInBackground(View... arg0) {
-                // Creating service handler class instance
-                ServiceHandler sh = new ServiceHandler();
 
                 // Nuova Gestione Liste
                 LinkedList listx = new LinkedList();
 
-                // Making a request to url and getting response
-                String jsonStr = sh.makeServiceCall(url, ServiceHandler.GET);
 
                 vista = arg0[0];
 
-                Log.d("Response: ", "> " + jsonStr);
+                //Log.d("Response: ", "> " + jsonStr);
 
-                if (jsonStr != null) {
-                    try {
-                        JSONObject jsonObj = new JSONObject(jsonStr);
-
-                        // Getting JSON Array node
-                        tickets = jsonObj.getJSONArray("TICKET");
-
-                        // looping through All Tickets
-                        for (int i = 0; i < tickets.length(); i++) {
-                            JSONObject c = tickets.getJSONObject(i);
-
-                            Integer id = c.getInt(TAG_ID);
-                            String titolo = c.getString(TAG_TITOLO);
-                            String codice = c.getString(TAG_CODICE);
-                            String titoloSup = c.getString(TAG_TITOLO_SUP);
-                            String photo = c.getString(TAG_CODICE) + ".jpg";
-                            Integer scaricati = c.getInt(TAG_TICKET_SCARICATI);
-                            float mediaVoto = Float.parseFloat(c.getString(TAG_VOTO));
-
-                            listx.add(new Ticket(id,codice,titolo,titoloSup,photo,scaricati,mediaVoto));
-
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    Log.e("ServiceHandler", "Couldn't get any data from the url");
+                MyDatabase db=new MyDatabase(getActivity().getApplicationContext());
+                db.open();  //apriamo il db
+                Cursor c;
+                if (categoria!="") {
+                     c = db.fetchTicketByCateg(categoria);
+                }else{
+                     c = db.fetchTicket();
                 }
+                getActivity().startManagingCursor(c);
+
+
+                Log.d("DATABASE: ", "> " + c.getCount());
+
+
+
+                if (c.moveToFirst()) {
+                    do {
+
+                        //int id = c.getInt(0);
+
+                        Integer id = c.getInt(0);
+                        String codice = c.getString(1);
+                        String photo = c.getString(1) + ".jpg";
+                        String titolo = c.getString(2);
+                        String titoloSup = c.getString(3);
+                        String categoria = c.getString(4);
+
+                        Integer scaricati = c.getInt(5);
+                        float mediaVoto = c.getFloat(6);
+
+                        listx.add(new Ticket(id, categoria, codice, titolo, titoloSup, photo, scaricati, mediaVoto));
+
+                    } while (c.moveToNext());
+                }
+                //c.close();
+                //db.close();
+
+
 
                 return listx;
             }
@@ -396,13 +410,12 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
             @Override
             protected void onPostExecute(LinkedList result) {
                 super.onPostExecute(result);
-                // Dismiss the progress dialog
-                if (pDialog.isShowing())
-                    pDialog.dismiss();
 
-                    list = result;
+
+                list = result;
             }
         }
+        /**************************************************************************/
     }
 
 
