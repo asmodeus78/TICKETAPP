@@ -6,9 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Created by Gio on 09/05/2014.
- */
+
 public class MyDatabase {
 
     SQLiteDatabase db;
@@ -82,15 +80,16 @@ public class MyDatabase {
         static final String TICKET_INDIRIZZO_KEY  = "indirizzo";
         static final String TICKET_LAT_KEY  = "lat";
         static final String TICKET_LON_KEY  = "lon";
-        static final String TICKET_ORDINE_KEY  = "ordine";
-        static final String TICKET_PREZZO_KEY  = "prezzo";
-        static final String TICKET_PREZZO_CR_KEY  = "prezzoCR";
+        //static final String TICKET_ORDINE_KEY  = "ordine";
+        //static final String TICKET_PREZZO_KEY  = "prezzo";
+       // static final String TICKET_PREZZO_CR_KEY  = "prezzoCR";
         static final String TICKET_CATEGORIA_KEY  = "categoria";
         static final String TICKET_SCARICATI_KEY  = "scaricati";
         static final String TICKET_MEDIA_VOTI_KEY  = "mediaVoti";
         static final String TICKET_NOMINATIVO_KEY  = "nominativo";
-        static final String TICKET_TELEFONO_KEY  = "telefono";
-        static final String TICKET_SITO_KEY  = "sito";
+        //static final String TICKET_TELEFONO_KEY  = "telefono";
+        //static final String TICKET_SITO_KEY  = "sito";
+
     }
 
     private static final String TICKET_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
