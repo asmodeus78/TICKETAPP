@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_marginTop="175dp"
         android:layout_marginLeft="215dp"
-        android:rating="3"
+        android:rating="0"
         style="@style/RatingBarSmallAppTheme"
         android:numStars="5"/>
 

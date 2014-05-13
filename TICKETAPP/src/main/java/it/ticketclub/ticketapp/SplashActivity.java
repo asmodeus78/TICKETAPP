@@ -57,6 +57,12 @@ public class SplashActivity extends Activity {
     private static final String TAG_TITOLO_SUP = "titoloSup";
     private static final String TAG_TICKET_SCARICATI = "scaricati";
     private static final String TAG_VOTO = "mediaVoti";
+    private static final String TAG_DESCRIZIONE = "descrizione";
+    private static final String TAG_INDIRIZZO = "indirizzo";
+    private static final String TAG_LAT = "lat";
+    private static final String TAG_LON = "lon";
+    private static final String TAG_NOMINATIVO = "Nominativo";
+
 
 
     // tickets JSONArray
@@ -85,8 +91,8 @@ public class SplashActivity extends Activity {
         //final Intent intent = new Intent(this,MainActivity.class); // WEB VIEW
         //final Intent intent = new Intent(this,HomeActivity.class); // ONLY SWIBE E TAB
         final Intent intent = new Intent(this,FirstActivity.class); // SWIPE E TAB + JSON NOT VIEW
-        //final Intent intent = new Intent(this,DemoActivity3.class); // JSON TICKET DOWNLOAD
-        //final Intent intent = new Intent(this,DemoActivity2.class); // TICKET FOTO DOWNLOAD ED ADAPTER CUSTOM VIEW
+
+
         startActivity(intent); // Launch the Intent
         finish(); // We finish the current Activity
     }
@@ -239,16 +245,21 @@ public class SplashActivity extends Activity {
                         String photo = c.getString(TAG_CODICE) + ".jpg";
                         String scaricati = c.getString(TAG_TICKET_SCARICATI);
                         String mediaVoto = c.getString(TAG_VOTO);
+                        String descrizione = c.getString(TAG_DESCRIZIONE);
+                        String indirizzo = c.getString(TAG_INDIRIZZO);
+                        String lat = c.getString(TAG_LAT);
+                        String lon = c.getString(TAG_LON);
+                        String nominativo = c.getString(TAG_NOMINATIVO);
 
 
 
-                        if (mediaVoto==""){
+                       /* if (mediaVoto==""){
                             mediaVoto = "0";
                         }
 
                         if (mediaVoto==null){
                             mediaVoto = "0";
-                        }
+                        }*/
 
                         if (mediaVoto=="null"){
                             mediaVoto = "0";
@@ -258,15 +269,11 @@ public class SplashActivity extends Activity {
                             scaricati="0";
                         }
 
-
-
-
-
-
                         //listx.add(new Ticket(id,categoria,codice,titolo,titoloSup,photo,scaricati,mediaVoto));
 
 
-                        db.insertTicket(id,categoria,codice,titolo,titoloSup,Float.parseFloat(mediaVoto),Integer.parseInt(scaricati));
+                        db.insertTicket(id,categoria,codice,titolo,titoloSup,Float.parseFloat(mediaVoto),Integer.parseInt(scaricati),descrizione,indirizzo,lat,lon,nominativo);
+
 
 
                     }

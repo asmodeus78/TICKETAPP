@@ -267,14 +267,14 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                 @Override
                 protected void onPreExecute() {
                     super.onPreExecute();
-                    pDialog = new ProgressDialog(getActivity());
-                    pDialog.setMessage("Attendere prego...");
-                    pDialog.setCancelable(true);
-                    pDialog.show();
+                    //pDialog = new ProgressDialog(getActivity());
+                    //pDialog.setMessage("Attendere prego...");
+                   // pDialog.setCancelable(true);
+                   // pDialog.show();
 
-                    if (pDialog.getProgress()==100){
-                        pDialog.dismiss();
-                    }
+                    //if (pDialog.getProgress()==100){
+                    //    pDialog.dismiss();
+                    //}
 
 
                     categoria = getArguments().getString(ARG_SECTION_STRING);
@@ -313,9 +313,9 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                         }
                     });
 
-                    if (pDialog.isShowing()) {
-                        pDialog.dismiss();
-                    }
+                    //if (pDialog.isShowing()) {
+                    //    pDialog.dismiss();
+                    //}
                 }
 
 
@@ -394,6 +394,8 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
 
                         Integer scaricati = c.getInt(5);
                         float mediaVoto = c.getFloat(6);
+
+                        //String descrizione = c.getString(7);
 
                         listx.add(new Ticket(id, categoria, codice, titolo, titoloSup, photo, scaricati, mediaVoto));
 

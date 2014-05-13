@@ -3,6 +3,7 @@ package it.ticketclub.ticketapp;
 import java.util.Locale;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.ActionBarActivity;
@@ -13,6 +14,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,6 +23,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import android.text.Html;
+import android.text.Spanned;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
 public class SecondActivity extends ActionBarActivity implements ActionBar.TabListener {
@@ -41,6 +52,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
     ViewPager mViewPager;
 
     String codice;
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +64,9 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
 
         codice = e.getString("codice");
+            id = e.getString("id");
+
+        Log.d("DATABASE::",id);
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
@@ -145,10 +160,10 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
                 case 0:
                     //OFFERTA
-                    return PlaceholderFragmentOfferta.newInstance(0,codice);
+                    return PlaceholderFragmentOfferta.newInstance(0,id,codice);
                 case 1:
                     //MAPPA
-                    return PlaceholderFragment.newInstance(1);
+                    return PlaceholderFragmentMappa.newInstance(0,id,codice);
                 case 2:
                     //FEEDBACK
                     return PlaceholderFragment.newInstance(2);
@@ -220,6 +235,97 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
     /**
      * A placeholder fragment containing a simple view.
      */
+    public static class PlaceholderFragmentMappa extends Fragment {
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+        private static final String ARG_SECTION_NUMBER = "section_number";
+        private static final String ARG_SECTION_CODICE = "codice";
+        private static final String ARG_SECTION_ID = "id";
+
+        private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+
+        /**
+         * Returns a new instance of this fragment for the given section
+         * number.
+         */
+        public static PlaceholderFragmentMappa newInstance(int sectionNumber, String id, String codice) {
+            PlaceholderFragmentMappa fragment = new PlaceholderFragmentMappa();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            args.putString(ARG_SECTION_ID, id);
+            args.putString(ARG_SECTION_CODICE, codice);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        public PlaceholderFragmentMappa() {
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.activity_maps, container, false);
+            //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            //textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+
+
+            setUpMapIfNeeded();
+
+            return rootView;
+        }
+
+        private void setUpMapIfNeeded() {
+            // Do a null check to confirm that we have not already instantiated the map.
+            if (mMap == null) {
+                // Try to obtain the map from the SupportMapFragment.
+                mMap = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map))
+                        .getMap();
+                // Check if we were successful in obtaining the map.
+                if (mMap != null) {
+                    setUpMap();
+                }
+            }
+        }
+
+        private void setUpMap() {
+
+
+            MyDatabase db3=new MyDatabase(getActivity().getApplicationContext());
+            db3.open();  //apriamo il db
+            Cursor c3;
+
+            c3 = db3.fetchSingleTicket(getArguments().getString(ARG_SECTION_ID));
+            //c2 = db2.fetchTicket();
+            getActivity().startManagingCursor(c3);
+
+            if (c3.moveToFirst()) {
+                do {
+
+                    //String indirizzo = c3.getString(8);
+
+                    Double lat = Double.parseDouble(c3.getString(9));
+                    Double lon = Double.parseDouble(c3.getString(10));
+                    String nominativo = c3.getString(11);
+
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title(nominativo)).showInfoWindow();
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lon),16.0f));
+
+                } while (c3.moveToNext());
+            }
+
+
+
+
+
+
+        }
+    }
+
+    /**
+     * A placeholder fragment containing a simple view.
+     */
     public static class PlaceholderFragmentOfferta extends Fragment {
         /**
          * The fragment argument representing the section number for this
@@ -227,15 +333,17 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
         private static final String ARG_SECTION_CODICE = "codice";
+        private static final String ARG_SECTION_ID = "id";
 
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragmentOfferta newInstance(int sectionNumber, String codice) {
+        public static PlaceholderFragmentOfferta newInstance(int sectionNumber, String id, String codice) {
             PlaceholderFragmentOfferta fragment = new PlaceholderFragmentOfferta();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            args.putString(ARG_SECTION_ID, id);
             args.putString(ARG_SECTION_CODICE, codice);
             fragment.setArguments(args);
             return fragment;
@@ -250,12 +358,66 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             View rootView = inflater.inflate(R.layout.fragment_offerta, container, false);
             ImageView imageView = (ImageView) rootView.findViewById(R.id.TK_image);
 
-           // getArguments().getInt(ARG_SECTION_NUMBER);
+
+
+            //getArguments().getInt(ARG_SECTION_NUMBER);
 
             Setup conf = new Setup();
 
             Bitmap bMap = BitmapFactory.decodeFile(conf.getPath() + "/" +  getArguments().getString(ARG_SECTION_CODICE) + ".jpg");
             imageView.setImageBitmap(bMap);
+
+            TextView textView = (TextView) rootView.findViewById(R.id.TK_descrizione);
+
+            /****/
+
+            MyDatabase db2=new MyDatabase(getActivity().getApplicationContext());
+            db2.open();  //apriamo il db
+            Cursor c2;
+
+            String idTest = getArguments().getString(ARG_SECTION_ID);
+
+            Log.d("DATABASE::", idTest);
+
+            //if (getArguments().getString(ARG_SECTION_ID)!="") {
+                c2 = db2.fetchSingleTicket(getArguments().getString(ARG_SECTION_ID));
+                //c2 = db2.fetchTicket();
+                getActivity().startManagingCursor(c2);
+
+                if (c2.moveToFirst()) {
+                    do {
+
+                        //int id = c.getInt(0);
+
+                        Integer id = c2.getInt(0);
+                        String codice = c2.getString(1);
+                        String photo = c2.getString(1) + ".jpg";
+                        String titolo = c2.getString(2);
+                        String titoloSup = c2.getString(3);
+                        String categoria = c2.getString(4);
+
+                        Integer scaricati = c2.getInt(5);
+                        float mediaVoto = c2.getFloat(6);
+
+                        String descrizione = c2.getString(7);
+
+
+
+
+                        Spanned text =  Html.fromHtml(descrizione);
+                        textView.setText(text);
+
+
+
+                    } while (c2.moveToNext());
+                }
+            //}
+            /****/
+
+
+
+
+
 
 
 

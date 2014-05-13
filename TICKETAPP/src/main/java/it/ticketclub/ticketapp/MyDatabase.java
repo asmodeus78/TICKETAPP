@@ -36,7 +36,7 @@ public class MyDatabase {
         db.close();
     }
 
-    public void insertTicket(int id, String categoria, String codice, String titolo, String titoloSup, float mediaVoti, int scaricati){ //metodo per inserire i dati
+    public void insertTicket(int id, String categoria, String codice, String titolo, String titoloSup, float mediaVoti, int scaricati, String descrizione, String indirizzo, String lat, String lon, String nominativo){ //metodo per inserire i dati
         ContentValues cv=new ContentValues();
         cv.put(TicketMetaData.ID, id);
         cv.put(TicketMetaData.TICKET_CATEGORIA_KEY , categoria);
@@ -45,12 +45,23 @@ public class MyDatabase {
         cv.put(TicketMetaData.TICKET_TITOLO_SUP_KEY , titoloSup);
         cv.put(TicketMetaData.TICKET_MEDIA_VOTI_KEY , mediaVoti);
         cv.put(TicketMetaData.TICKET_SCARICATI_KEY , scaricati);
+        cv.put(TicketMetaData.TICKET_DESCRIZIONE_KEY, descrizione);
+
+        cv.put(TicketMetaData.TICKET_INDIRIZZO_KEY, indirizzo);
+        cv.put(TicketMetaData.TICKET_LAT_KEY, lat);
+        cv.put(TicketMetaData.TICKET_LON_KEY, lon);
+
+        cv.put(TicketMetaData.TICKET_NOMINATIVO_KEY, nominativo);
 
         db.insert(TicketMetaData.TICKET_TABLE, null, cv);
     }
 
     public Cursor fetchTicket(){ //metodo per fare la query di tutti i dati
         return db.query(TicketMetaData.TICKET_TABLE, null,null,null,null,null,null);
+    }
+
+    public Cursor fetchSingleTicket(String id){ //metodo per fare la query di tutti i dati
+        return db.query(TicketMetaData.TICKET_TABLE, null,"idTicket=" + id,null,null,null,null);
     }
 
     public Cursor fetchTicketByCateg(String categoria){ //metodo per fare la query di tutti i dati
@@ -88,16 +99,16 @@ public class MyDatabase {
             + TicketMetaData.TICKET_CODICE_KEY + " text not null, "
             + TicketMetaData.TICKET_TITOLO_KEY + " text not null, "
             + TicketMetaData.TICKET_TITOLO_SUP_KEY + " text not null, "
-            //+ TicketMetaData.TICKET_DESCRIZIONE_KEY + " text not null, "
-            //+ TicketMetaData.TICKET_INDIRIZZO_KEY + " text null, "
-            //+ TicketMetaData.TICKET_LAT_KEY + " text null, "
-            //+ TicketMetaData.TICKET_LON_KEY + " text null, "
             //+ TicketMetaData.TICKET_PREZZO_KEY + " money null, "
             //+ TicketMetaData.TICKET_PREZZO_CR_KEY + " integer not null, "
             + TicketMetaData.TICKET_CATEGORIA_KEY + " text not null, "
             + TicketMetaData.TICKET_SCARICATI_KEY + " integer not null, "
-            + TicketMetaData.TICKET_MEDIA_VOTI_KEY + " float null "
-            //+ TicketMetaData.TICKET_NOMINATIVO_KEY + " text not null, "
+            + TicketMetaData.TICKET_MEDIA_VOTI_KEY + " float null, "
+            + TicketMetaData.TICKET_DESCRIZIONE_KEY + " text not null, "
+            + TicketMetaData.TICKET_INDIRIZZO_KEY + " text null, "
+            + TicketMetaData.TICKET_LAT_KEY + " text null, "
+            + TicketMetaData.TICKET_LON_KEY + " text null, "
+            + TicketMetaData.TICKET_NOMINATIVO_KEY + " text not null "
             //+ TicketMetaData.TICKET_TELEFONO_KEY + " text null, "
             //+ TicketMetaData.TICKET_SITO_KEY + " text null, )";
             //+ TicketMetaData.TICKET_ORDINE_KEY + " integer not null, "
