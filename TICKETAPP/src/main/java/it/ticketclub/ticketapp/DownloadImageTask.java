@@ -32,7 +32,14 @@ class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
     protected Bitmap doInBackground(String... urls) {
         Log.d("colonna", path.toString());
-        String urldisplay = "http://www.ticketclub.it/TICKET_NEW/biglietti/" + urls[0];
+
+        String urldisplay="";
+        if (urls[0].length()>30){
+            urldisplay = "" + urls[0];
+        }else {
+            urldisplay = "http://www.ticketclub.it/TICKET_NEW/biglietti/" + urls[0];
+        }
+
         codeimage = urls[0];
 
         Bitmap mIcon11 = null;

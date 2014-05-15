@@ -1,11 +1,13 @@
 package it.ticketclub.ticketapp;
 
+import java.util.LinkedList;
 import java.util.Locale;
 
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -21,7 +23,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import android.text.Html;
@@ -32,6 +36,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class SecondActivity extends ActionBarActivity implements ActionBar.TabListener {
@@ -166,7 +174,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
                     return PlaceholderFragmentMappa.newInstance(0,id,codice);
                 case 2:
                     //FEEDBACK
-                    return PlaceholderFragment.newInstance(2);
+                    return PlaceholderFragmentFeedback.newInstance(0,id,codice);
 
             }
 
@@ -197,40 +205,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
         }
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_second, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
 
     /**
      * A placeholder fragment containing a simple view.
@@ -427,4 +402,178 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
         }
     }
 
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PlaceholderFragmentFeedback extends Fragment {
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+
+        public static String id="";
+
+        // tickets JSONArray
+        static JSONArray feedback = null;
+
+        private static final String ARG_SECTION_NUMBER = "section_number";
+        private static final String ARG_SECTION_CODICE = "codice";
+        private static final String ARG_SECTION_ID = "id";
+
+
+
+        /**
+         * Returns a new instance of this fragment for the given section
+         * number.
+         */
+        public static PlaceholderFragmentFeedback newInstance(int sectionNumber, String id, String codice) {
+            PlaceholderFragmentFeedback fragment = new PlaceholderFragmentFeedback();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            args.putString(ARG_SECTION_ID, id);
+            args.putString(ARG_SECTION_CODICE, codice);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        public PlaceholderFragmentFeedback() {
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+
+
+            Log.d("colonna","HO CREATO LA VISTA FEEDBACK");
+
+            final View rootView = inflater.inflate(R.layout.fragment_feedback, container, false);
+
+            //LinkedList listaa = new LinkedList();
+
+            new GetFeedback() {
+
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
+
+                    id = getArguments().getString(ARG_SECTION_ID);
+                    Log.d("DRAGON",id);
+                }
+
+                @Override
+                protected void onPostExecute(LinkedList result) {
+                    // super.onPostExecute(result);
+
+                    ListView listView = (ListView)vista.findViewById(R.id.ListViewDemo);
+                    CustomAdapter_Feedback adapter = new CustomAdapter_Feedback(getActivity(), R.layout.row_feedback, result);
+                    adapter.notifyDataSetChanged();
+                    listView.setAdapter(adapter);
+                }
+
+
+            }.execute(rootView);
+
+
+            //textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+            return rootView;
+        }
+
+        /*********************************************************/
+        private class GetFeedback extends AsyncTask<View, Void, LinkedList> {
+
+            LinkedList list;
+            View vista;
+
+            public GetFeedback() {
+                this.list = list;
+                this.vista = null;
+            }
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                // Showing progress dialog
+            }
+
+            @Override
+            protected LinkedList doInBackground(View... arg0) {
+
+
+                // URL to get feedback JSON
+                String url2 = "http://www.ticketclub.it/APP/ticket_view.php?CMD=FEEDBACK&idTicket=" + id;
+
+                Log.d("JSON--",url2);
+
+                // Creating service handler class instance
+                ServiceHandler sh = new ServiceHandler();
+
+                // Making a request to url and getting response
+                String jsonStr = sh.makeServiceCall(url2, ServiceHandler.GET);
+
+                // Nuova Gestione Liste
+                LinkedList listx = new LinkedList();
+
+
+                vista = arg0[0];
+
+                //Log.d("Response: ", "> " + jsonStr);
+
+                if (jsonStr != null) {
+                    try {
+                        JSONObject jsonObj = new JSONObject(jsonStr);
+
+                        // Getting JSON Array node
+                        feedback = jsonObj.getJSONArray("FEEDBACK");
+
+                        for (int i = 0; i < feedback.length(); i++) {
+                            JSONObject c = feedback.getJSONObject(i);
+
+                            Integer id = c.getInt("idFeedback");
+                            String dataInserimento = c.getString("dataInserimento");
+                            String idImg = "https://graph.facebook.com/" + c.getString("idImg") + "/picture";
+                            String nominativo = c.getString("nominativo");
+                            String voto = c.getString("voto");
+                            String commento = c.getString("commento");
+
+                            //String descrizione = c.getString(7);
+
+                            listx.add(new Feedback(id, dataInserimento, idImg, nominativo, voto, commento));
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Log.e("ServiceHandler", "Couldn't get any data from the url");
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                return listx;
+            }
+
+            @Override
+            protected void onPostExecute(LinkedList result) {
+                super.onPostExecute(result);
+
+
+                list = result;
+            }
+        }
+        /**************************************************************************/
+    }
 }
+
+

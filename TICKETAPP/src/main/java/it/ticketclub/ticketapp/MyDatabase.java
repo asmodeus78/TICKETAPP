@@ -17,23 +17,57 @@ public class MyDatabase {
 
 
     private static final String DB_NAME="ticketclub.db";//nome del db
-    private static final int DB_VERSION=1; //numero di versione del nostro db
+    private static final int DB_VERSION=2; //numero di versione del nostro db
 
+    // GESTIONE DATABASE
     public MyDatabase(Context ctx){
         mContext = ctx;
         myDbHelper = new DbHelper(ctx,DB_NAME,null,DB_VERSION); //quando istanziamo questa classe, istanziamo anche l'helper (vedi sotto)
     }
-
     public void open(){  //il database su cui agiamo è leggibile/scrivibile
         db=myDbHelper.getWritableDatabase();
         //Setup conf = new Setup();
         //db = SQLiteDatabase.openOrCreateDatabase(conf.path + DB_NAME,null);
     }
-
     public void close(){ //chiudiamo il database su cui agiamo
         db.close();
     }
+    // GESTIONE DATABASE FINE
 
+
+    //DESCRITTORI STRUTTURA DATI
+    static class TicketMetaData {  // i metadati della tabella, accessibili ovunque
+        static final String TICKET_TABLE = "TICKET";
+        static final String ID = "idTicket";
+        static final String TICKET_CODICE_KEY = "codice";
+        static final String TICKET_TITOLO_KEY  = "titolo";
+        static final String TICKET_TITOLO_SUP_KEY  = "titoloSup";
+        static final String TICKET_DESCRIZIONE_KEY  = "descrizione";
+        static final String TICKET_INDIRIZZO_KEY  = "indirizzo";
+        static final String TICKET_LAT_KEY  = "lat";
+        static final String TICKET_LON_KEY  = "lon";
+        static final String TICKET_CATEGORIA_KEY  = "categoria";
+        static final String TICKET_SCARICATI_KEY  = "scaricati";
+        static final String TICKET_MEDIA_VOTI_KEY  = "mediaVoti";
+        static final String TICKET_NOMINATIVO_KEY  = "nominativo";
+        //static final String TICKET_ORDINE_KEY  = "ordine";
+        //static final String TICKET_PREZZO_KEY  = "prezzo";
+        // static final String TICKET_PREZZO_CR_KEY  = "prezzoCR";
+        //static final String TICKET_TELEFONO_KEY  = "telefono";
+        //static final String TICKET_SITO_KEY  = "sito";
+    }
+    static class FeedBackMetaData {  // i metadati della tabella, accessibili ovunque
+        static final String FEEDBACK_TABLE = "FEEDBACK";
+        static final String ID = "idFeedback";
+        static final String FEEDBACK_IDTICKET_KEY  = "idTicket";
+        static final String FEEDBACK_DATAINSERIMENTO_KEY  = "dataInserimento";
+        static final String FEEDBACK_IDIMG_KEY = "idImg";
+        static final String FEEDBACK_NOMINATIVO_KEY = "nominativo";
+        static final String FEEDBACK_VOTO_KEY  = "voto";
+        static final String FEEDBACK_COMMENTO_KEY  = "commento";
+    }
+
+    //COMMAND FOR INSERT DATA
     public void insertTicket(int id, String categoria, String codice, String titolo, String titoloSup, float mediaVoti, int scaricati, String descrizione, String indirizzo, String lat, String lon, String nominativo){ //metodo per inserire i dati
         ContentValues cv=new ContentValues();
         cv.put(TicketMetaData.ID, id);
@@ -53,53 +87,49 @@ public class MyDatabase {
 
         db.insert(TicketMetaData.TICKET_TABLE, null, cv);
     }
+    public void insertFeedback(int id, String idTicket, String dataInserimento, String idImg, String nominativo, String voto, String commento){
+        ContentValues cv=new ContentValues();
+        cv.put(FeedBackMetaData.ID, id);
+        cv.put(FeedBackMetaData.FEEDBACK_IDTICKET_KEY , idTicket);
+        cv.put(FeedBackMetaData.FEEDBACK_DATAINSERIMENTO_KEY , dataInserimento);
+        cv.put(FeedBackMetaData.FEEDBACK_IDIMG_KEY , idImg);
+        cv.put(FeedBackMetaData.FEEDBACK_NOMINATIVO_KEY , nominativo);
+        cv.put(FeedBackMetaData.FEEDBACK_VOTO_KEY , voto);
+        cv.put(FeedBackMetaData.FEEDBACK_COMMENTO_KEY, commento);
 
+        db.insert(FeedBackMetaData.FEEDBACK_TABLE, null, cv);
+    }
+
+    //COMMAND FOR FETCH DATA
     public Cursor fetchTicket(){ //metodo per fare la query di tutti i dati
         return db.query(TicketMetaData.TICKET_TABLE, null,null,null,null,null,null);
     }
-
     public Cursor fetchSingleTicket(String id){ //metodo per fare la query di tutti i dati
         return db.query(TicketMetaData.TICKET_TABLE, null,"idTicket=" + id,null,null,null,null);
     }
-
     public Cursor fetchTicketByCateg(String categoria){ //metodo per fare la query di tutti i dati
         return db.query(TicketMetaData.TICKET_TABLE, null,"categoria='" + categoria + "'",null,null,null,null);
     }
+    public Cursor fetchFeedback(String id){
+    return db.query(FeedBackMetaData.FEEDBACK_TABLE, null,"idTicket=" + id,null,null,null,null);
+}
 
+    //COMMAND FOR DELETE DATA
     public void deleteTicket(){
         db.delete(TicketMetaData.TICKET_TABLE,null,null);
     }
-
-    static class TicketMetaData {  // i metadati della tabella, accessibili ovunque
-        static final String TICKET_TABLE = "TICKET";
-        static final String ID = "idTicket";
-        static final String TICKET_CODICE_KEY = "codice";
-        static final String TICKET_TITOLO_KEY  = "titolo";
-        static final String TICKET_TITOLO_SUP_KEY  = "titoloSup";
-        static final String TICKET_DESCRIZIONE_KEY  = "descrizione";
-        static final String TICKET_INDIRIZZO_KEY  = "indirizzo";
-        static final String TICKET_LAT_KEY  = "lat";
-        static final String TICKET_LON_KEY  = "lon";
-        //static final String TICKET_ORDINE_KEY  = "ordine";
-        //static final String TICKET_PREZZO_KEY  = "prezzo";
-       // static final String TICKET_PREZZO_CR_KEY  = "prezzoCR";
-        static final String TICKET_CATEGORIA_KEY  = "categoria";
-        static final String TICKET_SCARICATI_KEY  = "scaricati";
-        static final String TICKET_MEDIA_VOTI_KEY  = "mediaVoti";
-        static final String TICKET_NOMINATIVO_KEY  = "nominativo";
-        //static final String TICKET_TELEFONO_KEY  = "telefono";
-        //static final String TICKET_SITO_KEY  = "sito";
-
+    public void deleteFeedback(){
+        db.delete(FeedBackMetaData.FEEDBACK_TABLE,null,null);
     }
 
+
+    //COMMAND FOR CREATE TABLE
     private static final String TICKET_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
             + TicketMetaData.TICKET_TABLE + " ("
             + TicketMetaData.ID + " integer primary key, "
             + TicketMetaData.TICKET_CODICE_KEY + " text not null, "
             + TicketMetaData.TICKET_TITOLO_KEY + " text not null, "
             + TicketMetaData.TICKET_TITOLO_SUP_KEY + " text not null, "
-            //+ TicketMetaData.TICKET_PREZZO_KEY + " money null, "
-            //+ TicketMetaData.TICKET_PREZZO_CR_KEY + " integer not null, "
             + TicketMetaData.TICKET_CATEGORIA_KEY + " text not null, "
             + TicketMetaData.TICKET_SCARICATI_KEY + " integer not null, "
             + TicketMetaData.TICKET_MEDIA_VOTI_KEY + " float null, "
@@ -108,9 +138,23 @@ public class MyDatabase {
             + TicketMetaData.TICKET_LAT_KEY + " text null, "
             + TicketMetaData.TICKET_LON_KEY + " text null, "
             + TicketMetaData.TICKET_NOMINATIVO_KEY + " text not null "
+            //+ TicketMetaData.TICKET_PREZZO_KEY + " money null, "
+            //+ TicketMetaData.TICKET_PREZZO_CR_KEY + " integer not null, "
             //+ TicketMetaData.TICKET_TELEFONO_KEY + " text null, "
             //+ TicketMetaData.TICKET_SITO_KEY + " text null, )";
             //+ TicketMetaData.TICKET_ORDINE_KEY + " integer not null, "
+            + ")";
+
+
+    private static final String FEEDBACK_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
+            + FeedBackMetaData.FEEDBACK_TABLE + " ("
+            + FeedBackMetaData.ID + " integer primary key, "
+            + FeedBackMetaData.FEEDBACK_IDTICKET_KEY + " text not null, "
+            + FeedBackMetaData.FEEDBACK_DATAINSERIMENTO_KEY + " text not null, "
+            + FeedBackMetaData.FEEDBACK_IDIMG_KEY + " text null, "
+            + FeedBackMetaData.FEEDBACK_NOMINATIVO_KEY + " text not null, "
+            + FeedBackMetaData.FEEDBACK_VOTO_KEY + " text not null, "
+            + FeedBackMetaData.FEEDBACK_COMMENTO_KEY + " text null "
             + ")";
 
     private class DbHelper extends SQLiteOpenHelper { //classe che ci aiuta nella creazione del db
@@ -121,7 +165,10 @@ public class MyDatabase {
 
         @Override
         public void onCreate(SQLiteDatabase _db) { //solo quando il db viene creato, creiamo la tabella
+
             _db.execSQL(TICKET_TABLE_CREATE);
+            _db.execSQL(FEEDBACK_TABLE_CREATE);
+
         }
 
         @Override

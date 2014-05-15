@@ -49,6 +49,9 @@ public class SplashActivity extends Activity {
     // URL to get tickets JSON
     public static String url = "http://www.ticketclub.it/APP/ticket_view.php?CMD=TK";
 
+    // URL to get feedback JSON
+    //public static String url2 = "http://www.ticketclub.it/APP/ticket_view.php?CMD=FEEDBACK&data_start=2014-05-10";
+
     // JSON Node names
     private static final String TAG_ID = "idTicket";
     private static final String TAG_CATEGORIA ="categoria";
@@ -110,9 +113,13 @@ public class SplashActivity extends Activity {
 
         db.deleteTicket();
 
+
+
         db.close();
 
         new GetTickets().execute();
+
+
 
 
 
@@ -188,7 +195,6 @@ public class SplashActivity extends Activity {
         }
         return false;
     }
-
 
 
     private class GetTickets extends AsyncTask<Void, Void, Void> {
@@ -299,5 +305,7 @@ public class SplashActivity extends Activity {
            // list = result;
         }
     }
+
+
 
 }
