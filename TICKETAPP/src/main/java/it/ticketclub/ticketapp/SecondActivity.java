@@ -3,7 +3,7 @@ package it.ticketclub.ticketapp;
 import java.util.LinkedList;
 import java.util.Locale;
 
-import android.content.Intent;
+
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,13 +17,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Gravity;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -70,9 +70,12 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
         Bundle e = getIntent().getExtras();
 
 
-
-        codice = e.getString("codice");
+        if (e != null) {
+            codice = e.getString("codice");
+        }
+        if (e != null) {
             id = e.getString("id");
+        }
 
         Log.d("DATABASE::",id);
 
@@ -363,7 +366,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
                     do {
 
                         //int id = c.getInt(0);
-
+/*
                         Integer id = c2.getInt(0);
                         String codice = c2.getString(1);
                         String photo = c2.getString(1) + ".jpg";
@@ -373,7 +376,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
                         Integer scaricati = c2.getInt(5);
                         float mediaVoto = c2.getFloat(6);
-
+*/
                         String descrizione = c2.getString(7);
 
 
@@ -485,7 +488,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             View vista;
 
             public GetFeedback() {
-                this.list = list;
+                //this.list = list;
                 this.vista = null;
             }
 
@@ -530,7 +533,11 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
                             Integer id = c.getInt("idFeedback");
                             String dataInserimento = c.getString("dataInserimento");
-                            String idImg = "https://graph.facebook.com/" + c.getString("idImg") + "/picture";
+
+                            String idImg="null";
+                            if (c.getString("idImg")!="null") {
+                                idImg = "https://graph.facebook.com/" + c.getString("idImg") + "/picture";
+                            }
                             String nominativo = c.getString("nominativo");
                             String voto = c.getString("voto");
                             String commento = c.getString("commento");
@@ -546,6 +553,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
                 } else {
                     Log.e("ServiceHandler", "Couldn't get any data from the url");
                 }
+
 
 
 
