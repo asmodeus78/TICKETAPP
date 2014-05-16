@@ -9,24 +9,24 @@
     <item android:id="@+id/action_search"
         android:title="Cerca ticket"
         android:icon="@drawable/ic_action_action_search"
-        app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="always"
+        app:actionViewClass="android.widget.SearchView"
         />
-
-
-
-    <item android:id="@+id/action_profilo"
-        android:title="Profilo"
-        android:icon="@drawable/ic_action_device_access_storage_1"
-        app:showAsAction="ifRoom"
-        />
-
 
     <item android:id="@+id/action_citta"
         android:title="CITTA"
         app:showAsAction="always"
         app:actionViewClass="android.widget.Spinner"
         />
+
+    <item android:id="@+id/action_profilo"
+        android:title="Profilo"
+        android:icon="@drawable/ic_action_device_access_storage_1"
+        app:showAsAction="always"
+    />
+
+
+
 
 
 

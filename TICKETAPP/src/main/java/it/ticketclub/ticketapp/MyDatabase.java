@@ -17,7 +17,7 @@ public class MyDatabase {
 
 
     private static final String DB_NAME="ticketclub.db";//nome del db
-    private static final int DB_VERSION=2; //numero di versione del nostro db
+    private static final int DB_VERSION=3; //numero di versione del nostro db
 
     // GESTIONE DATABASE
     public MyDatabase(Context ctx){
@@ -53,8 +53,8 @@ public class MyDatabase {
         //static final String TICKET_ORDINE_KEY  = "ordine";
         //static final String TICKET_PREZZO_KEY  = "prezzo";
         // static final String TICKET_PREZZO_CR_KEY  = "prezzoCR";
-        //static final String TICKET_TELEFONO_KEY  = "telefono";
-        //static final String TICKET_SITO_KEY  = "sito";
+        static final String TICKET_TELEFONO_KEY  = "telefono";
+        static final String TICKET_SITO_KEY  = "sito";
     }
     static class FeedBackMetaData {  // i metadati della tabella, accessibili ovunque
         static final String FEEDBACK_TABLE = "FEEDBACK";
@@ -68,7 +68,7 @@ public class MyDatabase {
     }
 
     //COMMAND FOR INSERT DATA
-    public void insertTicket(int id, String categoria, String codice, String titolo, String titoloSup, float mediaVoti, int scaricati, String descrizione, String indirizzo, String lat, String lon, String nominativo){ //metodo per inserire i dati
+    public void insertTicket(int id, String categoria, String codice, String titolo, String titoloSup, float mediaVoti, int scaricati, String descrizione, String indirizzo, String lat, String lon, String nominativo, String telefono, String sito){ //metodo per inserire i dati
         ContentValues cv=new ContentValues();
         cv.put(TicketMetaData.ID, id);
         cv.put(TicketMetaData.TICKET_CATEGORIA_KEY , categoria);
@@ -84,8 +84,16 @@ public class MyDatabase {
         cv.put(TicketMetaData.TICKET_LON_KEY, lon);
 
         cv.put(TicketMetaData.TICKET_NOMINATIVO_KEY, nominativo);
+        cv.put(TicketMetaData.TICKET_TELEFONO_KEY, telefono);
+        cv.put(TicketMetaData.TICKET_SITO_KEY, sito);
+
 
         db.insert(TicketMetaData.TICKET_TABLE, null, cv);
+
+
+
+
+
     }
     public void insertFeedback(int id, String idTicket, String dataInserimento, String idImg, String nominativo, String voto, String commento){
         ContentValues cv=new ContentValues();
@@ -137,13 +145,15 @@ public class MyDatabase {
             + TicketMetaData.TICKET_INDIRIZZO_KEY + " text null, "
             + TicketMetaData.TICKET_LAT_KEY + " text null, "
             + TicketMetaData.TICKET_LON_KEY + " text null, "
-            + TicketMetaData.TICKET_NOMINATIVO_KEY + " text not null "
+            + TicketMetaData.TICKET_NOMINATIVO_KEY + " text not null, "
+            + TicketMetaData.TICKET_TELEFONO_KEY + " text null, "
+            + TicketMetaData.TICKET_SITO_KEY + " text null "
             //+ TicketMetaData.TICKET_PREZZO_KEY + " money null, "
             //+ TicketMetaData.TICKET_PREZZO_CR_KEY + " integer not null, "
-            //+ TicketMetaData.TICKET_TELEFONO_KEY + " text null, "
-            //+ TicketMetaData.TICKET_SITO_KEY + " text null, )";
             //+ TicketMetaData.TICKET_ORDINE_KEY + " integer not null, "
-            + ")";
+    + ")";
+
+
 
 
     private static final String FEEDBACK_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
@@ -174,6 +184,13 @@ public class MyDatabase {
         @Override
         public void onUpgrade(SQLiteDatabase _db, int oldVersion, int newVersion) {
             //qui mettiamo eventuali modifiche al db, se nella nostra nuova versione della app, il db cambia numero di versione
+
+            /*if (oldVersion!=newVersion){
+
+                _db.execSQL("DROP " + TicketMetaData.TICKET_TABLE);
+                _db.execSQL("DROP " + FeedBackMetaData.FEEDBACK_TABLE);
+
+            }*/
 
         }
 

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,7 +69,12 @@ public class CustomAdapter_Feedback extends ArrayAdapter<Feedback> {
 
         viewHolder.FD_voto.setRating(Float.parseFloat(feedback.getVoto()));
         viewHolder.FD_voto.setIsIndicator(true);
-        viewHolder.FD_commento.setText(feedback.getCommento());
+
+        Spanned text =  Html.fromHtml(feedback.getCommento().replace("&acute","&acute;"));
+        viewHolder.FD_commento.setText(text);
+
+
+
 
 
         if (feedback.getIdImg()!="null" && feedback.getIdImg()!="") {
@@ -78,10 +85,10 @@ public class CustomAdapter_Feedback extends ArrayAdapter<Feedback> {
                 Log.d("colonna", "carico foto da sd");
             } else {
                 new DownloadImageTask(viewHolder.FD_fotoUser).execute(feedback.getIdImg());
-                Log.d("colonna", "scarico il file della foto da internet");
+                Log.d("colonna", "scarico il file della foto da internet: " + feedback.getIdImg());
             }
-
         }
+
 
         // profile_photo.setImageBitmap(mIcon_val);
 

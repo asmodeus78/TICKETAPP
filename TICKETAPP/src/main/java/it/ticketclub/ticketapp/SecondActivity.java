@@ -244,9 +244,43 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.activity_maps, container, false);
-            //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            //textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+            View rootView = inflater.inflate(R.layout.fragment_mappa, container, false);
+
+
+            MyDatabase db3=new MyDatabase(getActivity().getApplicationContext());
+            db3.open();  //apriamo il db
+            Cursor c3;
+
+            c3 = db3.fetchSingleTicket(getArguments().getString(ARG_SECTION_ID));
+            //c2 = db2.fetchTicket();
+            getActivity().startManagingCursor(c3);
+
+            if (c3.moveToFirst()) {
+                do {
+
+                    String indirizzo = c3.getString(8);
+                    String nominativo = c3.getString(11);
+                    String telefono = c3.getString(12);
+                    String sitoWeb = c3.getString(13);
+
+                    TextView textView = (TextView) rootView.findViewById(R.id.TK_nominativo);
+                    textView.setText(nominativo);
+
+                    TextView textView1 = (TextView) rootView.findViewById(R.id.TK_indirizzo);
+                    textView1.setText(indirizzo);
+
+                    TextView textView2 = (TextView) rootView.findViewById(R.id.TK_telefono);
+                    textView2.setText(telefono);
+
+                    TextView textView3 = (TextView) rootView.findViewById(R.id.TK_sitoweb);
+                    textView3.setText(sitoWeb);
+
+
+
+
+                } while (c3.moveToNext());
+            }
+
 
 
             setUpMapIfNeeded();
@@ -281,7 +315,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             if (c3.moveToFirst()) {
                 do {
 
-                    //String indirizzo = c3.getString(8);
+                    String indirizzo = c3.getString(8);
 
                     Double lat = Double.parseDouble(c3.getString(9));
                     Double lon = Double.parseDouble(c3.getString(10));
@@ -289,6 +323,10 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
                     mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title(nominativo)).showInfoWindow();
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lon),16.0f));
+
+
+
+
 
                 } while (c3.moveToNext());
             }
@@ -492,6 +530,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
                 this.vista = null;
             }
 
+
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
@@ -534,7 +573,8 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
                             Integer id = c.getInt("idFeedback");
                             String dataInserimento = c.getString("dataInserimento");
 
-                            String idImg="null";
+
+                            String idImg = c.getString("idImg");
                             if (c.getString("idImg")!="null") {
                                 idImg = "https://graph.facebook.com/" + c.getString("idImg") + "/picture";
                             }

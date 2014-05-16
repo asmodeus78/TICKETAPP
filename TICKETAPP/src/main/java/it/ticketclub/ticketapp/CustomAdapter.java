@@ -67,7 +67,7 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
         viewHolder.TK_titoloSup.setText(ticket.getTitoloSup());
         viewHolder.TK_scaricati.setText("Scaricati: " + ticket.getScaricati().toString());
 
-        Log.d("colonna1",ticket.getMediaVoti().toString());
+        //Log.d("colonna1",ticket.getMediaVoti().toString());
 
         viewHolder.TK_voto.setRating(ticket.getMediaVoti());
         viewHolder.TK_voto.setIsIndicator(true);
@@ -81,7 +81,7 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
             Log.d("colonna","carico foto da sd");
         }else {
             new DownloadImageTask(viewHolder.TK_image).execute(ticket.getFoto());
-            Log.d("colonna","scarico il file della foto da internet");
+            Log.d("colonna","scarico il file della foto da internet: " + ticket.getFoto());
         }
 
 

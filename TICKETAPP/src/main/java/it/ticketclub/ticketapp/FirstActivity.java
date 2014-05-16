@@ -103,6 +103,15 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         MenuInflater minf = getMenuInflater();
         minf.inflate(R.menu.first,menu);
 
+        //minf.inflate(R.menu.fragment_menu_top,menu);
+
+
+        //LayoutParams layout_params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+        /*View customNav = LayoutInflater.from(this).inflate(R.layout.fragment_menu_top, null);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setCustomView(customNav);*/
+
+
         mSpinnerItem = menu.findItem(R.id.action_citta);
         setupSpinner(mSpinnerItem);
         return super.onCreateOptionsMenu(menu);
@@ -256,7 +265,7 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
 
 
 
-            Log.d("colonna","HO CREATO LA VISTA");
+            //Log.d("colonna","HO CREATO LA VISTA");
 
             final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
@@ -278,7 +287,7 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
 
 
                     categoria = getArguments().getString(ARG_SECTION_STRING);
-                    Log.d("DRAGON",categoria);
+                    //Log.d("DRAGON",categoria);
                 }
 
                 @Override
@@ -376,7 +385,7 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                 getActivity().startManagingCursor(c);
 
 
-                Log.d("DATABASE: ", "> " + c.getCount());
+                //Log.d("DATABASE: ", "> " + c.getCount());
 
 
 

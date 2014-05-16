@@ -94,7 +94,7 @@ public class SplashActivity extends Activity {
         //final Intent intent = new Intent(this,MainActivity.class); // WEB VIEW
         //final Intent intent = new Intent(this,HomeActivity.class); // ONLY SWIBE E TAB
         final Intent intent = new Intent(this,FirstActivity.class); // SWIPE E TAB + JSON NOT VIEW
-
+        //final Intent intent = new Intent(this,MainActivity2.class); // WEB VIEW
 
         startActivity(intent); // Launch the Intent
         finish(); // We finish the current Activity
@@ -256,6 +256,8 @@ public class SplashActivity extends Activity {
                         String lat = c.getString(TAG_LAT);
                         String lon = c.getString(TAG_LON);
                         String nominativo = c.getString(TAG_NOMINATIVO);
+                        String telefono = c.getString("telefono");
+                        String sito = c.getString("sito");
 
 
 
@@ -278,7 +280,7 @@ public class SplashActivity extends Activity {
                         //listx.add(new Ticket(id,categoria,codice,titolo,titoloSup,photo,scaricati,mediaVoto));
 
 
-                        db.insertTicket(id,categoria,codice,titolo,titoloSup,Float.parseFloat(mediaVoto),Integer.parseInt(scaricati),descrizione,indirizzo,lat,lon,nominativo);
+                        db.insertTicket(id,categoria,codice,titolo,titoloSup,Float.parseFloat(mediaVoto),Integer.parseInt(scaricati),descrizione,indirizzo,lat,lon,nominativo,telefono,sito);
 
 
 
