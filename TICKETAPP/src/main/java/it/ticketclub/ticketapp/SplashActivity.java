@@ -3,6 +3,7 @@ package it.ticketclub.ticketapp;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,7 +19,12 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
+import java.util.Locale;
 
 
 public class SplashActivity extends Activity {
@@ -91,6 +97,36 @@ public class SplashActivity extends Activity {
 
 
     private void goAhead(){
+
+        //aggiorno ultima data aggiornamento ticket
+        Calendar data = Calendar.getInstance();
+
+
+        String anno = (String) String.valueOf(data.get(Calendar.YEAR));
+        String mese = (String) String.valueOf(data.get(Calendar.MONTH) + 1) ;
+        String giorno = (String) String.valueOf(data.get(Calendar.DAY_OF_MONTH));
+
+        if (mese.length()<2){mese="0" + mese;}
+        if (giorno.length()<2){giorno="0" + giorno;}
+
+        String filtro = anno + "-" + mese + "-" + giorno;
+
+
+        MyDatabase db=new MyDatabase(getApplicationContext());
+        db.open();  //apriamo il db
+        Cursor c;
+        c = db.fetchConfig();
+
+        if (c.getCount()>0){
+            db.updateLastDownload(filtro);
+        }else{
+            db.insertConfig(filtro,0,"","","0","0");
+        }
+
+
+
+
+
         //final Intent intent = new Intent(this,MainActivity.class); // WEB VIEW
         //final Intent intent = new Intent(this,HomeActivity.class); // ONLY SWIBE E TAB
         final Intent intent = new Intent(this,FirstActivity.class); // SWIPE E TAB + JSON NOT VIEW
@@ -110,9 +146,43 @@ public class SplashActivity extends Activity {
 
         MyDatabase db=new MyDatabase(getApplicationContext());
         db.open();  //apriamo il db
+        Cursor c;
 
-        db.deleteTicket();
+        /*CANCELLO TICKET SCADUTI*/
+        Calendar data = Calendar.getInstance();
 
+        String anno = (String) String.valueOf(data.get(Calendar.YEAR));
+        String mese = (String) String.valueOf(data.get(Calendar.MONTH) + 1) ;
+        String giorno = (String) String.valueOf(data.get(Calendar.DAY_OF_MONTH));
+
+        if (mese.length()<2){mese="0" + mese;}
+        if (giorno.length()<2){giorno="0" + giorno;}
+
+        String filtro = anno + "-" + mese + "-" + giorno;
+        db.deleteTicketByData(filtro);
+
+
+
+
+        c = db.fetchConfig();
+        String lastUpdate = "";
+
+        if (c.moveToFirst()) {
+            do {
+
+                lastUpdate = c.getString(5);
+
+            } while (c.moveToNext());
+        }
+
+
+        if (lastUpdate!=""){
+
+            url = "http://www.ticketclub.it/APP/ticket_view.php?CMD=TK&lastUpdate=" + lastUpdate;
+
+        }
+
+        Log.d("TICKET:",url);
 
 
         db.close();
@@ -259,6 +329,8 @@ public class SplashActivity extends Activity {
                         String telefono = c.getString("telefono");
                         String sito = c.getString("sito");
 
+                        String dataScadenza = c.getString("dataScadenza");
+
 
 
                        /* if (mediaVoto==""){
@@ -280,7 +352,7 @@ public class SplashActivity extends Activity {
                         //listx.add(new Ticket(id,categoria,codice,titolo,titoloSup,photo,scaricati,mediaVoto));
 
 
-                        db.insertTicket(id,categoria,codice,titolo,titoloSup,Float.parseFloat(mediaVoto),Integer.parseInt(scaricati),descrizione,indirizzo,lat,lon,nominativo,telefono,sito);
+                        db.insertTicket(id,categoria,codice,titolo,titoloSup,Float.parseFloat(mediaVoto),Integer.parseInt(scaricati),descrizione,indirizzo,lat,lon,nominativo,telefono,sito,dataScadenza);
 
 
 

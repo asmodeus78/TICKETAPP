@@ -5,6 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import java.util.Date;
 
 
 public class MyDatabase {
@@ -55,6 +58,7 @@ public class MyDatabase {
         // static final String TICKET_PREZZO_CR_KEY  = "prezzoCR";
         static final String TICKET_TELEFONO_KEY  = "telefono";
         static final String TICKET_SITO_KEY  = "sito";
+        static final String TICKET_DATA_SCADENZA_KEY = "dataScadenza";
     }
     static class FeedBackMetaData {  // i metadati della tabella, accessibili ovunque
         static final String FEEDBACK_TABLE = "FEEDBACK";
@@ -66,9 +70,18 @@ public class MyDatabase {
         static final String FEEDBACK_VOTO_KEY  = "voto";
         static final String FEEDBACK_COMMENTO_KEY  = "commento";
     }
+    static class ConfigMetaData {
+        static final String CONFIG_TABLE = "CONFIG";
+        static final String CONFIG_UPDATE_KEY = "lastUpdate";
+        static final String CONFIG_IDUTENTE_KEY = "idUtente";
+        static final String CONFIG_NOME_UTENTE_KEY = "nominativo";
+        static final String CONFIG_EMAIL_KEY = "email";
+        static final String CONFIG_CREDITI_KEY = "crediti";
+        static final String CONFIG_ABBONAMENTO_KEY = "abbonamento";
+    }
 
     //COMMAND FOR INSERT DATA
-    public void insertTicket(int id, String categoria, String codice, String titolo, String titoloSup, float mediaVoti, int scaricati, String descrizione, String indirizzo, String lat, String lon, String nominativo, String telefono, String sito){ //metodo per inserire i dati
+    public void insertTicket(int id, String categoria, String codice, String titolo, String titoloSup, float mediaVoti, int scaricati, String descrizione, String indirizzo, String lat, String lon, String nominativo, String telefono, String sito, String dataScadenza){ //metodo per inserire i dati
         ContentValues cv=new ContentValues();
         cv.put(TicketMetaData.ID, id);
         cv.put(TicketMetaData.TICKET_CATEGORIA_KEY , categoria);
@@ -87,12 +100,9 @@ public class MyDatabase {
         cv.put(TicketMetaData.TICKET_TELEFONO_KEY, telefono);
         cv.put(TicketMetaData.TICKET_SITO_KEY, sito);
 
+        cv.put(TicketMetaData.TICKET_DATA_SCADENZA_KEY, dataScadenza);
 
         db.insert(TicketMetaData.TICKET_TABLE, null, cv);
-
-
-
-
 
     }
     public void insertFeedback(int id, String idTicket, String dataInserimento, String idImg, String nominativo, String voto, String commento){
@@ -108,6 +118,27 @@ public class MyDatabase {
         db.insert(FeedBackMetaData.FEEDBACK_TABLE, null, cv);
     }
 
+    public void insertConfig(String update, int idUtente, String nominativo, String email,String crediti, String abbonamento){
+        ContentValues cv=new ContentValues();
+
+        cv.put(ConfigMetaData.CONFIG_UPDATE_KEY, update);
+        cv.put(ConfigMetaData.CONFIG_IDUTENTE_KEY, idUtente);
+        cv.put(ConfigMetaData.CONFIG_NOME_UTENTE_KEY, nominativo);
+        cv.put(ConfigMetaData.CONFIG_EMAIL_KEY, email);
+        cv.put(ConfigMetaData.CONFIG_CREDITI_KEY, crediti);
+        cv.put(ConfigMetaData.CONFIG_ABBONAMENTO_KEY, abbonamento);
+
+        db.insert(ConfigMetaData.CONFIG_TABLE, null, cv);
+    }
+
+    public void updateLastDownload(String data){
+        String sql ="update " + ConfigMetaData.CONFIG_TABLE + " set " + ConfigMetaData.CONFIG_UPDATE_KEY + "='" + data + "'";
+        db.execSQL(sql);
+    }
+
+
+
+
     //COMMAND FOR FETCH DATA
     public Cursor fetchTicket(){ //metodo per fare la query di tutti i dati
         return db.query(TicketMetaData.TICKET_TABLE, null,null,null,null,null,null);
@@ -119,15 +150,28 @@ public class MyDatabase {
         return db.query(TicketMetaData.TICKET_TABLE, null,"categoria='" + categoria + "'",null,null,null,null);
     }
     public Cursor fetchFeedback(String id){
-    return db.query(FeedBackMetaData.FEEDBACK_TABLE, null,"idTicket=" + id,null,null,null,null);
-}
+        return db.query(FeedBackMetaData.FEEDBACK_TABLE, null,"idTicket=" + id,null,null,null,null);
+    }
+    public Cursor fetchConfig(){ //metodo per fare la query di tutti i dati
+        return db.query(ConfigMetaData.CONFIG_TABLE, null,null,null,null,null,null);
+    }
 
     //COMMAND FOR DELETE DATA
     public void deleteTicket(){
         db.delete(TicketMetaData.TICKET_TABLE,null,null);
     }
+    public void deleteTicketByData(String dataScadenza){
+
+        String sql = "delete from " + TicketMetaData.TICKET_TABLE + " where dataScadenza<'" + dataScadenza + "'";
+        db.execSQL(sql);
+        Log.d("TICKET:",sql);
+
+    }
     public void deleteFeedback(){
         db.delete(FeedBackMetaData.FEEDBACK_TABLE,null,null);
+    }
+    public void deleteConfig(){
+        db.delete(ConfigMetaData.CONFIG_TABLE,null,null);
     }
 
 
@@ -147,7 +191,8 @@ public class MyDatabase {
             + TicketMetaData.TICKET_LON_KEY + " text null, "
             + TicketMetaData.TICKET_NOMINATIVO_KEY + " text not null, "
             + TicketMetaData.TICKET_TELEFONO_KEY + " text null, "
-            + TicketMetaData.TICKET_SITO_KEY + " text null "
+            + TicketMetaData.TICKET_SITO_KEY + " text null, "
+            + TicketMetaData.TICKET_DATA_SCADENZA_KEY + " text null "
             //+ TicketMetaData.TICKET_PREZZO_KEY + " money null, "
             //+ TicketMetaData.TICKET_PREZZO_CR_KEY + " integer not null, "
             //+ TicketMetaData.TICKET_ORDINE_KEY + " integer not null, "
@@ -167,6 +212,16 @@ public class MyDatabase {
             + FeedBackMetaData.FEEDBACK_COMMENTO_KEY + " text null "
             + ")";
 
+    private static final String CONFIG_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
+            + ConfigMetaData.CONFIG_TABLE + " ("
+            + ConfigMetaData.CONFIG_IDUTENTE_KEY + " integer not null default 0, "
+            + ConfigMetaData.CONFIG_NOME_UTENTE_KEY + " text null, "
+            + ConfigMetaData.CONFIG_EMAIL_KEY + " text null, "
+            + ConfigMetaData.CONFIG_CREDITI_KEY + " int not null default 0, "
+            + ConfigMetaData.CONFIG_ABBONAMENTO_KEY + " int not null default 0, "
+            + ConfigMetaData.CONFIG_UPDATE_KEY + " text not null default 0 "
+            + ")";
+
     private class DbHelper extends SQLiteOpenHelper { //classe che ci aiuta nella creazione del db
 
         public DbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory,int version) {
@@ -176,9 +231,14 @@ public class MyDatabase {
         @Override
         public void onCreate(SQLiteDatabase _db) { //solo quando il db viene creato, creiamo la tabella
 
-            _db.execSQL(TICKET_TABLE_CREATE);
-            _db.execSQL(FEEDBACK_TABLE_CREATE);
+            Log.d("COLONNA","DB CONFIG CREATED");
+            _db.execSQL(CONFIG_TABLE_CREATE);
 
+            Log.d("COLONNA","DB TICKET CREATED");
+            _db.execSQL(TICKET_TABLE_CREATE);
+
+            Log.d("COLONNA","DB FEEDBACK CREATED si dovrebbe rimuovere");
+            _db.execSQL(FEEDBACK_TABLE_CREATE);
         }
 
         @Override
