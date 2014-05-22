@@ -1,11 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<!--
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="it.ticketclub.ticketapp.FirstActivity" >
+-->
 
 
-  
-
+    <!--
     <item android:id="@+id/action_search"
         android:title="Cerca ticket"
         android:icon="@drawable/ic_action_action_search"
@@ -13,18 +18,67 @@
         app:actionViewClass="android.widget.SearchView"
         />
 
+
     <item android:id="@+id/action_citta"
         android:title="CITTA"
         app:showAsAction="always"
         app:actionViewClass="android.widget.Spinner"
         />
+    -->
 
-    <item android:id="@+id/action_profilo"
-        android:title="Profilo"
-        android:icon="@drawable/ic_action_device_access_storage_1"
+    <item android:id="@+id/action_citta"
+        android:title="CITTA"
+        android:icon="@drawable/ic_action_place"
+        app:showAsAction="always">
+        <menu>
+            <item android:id="@+id/action_avellino"
+                android:title="Avellino"
+                app:showAsAction="always"
+                />
+            <item android:id="@+id/action_benevento"
+                android:title="Benevento"
+                app:showAsAction="always"
+                />
+            <item android:id="@+id/action_caserta"
+                android:title="Caserta"
+                app:showAsAction="always"
+                />
+            <item android:id="@+id/action_napoli"
+                android:title="Napoli"
+                app:showAsAction="always"
+                />
+            <item android:id="@+id/action_salerno"
+                android:title="Salerno"
+                app:showAsAction="always"
+                />
+
+        </menu>
+
+    </item>
+
+
+    <item
+        android:id="@+id/a_More"
+        android:icon="@drawable/ic_action_overflow"
         app:showAsAction="always"
-    />
+        android:title="More">
+        <menu>
+            <item android:id="@+id/action_ticketScaricati"
+                android:title="Ticket Scaricati"
+                app:showAsAction="always"
+                />
 
+            <item android:id="@+id/action_mappaDistributori"
+                android:title="Mappa Distributori"
+                app:showAsAction="always"
+                />
+
+            <item android:id="@+id/action_profilo"
+                android:title="Profilo"
+                app:showAsAction="always"
+            />
+        </menu>
+    </item>
 
 
 
