@@ -1,23 +1,67 @@
 package it.ticketclub.ticketapp;
 
+import android.content.Context;
+import android.graphics.BitmapFactory;
+import android.location.Location;
+
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+//import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+
 
 public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+
+    private Boolean StatusUpdate=false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+
+
+        // Acquire a reference to the system Location Manager
+
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        // Define a listener that responds to location updates
+        final LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                // Called when a new location is found by the network location provider.
+
+                if(!StatusUpdate) {
+                    makeUseOfNewLocation(location);
+                }
+
+
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            public void onProviderEnabled(String provider) {}
+
+            public void onProviderDisabled(String provider) {}
+
+
+        };
+
+
+
+        // Register the listener with the Location Manager to receive location updates
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
     }
 
     @Override
@@ -60,9 +104,23 @@ public class MapsActivity extends FragmentActivity {
      * <p>
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
+
+    public void makeUseOfNewLocation(Location location){
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()),12.0f));
+        //mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(),location.getLongitude())).title("Tu sei qui!").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_action_place))).showInfoWindow();
+
+        mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(),location.getLongitude())).title("Tu sei qui!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))).showInfoWindow();
+
+        StatusUpdate = true;
+
+    }
+
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(41.0878037, 14.3312936)).title("La Vera Bellezza")).showInfoWindow();
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.0878037, 14.3312936), 16.0f));
+
+        mMap.addMarker(new MarkerOptions().position(new LatLng(41.0900208, 14.255227)).title("Tabaccheria n. 34").snippet("Viale del Consiglio, 41 Santa Maria Capua Vetere")).showInfoWindow();
+        mMap.addMarker(new MarkerOptions().position(new LatLng(41.0335837, 14.3802024)).title("Caffè di notte").snippet("Via Salvator Rosa, Caserta")).showInfoWindow();
+        mMap.addMarker(new MarkerOptions().position(new LatLng(41.0385015, 14.384481)).title("Chiosco della nonna").snippet("Piazza della pace, Maddaloni")).showInfoWindow();
+
 
     }
 }

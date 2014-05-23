@@ -33,23 +33,23 @@
         <menu>
             <item android:id="@+id/action_avellino"
                 android:title="Avellino"
-                app:showAsAction="always"
+                app:showAsAction="never"
                 />
             <item android:id="@+id/action_benevento"
                 android:title="Benevento"
-                app:showAsAction="always"
+                app:showAsAction="never"
                 />
             <item android:id="@+id/action_caserta"
                 android:title="Caserta"
-                app:showAsAction="always"
+                app:showAsAction="never"
                 />
             <item android:id="@+id/action_napoli"
                 android:title="Napoli"
-                app:showAsAction="always"
+                app:showAsAction="never"
                 />
             <item android:id="@+id/action_salerno"
                 android:title="Salerno"
-                app:showAsAction="always"
+                app:showAsAction="never"
                 />
 
         </menu>
@@ -63,19 +63,19 @@
         app:showAsAction="always"
         android:title="More">
         <menu>
-            <item android:id="@+id/action_ticketScaricati"
+            <item android:id="@+id/menu_myTicket"
                 android:title="Ticket Scaricati"
-                app:showAsAction="always"
+                app:showAsAction="never"
                 />
 
-            <item android:id="@+id/action_mappaDistributori"
+            <item android:id="@+id/menu_distributori"
                 android:title="Mappa Distributori"
-                app:showAsAction="always"
+                app:showAsAction="never"
                 />
 
-            <item android:id="@+id/action_profilo"
+            <item android:id="@+id/menu_profilo"
                 android:title="Profilo"
-                app:showAsAction="always"
+                app:showAsAction="never"
             />
         </menu>
     </item>

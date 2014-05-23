@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -69,9 +70,6 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-
-
-
         //actionBar.setHomeButtonEnabled(true);
         //actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -108,12 +106,15 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
     }
 
 
+
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater minf = getMenuInflater();
         minf.inflate(R.menu.first,menu);
-
         //minf.inflate(R.menu.fragment_menu_top,menu);
 
 
@@ -123,8 +124,8 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         getSupportActionBar().setCustomView(customNav);*/
 
 
-        mSpinnerItem = menu.findItem(R.id.action_citta);
-        setupSpinner(mSpinnerItem);
+        //mSpinnerItem = menu.findItem(R.id.action_citta);
+        //setupSpinner(mSpinnerItem);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -133,24 +134,44 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        //int id = item.getItemId();
         /*if (id == R.id.action_settings) {
             return true;
         }*/
 
-        Log.d("AAA", String.valueOf(id));
 
-        return super.onOptionsItemSelected(item);
 
-        /*switch (item.getItemId()) {
-            case android.R.id.:
-                Intent intent = new Intent(this, FirstActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+       // Log.d("AAA", String.valueOf(id));
+
+        //return super.onOptionsItemSelected(item);
+
+        switch (item.getItemId()) {
+            case R.id.menu_distributori :
+                ApriMappaDist();
                 return true;
+            case R.id.menu_profilo :
+                ApriProfilo();
+                return true;
+            case R.id.menu_myTicket :
+                ApriMyTicket();
             default:
                 return super.onOptionsItemSelected(item);
-        }*/
+        }
+    }
+
+    public void ApriMappaDist(){
+        final Intent intent = new Intent(this,MapsActivity.class); // SWIPE E TAB + JSON NOT VIEW
+        startActivity(intent); // Launch the Intent
+    }
+
+    public void ApriProfilo(){
+        final Intent intent = new Intent(this,MyLoginActivity.class); // SWIPE E TAB + JSON NOT VIEW
+        startActivity(intent); // Launch the Intent
+    }
+
+    public void ApriMyTicket(){
+        //final Intent intent = new Intent(this,LoginActivity.class); // SWIPE E TAB + JSON NOT VIEW
+        //startActivity(intent); // Launch the Intent
     }
 
     @Override
