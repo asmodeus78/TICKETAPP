@@ -17,6 +17,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
+        android:name="Setup"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -55,6 +56,11 @@
             android:screenOrientation="portrait"
             android:uiOptions="splitActionBarWhenNarrow" >
         </activity>
+
+
+
+
+
 
         <activity android:name="it.ticketclub.ticketapp.MapsActivity" android:label="Mappa distributori" android:logo="@drawable/ic_launcher" android:screenOrientation="portrait" ></activity>
         <activity android:name="it.ticketclub.ticketapp.MyLoginActivity" android:icon="@drawable/ic_launcher" android:logo="@drawable/ic_launcher"  android:label="Accedi" android:screenOrientation="portrait" android:windowSoftInputMode="adjustResize|stateHidden"></activity>
