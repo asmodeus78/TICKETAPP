@@ -60,6 +60,7 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
+    public Setup application;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,13 +166,30 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
     }
 
     public void ApriProfilo(){
-        final Intent intent = new Intent(this,MyLoginActivity.class); // SWIPE E TAB + JSON NOT VIEW
+
+        final Intent intent;
+        application = (Setup) this.getApplication();
+        if (application.getTkStatusLogin()=="1"){
+            intent = new Intent(getApplication(),MyProfile.class); // SWIPE E TAB + JSON NOT VIEW
+        }else {
+            intent = new Intent(this,MyLoginActivity.class); // SWIPE E TAB + JSON NOT VIEW
+        }
+
         startActivity(intent); // Launch the Intent
+
+
     }
 
     public void ApriMyTicket(){
-        //final Intent intent = new Intent(this,LoginActivity.class); // SWIPE E TAB + JSON NOT VIEW
-        //startActivity(intent); // Launch the Intent
+        final Intent intent;
+        application = (Setup) this.getApplication();
+        if (application.getTkStatusLogin()=="1"){
+            intent = new Intent(getApplication(),MyTicket.class); // SWIPE E TAB + JSON NOT VIEW
+        }else {
+            intent = new Intent(this,MyLoginActivity.class); // SWIPE E TAB + JSON NOT VIEW
+        }
+
+        startActivity(intent); // Launch the Intent
     }
 
     @Override
