@@ -59,8 +59,7 @@ public class MyProfile extends Activity {
             });
 
 
-        }else {
-            //updateView();
+
         }
 
     }

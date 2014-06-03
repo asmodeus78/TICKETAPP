@@ -35,11 +35,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="it.ticketclub.ticketapp.HomeActivity"
-            android:label=""
-            android:screenOrientation="portrait"
-            android:uiOptions="splitActionBarWhenNarrow" />
+
         <activity
             android:name="it.ticketclub.ticketapp.FirstActivity"
             android:label=""
@@ -86,11 +82,6 @@
             android:name="it.ticketclub.ticketapp.MainActivity2"
             android:label=""
             android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="it.ticketclub.ticketapp.LoginActivity"
-            android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
     </application>
 

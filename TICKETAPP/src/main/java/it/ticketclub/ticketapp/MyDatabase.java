@@ -60,6 +60,18 @@ public class MyDatabase {
         static final String TICKET_SITO_KEY  = "sito";
         static final String TICKET_DATA_SCADENZA_KEY = "dataScadenza";
     }
+    static class MyTicketMetaData {  // i metadati della tabella, accessibili ovunque
+        static final String MYTICKET_TABLE = "MYTICKET";
+        static final String ID = "idTicketEmesso";
+        static final String MYTICKET_ID_KEY = "idTicket";
+        static final String MYTICKET_CODICE_KEY = "codice";
+        static final String MYTICKET_CWEB_KEY  = "cWeb";
+        static final String MYTICKET_TITOLO_SUP_KEY  = "titoloSup";
+        static final String MYTICKET_QTA_KEY  = "qta";
+        static final String MYTICKET_USATO_KEY  = "usato";
+        static final String MYTICKET_FEEDBACK_KEY  = "feedback";
+        static final String MYTICKET_DATA_DOWNLOAD_KEY = "dataScadenza";
+    }
     static class FeedBackMetaData {  // i metadati della tabella, accessibili ovunque
         static final String FEEDBACK_TABLE = "FEEDBACK";
         static final String ID = "idFeedback";
@@ -78,6 +90,21 @@ public class MyDatabase {
         static final String CONFIG_EMAIL_KEY = "email";
         static final String CONFIG_CREDITI_KEY = "crediti";
         static final String CONFIG_ABBONAMENTO_KEY = "abbonamento";
+    }
+
+    public void insertMyTicket(int id,String idTicket, String codice, String titoloSup, String cWeb, String qta, String usato, String feedback, String dataDownload){
+        ContentValues cv=new ContentValues();
+        cv.put(MyTicketMetaData.ID,id);
+        cv.put(MyTicketMetaData.MYTICKET_ID_KEY,idTicket);
+        cv.put(MyTicketMetaData.MYTICKET_CODICE_KEY,codice);
+        cv.put(MyTicketMetaData.MYTICKET_TITOLO_SUP_KEY,titoloSup);
+        cv.put(MyTicketMetaData.MYTICKET_CWEB_KEY,cWeb);
+        cv.put(MyTicketMetaData.MYTICKET_QTA_KEY,qta);
+        cv.put(MyTicketMetaData.MYTICKET_USATO_KEY,usato);
+        cv.put(MyTicketMetaData.MYTICKET_FEEDBACK_KEY,feedback);
+        cv.put(MyTicketMetaData.MYTICKET_DATA_DOWNLOAD_KEY,dataDownload);
+
+        db.insert(MyTicketMetaData.MYTICKET_TABLE, null, cv);
     }
 
     //COMMAND FOR INSERT DATA
@@ -143,6 +170,9 @@ public class MyDatabase {
     public Cursor fetchTicket(){ //metodo per fare la query di tutti i dati
         return db.query(TicketMetaData.TICKET_TABLE, null,null,null,null,null,null);
     }
+    public Cursor fetchMyTicket(){ //metodo per fare la query di tutti i dati
+        return db.query(MyTicketMetaData.MYTICKET_TABLE, null,null,null,null,null,null);
+    }
     public Cursor fetchSingleTicket(String id){ //metodo per fare la query di tutti i dati
         return db.query(TicketMetaData.TICKET_TABLE, null,"idTicket=" + id,null,null,null,null);
     }
@@ -164,7 +194,7 @@ public class MyDatabase {
 
         String sql = "delete from " + TicketMetaData.TICKET_TABLE + " where dataScadenza<'" + dataScadenza + "'";
         db.execSQL(sql);
-        Log.d("TICKET:",sql);
+        Log.d("COLONNA:",sql);
 
     }
     public void deleteFeedback(){
@@ -197,6 +227,21 @@ public class MyDatabase {
             //+ TicketMetaData.TICKET_PREZZO_CR_KEY + " integer not null, "
             //+ TicketMetaData.TICKET_ORDINE_KEY + " integer not null, "
     + ")";
+
+    //COMMAND FOR CREATE TABLE
+    private static final String MYTICKET_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
+            + MyTicketMetaData.MYTICKET_TABLE + " ("
+            + MyTicketMetaData.ID + " integer primary key, "
+            + MyTicketMetaData.MYTICKET_ID_KEY + " text null, "
+            + MyTicketMetaData.MYTICKET_CODICE_KEY + " text null, "
+            + MyTicketMetaData.MYTICKET_CWEB_KEY + " text null, "
+            + MyTicketMetaData.MYTICKET_TITOLO_SUP_KEY + " text null, "
+            + MyTicketMetaData.MYTICKET_QTA_KEY + " text null, "
+            + MyTicketMetaData.MYTICKET_USATO_KEY + " text null, "
+            + MyTicketMetaData.MYTICKET_FEEDBACK_KEY + " text null, "
+            + MyTicketMetaData.MYTICKET_DATA_DOWNLOAD_KEY+ " text null "
+
+            + ")";
 
 
 
@@ -237,8 +282,11 @@ public class MyDatabase {
             Log.d("COLONNA","DB TICKET CREATED");
             _db.execSQL(TICKET_TABLE_CREATE);
 
-            Log.d("COLONNA","DB FEEDBACK CREATED si dovrebbe rimuovere");
-            _db.execSQL(FEEDBACK_TABLE_CREATE);
+            //Log.d("COLONNA","DB FEEDBACK CREATED si dovrebbe rimuovere");
+            //_db.execSQL(FEEDBACK_TABLE_CREATE);
+
+            Log.d("COLONNA","DB MY TYCKET CREATED si dovrebbe rimuovere");
+            _db.execSQL(MYTICKET_TABLE_CREATE);
         }
 
         @Override

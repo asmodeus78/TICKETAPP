@@ -88,7 +88,8 @@ public class SplashActivity extends Activity {
                     long elapsedTime = SystemClock.uptimeMillis() - mStartTime;
                     if (elapsedTime>=MIN_WAIT_INTERVAL && !mIsDone){
                         mIsDone = true;
-                        goAhead();
+                        Log.d("COLONNA","FORSE INTERNET NON C'E'?");
+                        //goAhead();
                     }
                     break;
             }
@@ -128,7 +129,6 @@ public class SplashActivity extends Activity {
 
 
         //final Intent intent = new Intent(this,MainActivity.class); // WEB VIEW
-        //final Intent intent = new Intent(this,HomeActivity.class); // ONLY SWIBE E TAB
         final Intent intent = new Intent(this,FirstActivity.class); // SWIPE E TAB + JSON NOT VIEW
         //final Intent intent = new Intent(this,MainActivity2.class); // WEB VIEW
 
@@ -159,6 +159,8 @@ public class SplashActivity extends Activity {
         if (giorno.length()<2){giorno="0" + giorno;}
 
         String filtro = anno + "-" + mese + "-" + giorno;
+        Log.d("COLONNA","DATA OGGI " +filtro);
+
         db.deleteTicketByData(filtro);
 
 
@@ -175,6 +177,8 @@ public class SplashActivity extends Activity {
             } while (c.moveToNext());
         }
 
+        Log.d("COLONNA","ULTIMO AGGIORNAMENTO " + lastUpdate);
+
 
         if (lastUpdate!=""){
 
@@ -182,7 +186,7 @@ public class SplashActivity extends Activity {
 
         }
 
-        Log.d("TICKET:",url);
+        Log.d("COLONNA:","URL UPDATE " + url);
 
 
         db.close();
@@ -353,6 +357,7 @@ public class SplashActivity extends Activity {
 
 
                         db.insertTicket(id,categoria,codice,titolo,titoloSup,Float.parseFloat(mediaVoto),Integer.parseInt(scaricati),descrizione,indirizzo,lat,lon,nominativo,telefono,sito,dataScadenza);
+                        Log.d("COLONNA","Inserito " + i);
 
 
 

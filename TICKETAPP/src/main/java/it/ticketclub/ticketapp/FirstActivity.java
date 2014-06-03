@@ -184,6 +184,11 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         final Intent intent;
         application = (Setup) this.getApplication();
         if (application.getTkStatusLogin()=="1"){
+
+
+            new GetMyTickets().execute();
+
+
             intent = new Intent(getApplication(),MyTicket.class); // SWIPE E TAB + JSON NOT VIEW
         }else {
             intent = new Intent(this,MyLoginActivity.class); // SWIPE E TAB + JSON NOT VIEW
@@ -270,45 +275,107 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
 
 
 
-    private void setupSpinner(MenuItem item) {
-        //  item.setVisible(getSupportActionBar().getNavigationMode() == ActionBar.NAVIGATION_MODE_LIST);
-        //item.setVisible(ab.getNavigationMode() == ActionBar.NAVIGATION_MODE_LIST);
+    private class GetMyTickets extends AsyncTask<Void, Void, Void> {
 
-        View view = item.getActionView();
-        Context context = getSupportActionBar().getThemedContext(); //to get the declared theme
-        if (view instanceof Spinner) {
-            final Spinner spinner = (Spinner) view;
+        LinkedList list;
+        View vista;
+
+        public GetMyTickets() {
+            this.list = list;
+            this.vista = null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // Showing progress dialog
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            // Creating service handler class instance
+            ServiceHandler sh = new ServiceHandler();
+
+            // Nuova Gestione Liste
+            //LinkedList listx = new LinkedList();
+
+            // Making a request to url and getting response
+
+            application = (Setup) getApplication();
+            String url="";
+
+            JSONArray tickets = null;
+
+            if (application.getTkStatusLogin()=="1"){
+
+                url = "http://www.ticketclub.it/APP/ticket_view.php?CMD=MY_TICKET&email=" + application.getTkProfileEmail();
+                Log.d("COLONNA",url);
+
+            }
+
+            String jsonStr = sh.makeServiceCall(url, ServiceHandler.GET);
+
+            MyDatabase db=new MyDatabase(getApplicationContext());
+            db.open();  //apriamo il db
+
+            Log.d("Response: ", "> " + jsonStr);
+
+            if (jsonStr != null) {
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+
+                    // Getting JSON Array node
+                    tickets = jsonObj.getJSONArray("MY_TICKET");
+
+                    // looping through All Tickets
 
 
 
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                   // Log.d("AAA",(String) spinner.getItemAtPosition(position) );
+                    for (int i = 0; i < tickets.length(); i++) {
+                        JSONObject c = tickets.getJSONObject(i);
+
+                        int id = c.getInt("idTicketEmesso");
+                        String idTicket = c.getString("idTicket");
+                        String titoloSup = c.getString("titoloSup");
+                        String codice = c.getString("codice");
+                        String photo = c.getString("codice") + ".jpg";
+                        String cWeb = c.getString("cWeb");
+                        String usato = c.getString("flagUsato");
+                        String feedback = c.getString("flagFeedback");
+                        String dataDownload = c.getString("dataDownload");
+                        //String dataScadenza = c.getString("dataScadenza");
+                        String qta = c.getString("qta");
+
+
+                        //listx.add(new Ticket(id,categoria,codice,titolo,titoloSup,photo,scaricati,mediaVoto));
+
+
+                        db.insertMyTicket (id,idTicket,codice,titoloSup,cWeb,qta,usato,feedback,dataDownload);
+                        Log.d("COLONNA","Inserito " + i);
+
+
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+            } else {
+                Log.e("ServiceHandler", "Couldn't get any data from the url");
+            }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
+            return null;
+        }
 
-                }
-            });
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
 
-           /* spinner.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    Log.d("AAA",(String) spinner.getItemAtPosition(position) );
-                    return false;
-                }
-            });*/
+            //goAhead();
+            // Dismiss the progress dialog
+            //if (pDialog.isShowing())
+            //     pDialog.dismiss();
 
-
-                    ArrayAdapter < CharSequence > listAdapter = ArrayAdapter.createFromResource(context,
-                            R.array.spinner_data,
-                            R.layout.support_simple_spinner_dropdown_item);
-            listAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-            spinner.setAdapter(listAdapter);
-
-
+            // list = result;
         }
     }
 

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp" >
+
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:id="@+id/TK_image"
+        android:src="@drawable/ticket"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_gravity="left" />
+
+
+
+    <ImageView
+
+    android:id="@+id/TK_voto"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:rating="0"
+        android:src="@drawable/apptheme_ratingbar_full_filled_holo_light"
+
+        android:numStars="1"
+        android:layout_gravity="right"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true" />
+
+    <TextView
+        android:id="@+id/TK_titoloSup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#616161"
+        android:text="Bracisti per caso - Caserta"
+        android:textSize="12dp"
+        android:textStyle="normal"
+        android:layout_toRightOf="@+id/TK_image"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="15dp"
+        android:layout_toLeftOf="@+id/TK_voto" />
+
+
+    <TextView
+        android:id="@+id/TK_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID"
+        android:textColor="#ff0000"
+        android:textSize="14dp"
+        android:textStyle="normal"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:autoText="false"
+        android:enabled="false"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/TK_codice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CODICE"
+        android:textColor="#ff0000"
+        android:textSize="14dp"
+        android:textStyle="normal"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:autoText="false"
+        android:enabled="false"
+        android:visibility="invisible" />
+
+
+
+
+
+</RelativeLayout>
+
