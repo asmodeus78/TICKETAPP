@@ -4,10 +4,17 @@ import java.util.LinkedList;
 import java.util.Locale;
 
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Paint;
+import android.location.Criteria;
+import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -23,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import android.widget.ImageView;
@@ -31,6 +39,7 @@ import android.widget.TextView;
 
 import android.text.Html;
 import android.text.Spanned;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -257,6 +266,9 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+
+            final LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
             View rootView = inflater.inflate(R.layout.fragment_mappa, container, false);
 
 
@@ -268,6 +280,15 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             //c2 = db2.fetchTicket();
             getActivity().startManagingCursor(c3);
 
+            final TextView textView = (TextView) rootView.findViewById(R.id.TK_nominativo);
+            final TextView textView1 = (TextView) rootView.findViewById(R.id.TK_indirizzo);
+            final TextView textView2 = (TextView) rootView.findViewById(R.id.TK_telefono);
+            final TextView textView3 = (TextView) rootView.findViewById(R.id.TK_sitoweb);
+
+            textView1.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+            textView2.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+            textView3.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+
             if (c3.moveToFirst()) {
                 do {
 
@@ -276,30 +297,165 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
                     String telefono = c3.getString(12);
                     String sitoWeb = c3.getString(13);
 
-                    TextView textView = (TextView) rootView.findViewById(R.id.TK_nominativo);
                     textView.setText(nominativo);
-
-                    TextView textView1 = (TextView) rootView.findViewById(R.id.TK_indirizzo);
                     textView1.setText(indirizzo);
-
-                    TextView textView2 = (TextView) rootView.findViewById(R.id.TK_telefono);
                     textView2.setText(telefono);
-
-                    TextView textView3 = (TextView) rootView.findViewById(R.id.TK_sitoweb);
                     textView3.setText(sitoWeb);
-
-
 
 
                 } while (c3.moveToNext());
             }
 
+            textView1.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    //Yes button clicked
+                                    Toast.makeText(getActivity(),
+                                            "Navigo verso " + textView1.getText().toString() + " ... ",
+                                            Toast.LENGTH_LONG).show();
+
+                                    Criteria criteria = new Criteria();
+                                    criteria.setAccuracy(Criteria.ACCURACY_LOW);
+                                    criteria.setAltitudeRequired(false);
+                                    criteria.setBearingRequired(false);
+                                    criteria.setCostAllowed(true);
+                                    criteria.setPowerRequirement(Criteria.POWER_LOW);
+                                    String provider = locationManager.getBestProvider(criteria, true);
 
 
-            setUpMapIfNeeded();
+                                    Uri routeUri = Uri.parse("http://maps.google.com/maps?&saddr=" +
+                                            locationManager.getLastKnownLocation(provider).getLatitude() + "," +
+                                            locationManager.getLastKnownLocation(provider).getLongitude() + "&daddr=" + textView1.getText());
+
+                                    Intent i = new Intent(Intent.ACTION_VIEW, routeUri);
+                                    startActivity(i);
+
+
+
+                                    //String toDial = "tel:" + textView2.getText().toString();
+                                    //startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(toDial)));
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
+
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("Vuoi andare a " + textView1.getText().toString() + "?").setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
+
+                }
+            });
+
+            textView2.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    //Yes button clicked
+                                    Toast.makeText(getActivity(),
+                                            "Sto chiamando " + textView.getText().toString() + " ... ",
+                                            Toast.LENGTH_LONG).show();
+
+                                    Integer pos = textView2.getText().toString().indexOf(" ");
+
+                                    String toDial = "tel:";
+                                    if (pos>0){
+                                        toDial = toDial + textView2.getText().toString().substring(0,pos);
+                                    }else{
+                                        toDial = toDial + textView2.getText().toString();
+                                    }
+
+                                    startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(toDial)));
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
+
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("Vuoi chiamare " + textView.getText().toString() + "?").setPositiveButton("Yes", dialogClickListener)
+                                                       .setNegativeButton("No", dialogClickListener).show();
+
+                }
+            });
+
+            textView3.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    //Yes button clicked
+                                    Toast.makeText(getActivity(),
+                                            "Sto aprendo " + textView3.getText().toString() + " ... ",
+                                            Toast.LENGTH_LONG).show();
+
+                                    String url = textView3.getText().toString();
+
+                                    if (!url.substring(0,4).matches("http")) {
+                                        url = "http://" + url;
+                                    }
+                                    Log.d("COLONNA",url);
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+
+
+
+
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
+
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("Vuoi aprire il sito " + textView3.getText().toString() + "?").setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
+
+                }
+            });
+
+            if (textView1.getText().toString()!="") {
+                setUpMapIfNeeded();
+            }
 
             return rootView;
         }
+
+
+
+
+
+
+
+
+
+
 
         private void setUpMapIfNeeded() {
             // Do a null check to confirm that we have not already instantiated the map.
@@ -330,13 +486,21 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
                     String indirizzo = c3.getString(8);
 
-                    Double lat = Double.parseDouble(c3.getString(9));
-                    Double lon = Double.parseDouble(c3.getString(10));
-                    String nominativo = c3.getString(11);
+                    if (indirizzo!="") {
 
-                    mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title(nominativo)).showInfoWindow();
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lon),16.0f));
+                        try {
 
+                            Double lat = Double.parseDouble(c3.getString(9));
+                            Double lon = Double.parseDouble(c3.getString(10));
+                            String nominativo = c3.getString(11);
+
+                            mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title(nominativo)).showInfoWindow();
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 16.0f));
+
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
 
 
@@ -408,26 +572,15 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
             Log.d("DATABASE::", idTest);
 
-            //if (getArguments().getString(ARG_SECTION_ID)!="") {
+
                 c2 = db2.fetchSingleTicket(getArguments().getString(ARG_SECTION_ID));
-                //c2 = db2.fetchTicket();
+
                 getActivity().startManagingCursor(c2);
 
                 if (c2.moveToFirst()) {
                     do {
 
-                        //int id = c.getInt(0);
-/*
-                        Integer id = c2.getInt(0);
-                        String codice = c2.getString(1);
-                        String photo = c2.getString(1) + ".jpg";
-                        String titolo = c2.getString(2);
-                        String titoloSup = c2.getString(3);
-                        String categoria = c2.getString(4);
 
-                        Integer scaricati = c2.getInt(5);
-                        float mediaVoto = c2.getFloat(6);
-*/
                         String descrizione = c2.getString(7);
 
 
@@ -440,7 +593,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
                     } while (c2.moveToNext());
                 }
-            //}
+
             /****/
 
 

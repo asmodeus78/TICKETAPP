@@ -23,38 +23,73 @@
         android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"/>
 
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/imageView"
+        android:layout_below="@+id/TK_nominativo"
+        android:src="@drawable/gps_ico"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="16dp"
         android:text="Via Roma,228 - Aversa(CE)"
         android:id="@+id/TK_indirizzo"
         android:layout_below="@+id/TK_nominativo"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="3dp"
-        android:layout_marginLeft="10dp"/>
+        android:layout_toRightOf="@+id/imageView"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
 
+        />
+
+
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/imageView2"
+        android:layout_below="@+id/TK_indirizzo"
+        android:src="@drawable/tel_ico"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Tel: 081-5037271"
+        android:textSize="16dp"
+        android:text="081-5037271"
         android:id="@+id/TK_telefono"
         android:layout_below="@+id/TK_indirizzo"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="0dp"
-        android:layout_marginLeft="10dp" />
+        android:layout_toRightOf="@+id/imageView2"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="#33b5e5" />
 
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/imageView3"
+        android:layout_below="@+id/TK_telefono"
+        android:src="@drawable/link_ico"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="16dp"
         android:text="www.burgerking.it"
         android:id="@+id/TK_sitoweb"
         android:layout_below="@+id/TK_telefono"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="0dp"
-        android:layout_marginLeft="10dp" />
+        android:layout_toRightOf="@+id/imageView3"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="#33b5e5"/>
+
+
 
 
 </RelativeLayout>
