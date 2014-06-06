@@ -289,11 +289,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             final TextView textView = (TextView) rootView.findViewById(R.id.TK_nominativo);
             final TextView textView1 = (TextView) rootView.findViewById(R.id.TK_indirizzo);
             final TextView textView2 = (TextView) rootView.findViewById(R.id.TK_telefono);
-
-
-
             final TextView textView3 = (TextView) rootView.findViewById(R.id.TK_sitoweb);
-
             textView1.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
             textView2.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
             textView3.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
