@@ -298,6 +298,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             textView2.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
             textView3.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
+
             if (c3.moveToFirst()) {
                 do {
 
