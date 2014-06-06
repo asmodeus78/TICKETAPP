@@ -103,9 +103,9 @@ public class SplashActivity extends Activity {
         Calendar data = Calendar.getInstance();
 
 
-        String anno = (String) String.valueOf(data.get(Calendar.YEAR));
-        String mese = (String) String.valueOf(data.get(Calendar.MONTH) + 1) ;
-        String giorno = (String) String.valueOf(data.get(Calendar.DAY_OF_MONTH));
+        String anno = String.valueOf(data.get(Calendar.YEAR));
+        String mese = String.valueOf(data.get(Calendar.MONTH) + 1) ;
+        String giorno = String.valueOf(data.get(Calendar.DAY_OF_MONTH));
 
         if (mese.length()<2){mese="0" + mese;}
         if (giorno.length()<2){giorno="0" + giorno;}
@@ -151,9 +151,9 @@ public class SplashActivity extends Activity {
         /*CANCELLO TICKET SCADUTI*/
         Calendar data = Calendar.getInstance();
 
-        String anno = (String) String.valueOf(data.get(Calendar.YEAR));
-        String mese = (String) String.valueOf(data.get(Calendar.MONTH) + 1) ;
-        String giorno = (String) String.valueOf(data.get(Calendar.DAY_OF_MONTH));
+        String anno = String.valueOf(data.get(Calendar.YEAR));
+        String mese = String.valueOf(data.get(Calendar.MONTH) + 1) ;
+        String giorno = String.valueOf(data.get(Calendar.DAY_OF_MONTH));
 
         if (mese.length()<2){mese="0" + mese;}
         if (giorno.length()<2){giorno="0" + giorno;}
@@ -180,7 +180,7 @@ public class SplashActivity extends Activity {
         Log.d("COLONNA","ULTIMO AGGIORNAMENTO " + lastUpdate);
 
 
-        if (lastUpdate!=""){
+        if (!lastUpdate.equals("")){
 
             url = "http://www.ticketclub.it/APP/ticket_view.php?CMD=TK&lastUpdate=" + lastUpdate;
 
@@ -334,6 +334,7 @@ public class SplashActivity extends Activity {
                         String sito = c.getString("sito");
 
                         String dataScadenza = c.getString("dataScadenza");
+                        String prezzoCr = c.getString("prezzoCR");
 
 
 
@@ -356,7 +357,7 @@ public class SplashActivity extends Activity {
                         //listx.add(new Ticket(id,categoria,codice,titolo,titoloSup,photo,scaricati,mediaVoto));
 
 
-                        db.insertTicket(id,categoria,codice,titolo,titoloSup,Float.parseFloat(mediaVoto),Integer.parseInt(scaricati),descrizione,indirizzo,lat,lon,nominativo,telefono,sito,dataScadenza);
+                        db.insertTicket(id,categoria,codice,titolo,titoloSup,Float.parseFloat(mediaVoto),Integer.parseInt(scaricati),descrizione,indirizzo,lat,lon,nominativo,telefono,sito,dataScadenza,prezzoCr);
                         Log.d("COLONNA","Inserito " + i);
 
 

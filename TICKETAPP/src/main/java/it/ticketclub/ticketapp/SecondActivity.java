@@ -1,7 +1,12 @@
 package it.ticketclub.ticketapp;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 
 import android.app.AlertDialog;
@@ -33,6 +38,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -216,7 +222,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
         @Override
         public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
+
 
             switch (position) {
                 case 0:
@@ -528,6 +534,9 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
         private static final String ARG_SECTION_CODICE = "codice";
         private static final String ARG_SECTION_ID = "id";
 
+        public Setup application;
+        public String urlDownload="";
+
         /**
          * Returns a new instance of this fragment for the given section
          * number.
@@ -560,7 +569,11 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             Bitmap bMap = BitmapFactory.decodeFile(conf.getPath() + "/" +  getArguments().getString(ARG_SECTION_CODICE) + ".jpg");
             imageView.setImageBitmap(bMap);
 
-            TextView textView = (TextView) rootView.findViewById(R.id.TK_descrizione);
+            final TextView textView = (TextView) rootView.findViewById(R.id.TK_descrizione);
+            final TextView textView2 = (TextView) rootView.findViewById(R.id.TK_crediti);
+            final TextView textView3 = (TextView) rootView.findViewById(R.id.TK_scadenza);
+            final TextView textView4 = (TextView) rootView.findViewById(R.id.TK_DataScadenza);
+            final TextView textView5 = (TextView) rootView.findViewById(R.id.TK_codice);
 
             /****/
 
@@ -582,6 +595,11 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
 
                         String descrizione = c2.getString(7);
+                        String dataScadenza = c2.getString(14);
+                        String crediti = c2.getString(15);
+                        String codice = c2.getString(1);
+
+
 
 
 
@@ -589,12 +607,113 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
                         Spanned text =  Html.fromHtml(descrizione);
                         textView.setText(text);
 
+                        textView2.setText(crediti);
+
+                        textView4.setText(dataScadenza);
+
+                        textView5.setText(codice);
+
+                        long diffMs, diffInSec=0;
+                        Calendar dataOggi = Calendar.getInstance();
+                        Date dataFine = null;
+                        String giorni,minuti,ore,secondi,FIMALEEE = null;
+
+                        Log.d("SCADENZA 1", String.valueOf(dataOggi.getTimeInMillis()));
+
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                        try {
+                            dataFine = dateFormat.parse(dataScadenza);
+
+                            diffMs = dataFine.getTime() - dataOggi.getTimeInMillis();
+                            diffInSec = TimeUnit.MILLISECONDS.toSeconds(diffMs);
+
+                            giorni = String.valueOf(diffInSec / 86400);
+                            ore = String.valueOf(((diffInSec  % 86400) / 3600));
+                            minuti =  String.valueOf(((diffInSec  % 86400) % 3600) / 60);
+                            secondi = String.valueOf(((diffInSec  % 86400) % 3600) % 60);
+
+                            if(ore.length()<2){ore="0"+ore;}
+                            if(minuti.length()<2){minuti="0"+minuti;}
+                            //if(secondi.length()<2){secondi="0"+secondi;}
+
+                            FIMALEEE = giorni + "g " + ore + "h " + minuti + "m"; // + secondi + "s";
+
+
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        textView3.setText(FIMALEEE);
+
+
+
+
+
 
 
                     } while (c2.moveToNext());
                 }
 
             /****/
+
+            Button btscarica = (Button) rootView.findViewById(R.id.btScarica);
+
+            application = (Setup) getActivity().getApplication();
+
+
+            btscarica.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                //Yes button clicked
+
+                                final Intent intent;
+
+                                if (application.getTkStatusLogin()=="1"){
+
+                                    //new GetMyTickets().execute();
+
+                                    String cmd = "SCARICA_TICKET";
+                                    String email = application.getTkProfileEmail();
+                                    String crediti = textView2.getText().toString();
+                                    String codice = textView5.getText().toString();
+
+                                    urlDownload = "http://www.ticketclub.it/APP/ticket_view.php?CMD=" + cmd + "&crediti=" + crediti + "&email=" + email + "&&qta=1&codice=" + codice;
+
+                                    Log.d("URLD",urlDownload);
+
+                                    //new GetDownloadTickets().execute();
+
+
+
+                                }else {
+                                    intent = new Intent(getActivity(),MyLoginActivity.class); // SWIPE E TAB + JSON NOT VIEW
+                                    startActivity(intent); // Launch the Intent
+                                }
+
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //No button clicked
+                                break;
+                        }
+                        }
+                    };
+
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("Vuoi scaricare il ticket ?").setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
+
+                }
+            });
 
 
 

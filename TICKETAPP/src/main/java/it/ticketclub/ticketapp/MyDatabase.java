@@ -55,10 +55,11 @@ public class MyDatabase {
         static final String TICKET_NOMINATIVO_KEY  = "nominativo";
         //static final String TICKET_ORDINE_KEY  = "ordine";
         //static final String TICKET_PREZZO_KEY  = "prezzo";
-        // static final String TICKET_PREZZO_CR_KEY  = "prezzoCR";
+
         static final String TICKET_TELEFONO_KEY  = "telefono";
         static final String TICKET_SITO_KEY  = "sito";
         static final String TICKET_DATA_SCADENZA_KEY = "dataScadenza";
+        static final String TICKET_PREZZO_CR_KEY  = "prezzoCR";
     }
     static class MyTicketMetaData {  // i metadati della tabella, accessibili ovunque
         static final String MYTICKET_TABLE = "MYTICKET";
@@ -108,7 +109,7 @@ public class MyDatabase {
     }
 
     //COMMAND FOR INSERT DATA
-    public void insertTicket(int id, String categoria, String codice, String titolo, String titoloSup, float mediaVoti, int scaricati, String descrizione, String indirizzo, String lat, String lon, String nominativo, String telefono, String sito, String dataScadenza){ //metodo per inserire i dati
+    public void insertTicket(int id, String categoria, String codice, String titolo, String titoloSup, float mediaVoti, int scaricati, String descrizione, String indirizzo, String lat, String lon, String nominativo, String telefono, String sito, String dataScadenza, String prezzoCr){ //metodo per inserire i dati
         ContentValues cv=new ContentValues();
         cv.put(TicketMetaData.ID, id);
         cv.put(TicketMetaData.TICKET_CATEGORIA_KEY , categoria);
@@ -128,6 +129,7 @@ public class MyDatabase {
         cv.put(TicketMetaData.TICKET_SITO_KEY, sito);
 
         cv.put(TicketMetaData.TICKET_DATA_SCADENZA_KEY, dataScadenza);
+        cv.put(TicketMetaData.TICKET_PREZZO_CR_KEY, prezzoCr);
 
         db.insert(TicketMetaData.TICKET_TABLE, null, cv);
 
@@ -222,9 +224,9 @@ public class MyDatabase {
             + TicketMetaData.TICKET_NOMINATIVO_KEY + " text not null, "
             + TicketMetaData.TICKET_TELEFONO_KEY + " text null, "
             + TicketMetaData.TICKET_SITO_KEY + " text null, "
-            + TicketMetaData.TICKET_DATA_SCADENZA_KEY + " text null "
+            + TicketMetaData.TICKET_DATA_SCADENZA_KEY + " text null, "
+            + TicketMetaData.TICKET_PREZZO_CR_KEY + " integer not null "
             //+ TicketMetaData.TICKET_PREZZO_KEY + " money null, "
-            //+ TicketMetaData.TICKET_PREZZO_CR_KEY + " integer not null, "
             //+ TicketMetaData.TICKET_ORDINE_KEY + " integer not null, "
     + ")";
 
