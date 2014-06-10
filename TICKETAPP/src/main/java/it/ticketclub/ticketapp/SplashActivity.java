@@ -2,8 +2,11 @@ package it.ticketclub.ticketapp;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,6 +15,7 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,7 +44,7 @@ public class SplashActivity extends Activity {
     private static final String IS_DONE_KEY ="it.ticketclub.ticketapp.key.IS_DONE_KEY";
 
     private static final long MIN_WAIT_INTERVAL = 1500L;
-    private static final long MAX_WAIT_INTERVAL = 3000L;
+    private static final long MAX_WAIT_INTERVAL = 5000L;
     private static final int GO_HEAD_WHAT = 1;
 
 
@@ -89,7 +93,18 @@ public class SplashActivity extends Activity {
                     if (elapsedTime>=MIN_WAIT_INTERVAL && !mIsDone){
                         mIsDone = true;
                         Log.d("COLONNA","FORSE INTERNET NON C'E'?");
-                        //goAhead();
+
+                        if (!isNetworkAvailable()) {
+
+                            Toast.makeText(getApplication(),
+                                    "Connessione Internet Assente",
+                                    Toast.LENGTH_LONG).show();
+
+                            goAhead();
+                        }
+
+
+
                     }
                     break;
             }
@@ -140,6 +155,7 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
         if (savedInstanceState != null){
             this.mStartTime = savedInstanceState.getLong(START_TIME_KEY);
         }
@@ -191,7 +207,16 @@ public class SplashActivity extends Activity {
 
         db.close();
 
-        new GetTickets().execute();
+        if (!isNetworkAvailable()) {
+
+            Toast.makeText(getApplication(),
+                    "Connessione Internet Assente",
+                    Toast.LENGTH_LONG).show();
+        }else{
+            new GetTickets().execute();
+        }
+
+
 
 
 
@@ -233,8 +258,8 @@ public class SplashActivity extends Activity {
         startActivityForResult(updateIntent,UPDATE_REQUEST_ID);*/
 
 
-        /////////////mHandler.sendMessageAtTime(goAheadMessage, mStartTime + MAX_WAIT_INTERVAL);
-        Log.d(TAG_LOG, "Handler message sent!");
+        mHandler.sendMessageAtTime(goAheadMessage, mStartTime + MAX_WAIT_INTERVAL);
+        Log.d("COLONNA", "Handler message sent!");
     }
 
     @Override
@@ -384,6 +409,36 @@ public class SplashActivity extends Activity {
 
            // list = result;
         }
+    }
+
+
+    public boolean isNetworkAvailable() {
+
+        Context context = getApplicationContext();
+        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (connectivity == null) {
+
+            //boitealerte(this.getString(R.string.alert),"getSystemService rend null");
+            Log.d("COLONNA","getSystemService rend null");
+
+        } else {
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+
+            if (info != null) {
+
+                for (int i = 0; i < info.length; i++) {
+
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+
+                        return true;
+                    }
+                }
+
+            }
+        }
+        return false;
+
     }
 
 
