@@ -295,21 +295,36 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             textView3.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
 
+            final String LocationDest;
+
+
             if (c3.moveToFirst()) {
-                do {
-
-                    String indirizzo = c3.getString(8);
-                    String nominativo = c3.getString(11);
-                    String telefono = c3.getString(12);
-                    String sitoWeb = c3.getString(13);
-
-                    textView.setText(nominativo);
-                    textView1.setText(indirizzo);
-                    textView2.setText(telefono);
-                    textView3.setText(sitoWeb);
+            //    do {
 
 
-                } while (c3.moveToNext());
+
+            String indirizzo = c3.getString(8);
+            String nominativo = c3.getString(11);
+            String telefono = c3.getString(12);
+            String sitoWeb = c3.getString(13);
+
+            Double latDest = Double.parseDouble(c3.getString(9));
+            Double lonDest = Double.parseDouble(c3.getString(10));
+
+            LocationDest = latDest + "," + lonDest;
+
+
+            textView.setText(nominativo);
+            textView1.setText(indirizzo);
+            textView2.setText(telefono);
+            textView3.setText(sitoWeb);
+
+
+            //    } while (c3.moveToNext());
+            }else{
+
+                LocationDest="";
+
             }
 
             textView1.setOnClickListener(new OnClickListener() {
@@ -322,9 +337,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
                             switch (which){
                                 case DialogInterface.BUTTON_POSITIVE:
                                     //Yes button clicked
-                                    Toast.makeText(getActivity(),
-                                            "Navigo verso " + textView1.getText().toString() + " ... ",
-                                            Toast.LENGTH_LONG).show();
+
 
                                     Criteria criteria = new Criteria();
                                     criteria.setAccuracy(Criteria.ACCURACY_LOW);
@@ -335,17 +348,33 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
                                     String provider = locationManager.getBestProvider(criteria, true);
 
 
-                                    Uri routeUri = Uri.parse("http://maps.google.com/maps?&saddr=" +
-                                            locationManager.getLastKnownLocation(provider).getLatitude() + "," +
-                                            locationManager.getLastKnownLocation(provider).getLongitude() + "&daddr=" + textView1.getText());
-
-                                    Intent i = new Intent(Intent.ACTION_VIEW, routeUri);
-                                    startActivity(i);
 
 
+                                    if (provider != null) {
 
-                                    //String toDial = "tel:" + textView2.getText().toString();
-                                    //startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(toDial)));
+                                        Toast.makeText(getActivity(),
+                                                "Navigo verso " + textView1.getText().toString() + " ... ",
+                                                Toast.LENGTH_LONG).show();
+
+                                        Double Latitude = locationManager.getLastKnownLocation(provider).getLatitude();
+                                        Double Longitude= locationManager.getLastKnownLocation(provider).getLongitude();
+                                        //String Location = textView1.getText().toString();
+
+
+                                        Uri routeUri = Uri.parse("http://maps.google.com/maps?&saddr=" + Latitude + "," + Longitude + "&daddr=" + LocationDest);
+
+                                        Intent i = new Intent(Intent.ACTION_VIEW, routeUri);
+                                        startActivity(i);
+                                    } else{
+
+                                        Toast.makeText(getActivity(),
+                                                "Attiva il GPS per avviare la navigazione ... ",
+                                                Toast.LENGTH_LONG).show();
+
+                                        System.out.println("objectInstance is null, do not attempt to initialize field2");
+                                    }
+
+
                                     break;
 
                                 case DialogInterface.BUTTON_NEGATIVE:
@@ -534,8 +563,13 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
         private static final String ARG_SECTION_CODICE = "codice";
         private static final String ARG_SECTION_ID = "id";
 
+
+
         public Setup application;
         public String urlDownload="";
+
+        // tickets JSONArray
+        static JSONArray MyTicket = null;
 
         /**
          * Returns a new instance of this fragment for the given section
@@ -689,7 +723,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
                                     Log.d("URLD",urlDownload);
 
-                                    //new GetDownloadTickets().execute();
+                                    new GetDownloadTickets().execute();
 
 
 
@@ -712,8 +746,17 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
                     builder.setMessage("Vuoi scaricare il ticket ?").setPositiveButton("Yes", dialogClickListener)
                             .setNegativeButton("No", dialogClickListener).show();
 
+
+
+
+
+
                 }
             });
+
+
+
+
 
 
 
@@ -726,7 +769,117 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             //textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
         }
+
+
+
+        /*********************************************************/
+        private class GetDownloadTickets extends AsyncTask<Void, Void, Void> {
+            LinkedList list;
+            View vista;
+
+            public GetDownloadTickets() {
+                //this.list = list;
+                //this.vista = null;
+            }
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                // Showing progress dialog
+            }
+
+            @Override
+            protected Void doInBackground(Void... arg0) {
+                // URL to get feedback JSON
+                //String url2 = "http://www.ticketclub.it/APP/ticket_view.php?CMD=FEEDBACK&idTicket=" + id;
+
+                Log.d("JSON--",urlDownload);
+
+                // Creating service handler class instance
+                ServiceHandler sh = new ServiceHandler();
+
+                // Making a request to url and getting response
+                String jsonStr = sh.makeServiceCall(urlDownload, ServiceHandler.GET);
+
+                // Nuova Gestione Liste
+                LinkedList listx = new LinkedList();
+
+
+                //vista = arg0[0];
+
+                //Log.d("Response: ", "> " + jsonStr);
+
+                if (jsonStr != null) {
+                    try {
+                        JSONObject jsonObj = new JSONObject(jsonStr);
+
+                        // Getting JSON Array node
+                        MyTicket = jsonObj.getJSONArray("SCARICA_TICKET");
+
+                        for (int i = 0; i < MyTicket.length(); i++) {
+                            JSONObject c = MyTicket.getJSONObject(i);
+
+                            String messaggio = c.getString("messaggio");
+                            //Toast.makeText(getActivity(),messaggio,Toast.LENGTH_LONG).show();
+
+
+
+                            //Integer id = c.getInt("idFeedback");
+
+
+                            /*String dataInserimento = c.getString("dataInserimento");
+                            String nominativo = c.getString("nominativo");
+                            String voto = c.getString("voto");
+                            String commento = c.getString("commento");*/
+
+                            //String descrizione = c.getString(7);
+
+                            //listx.add(new Feedback(id, dataInserimento, idImg, nominativo, voto, commento));
+
+                        }
+
+
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Log.e("ServiceHandler", "Couldn't get any data from the url");
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+                super.onPostExecute(result);
+
+
+               // list = result;
+            }
+        }
+        /**************************************************************************/
     }
+
+
+
+
 
     /**
      * A placeholder fragment containing a simple view.
