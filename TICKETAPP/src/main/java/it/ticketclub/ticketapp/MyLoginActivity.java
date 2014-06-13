@@ -409,30 +409,18 @@ public class MyLoginActivity extends Activity {
                         String email = c.getString("email");
                         String nominativo = c.getString("name");
 
-
-
+                        String usernamex = c.getString("username");
 
                         Log.d("COLONNA","mia email:" + email);
 
+                        if (email.length()>0) {
+                            url2 = URL_PREFIX_USER_INFO_TK + "&uid=" + id + "&email=" + email + "&nominativo=" + nominativo.replace(" ","%20");
+                        }else{
+                            url2 = URL_PREFIX_USER_INFO_TK + "&uid=" + id + "&email=" + usernamex + "@facebook.com&nominativo=" + nominativo.replace(" ","%20");
+                        }
 
 
 
-                        url2 = URL_PREFIX_USER_INFO_TK +"&uid=" + id + "&email=" + email + "&nominativo=" + nominativo;
-
-
-
-
-
-
-
-
-
-
-
-                        //listx.add(new Ticket(id,categoria,codice,titolo,titoloSup,photo,scaricati,mediaVoto));
-
-
-                        //db.insertTicket(id,categoria,codice,titolo,titoloSup,Float.parseFloat(mediaVoto),Integer.parseInt(scaricati),descrizione,indirizzo,lat,lon,nominativo,telefono,sito,dataScadenza);
 
 
 

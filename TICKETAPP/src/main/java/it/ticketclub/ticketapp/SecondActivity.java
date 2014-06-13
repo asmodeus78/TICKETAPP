@@ -308,10 +308,25 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             String telefono = c3.getString(12);
             String sitoWeb = c3.getString(13);
 
-            Double latDest = Double.parseDouble(c3.getString(9));
-            Double lonDest = Double.parseDouble(c3.getString(10));
+            Double latDest = Double.valueOf("0");
+            Double lonDest = Double.valueOf("0");
+
+
+            try {
+
+                 latDest = Double.parseDouble(c3.getString(9));
+                 lonDest = Double.parseDouble(c3.getString(10));
+
+
+
+
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+
+            }
 
             LocationDest = latDest + "," + lonDest;
+
 
 
             textView.setText(nominativo);
@@ -567,6 +582,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
         public Setup application;
         public String urlDownload="";
+        public String messaggio="";
 
         // tickets JSONArray
         static JSONArray MyTicket = null;
@@ -608,6 +624,8 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             final TextView textView3 = (TextView) rootView.findViewById(R.id.TK_scadenza);
             final TextView textView4 = (TextView) rootView.findViewById(R.id.TK_DataScadenza);
             final TextView textView5 = (TextView) rootView.findViewById(R.id.TK_codice);
+
+
 
             /****/
 
@@ -697,6 +715,8 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             application = (Setup) getActivity().getApplication();
 
 
+
+
             btscarica.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -722,6 +742,8 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
                                     urlDownload = "http://www.ticketclub.it/APP/ticket_view.php?CMD=" + cmd + "&crediti=" + crediti + "&email=" + email + "&&qta=1&codice=" + codice;
 
                                     Log.d("URLD",urlDownload);
+
+
 
                                     new GetDownloadTickets().execute();
 
@@ -786,6 +808,9 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             protected void onPreExecute() {
                 super.onPreExecute();
                 // Showing progress dialog
+
+
+
             }
 
             @Override
@@ -809,6 +834,8 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
                 //Log.d("Response: ", "> " + jsonStr);
 
+
+
                 if (jsonStr != null) {
                     try {
                         JSONObject jsonObj = new JSONObject(jsonStr);
@@ -819,24 +846,21 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
                         for (int i = 0; i < MyTicket.length(); i++) {
                             JSONObject c = MyTicket.getJSONObject(i);
 
-                            String messaggio = c.getString("messaggio");
-                            //Toast.makeText(getActivity(),messaggio,Toast.LENGTH_LONG).show();
+                            messaggio = c.getString("messaggio");
 
+                            if (messaggio.contentEquals("TICKET SCARICATO")){
+                                String crediti = c.getString("crediti");
+                                application.setTkProfileCrediti(crediti);
 
+                            }else{
 
-                            //Integer id = c.getInt("idFeedback");
+                                Log.d("MSGGG:" , messaggio);
 
-
-                            /*String dataInserimento = c.getString("dataInserimento");
-                            String nominativo = c.getString("nominativo");
-                            String voto = c.getString("voto");
-                            String commento = c.getString("commento");*/
-
-                            //String descrizione = c.getString(7);
-
-                            //listx.add(new Feedback(id, dataInserimento, idImg, nominativo, voto, commento));
+                            }
 
                         }
+
+
 
 
 
@@ -869,6 +893,8 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             @Override
             protected void onPostExecute(Void result) {
                 super.onPostExecute(result);
+
+                Toast.makeText(getActivity(),messaggio,Toast.LENGTH_LONG).show();
 
 
                // list = result;
