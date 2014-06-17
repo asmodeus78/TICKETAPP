@@ -51,7 +51,9 @@ public class MyProfile extends Activity {
             txtNominativo.setText(application.getTkProfileName());
             txtCrediti.setText(application.getTkProfileCrediti() + " Crediti");
 
-            new DownloadImageTask(imgUser).execute("https://graph.facebook.com/" + application.getTkProfileImageId() + "/picture");
+            //if (!application.getTkProfileEmail().contains("@facebook.com")) {
+                new DownloadImageTask(imgUser).execute("https://graph.facebook.com/" + application.getTkProfileImageId() + "/picture");
+            //}
 
 
             buttonLogout.setOnClickListener(new View.OnClickListener() {

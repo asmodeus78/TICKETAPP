@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,8 +64,8 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
 
         viewHolder.TK_id.setText(ticket.getId().toString());
         viewHolder.TK_codice.setText(ticket.getCodice().toString());
-        viewHolder.TK_titolo.setText(ticket.getTitolo());
-        viewHolder.TK_titoloSup.setText(ticket.getTitoloSup());
+        viewHolder.TK_titolo.setText(Html.fromHtml(ticket.getTitolo()));
+        viewHolder.TK_titoloSup.setText(Html.fromHtml(ticket.getTitoloSup()));
         viewHolder.TK_scaricati.setText("Scaricati: " + ticket.getScaricati().toString());
 
         //Log.d("colonna1",ticket.getMediaVoti().toString());

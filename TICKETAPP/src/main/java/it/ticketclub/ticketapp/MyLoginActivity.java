@@ -140,6 +140,8 @@ public class MyLoginActivity extends Activity {
             Session session = Session.getActiveSession();
             if (session.isOpened()) {
                 //textInstructionsOrLink.setText(URL_PREFIX_FRIENDS + session.getAccessToken());
+
+
                 Log.d("COLONNA", URL_PREFIX_USER_INFO + session.getAccessToken());
 
                 url = URL_PREFIX_USER_INFO + session.getAccessToken();
@@ -172,7 +174,6 @@ public class MyLoginActivity extends Activity {
         Session session = Session.getActiveSession();
         if (!session.isOpened() && !session.isClosed()) {
             session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback));
-
         } else {
             Session.openActiveSession(this, true, statusCallback);
         }
@@ -405,18 +406,29 @@ public class MyLoginActivity extends Activity {
                     for (int i = 0; i < myProfile.length(); i++) {
                         JSONObject c = myProfile.getJSONObject(i);
 
-                        Integer id = c.getInt("id");
-                        String email = c.getString("email");
+                        String id = c.getString("id");
+
+                        String email = "";
+                        String usernamex="";
                         String nominativo = c.getString("name");
 
-                        String usernamex = c.getString("username");
+
+                        try {
+                            email = c.getString("email");
+                            usernamex = c.getString("username");
+                        }catch(JSONException e){
+                            e.printStackTrace();
+                        }
+
+
+
 
                         Log.d("COLONNA","mia email:" + email);
 
                         if (email.length()>0) {
                             url2 = URL_PREFIX_USER_INFO_TK + "&uid=" + id + "&email=" + email + "&nominativo=" + nominativo.replace(" ","%20");
                         }else{
-                            url2 = URL_PREFIX_USER_INFO_TK + "&uid=" + id + "&email=" + usernamex + "@facebook.com&nominativo=" + nominativo.replace(" ","%20");
+                            url2 = URL_PREFIX_USER_INFO_TK + "&uid=" + id + "&email=" + id + "@facebook.com&nominativo=" + nominativo.replace(" ","%20");
                         }
 
 
@@ -426,6 +438,7 @@ public class MyLoginActivity extends Activity {
 
                     }
                 } catch (JSONException e) {
+                    url2="";
                     e.printStackTrace();
                 }
             } else {
@@ -446,8 +459,18 @@ public class MyLoginActivity extends Activity {
             //     pDialog.dismiss();
 
             // list = result;
+            if (url2!="") {
+                new GetUserInfoTK().execute();
+            }else{
 
-           new GetUserInfoTK().execute();
+                Context context = getApplicationContext();
+                CharSequence text = "Accesso Facebook fallito";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+
+            }
         }
     }
 

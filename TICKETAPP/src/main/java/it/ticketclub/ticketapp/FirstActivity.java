@@ -102,14 +102,16 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         actionBar.addTab(actionBar.newTab().setCustomView(R.layout.tab_ico_6).setText("").setTabListener(this));
         actionBar.addTab(actionBar.newTab().setCustomView(R.layout.tab_ico_7).setText("").setTabListener(this));*/
 
-        actionBar.addTab(actionBar.newTab().setText(" TUTTE ").setTabListener(this));
-        actionBar.addTab(actionBar.newTab().setText(" RISTORAZIONE ").setTabListener(this));
-        actionBar.addTab(actionBar.newTab().setText(" BENESSERE ").setTabListener(this));
-        actionBar.addTab(actionBar.newTab().setText(" VIAGGI E SVAGO ").setTabListener(this));
-        actionBar.addTab(actionBar.newTab().setText(" CASA E SERVIZI ").setTabListener(this));
-        actionBar.addTab(actionBar.newTab().setText(" SPORT E MOTORI ").setTabListener(this));
-        actionBar.addTab(actionBar.newTab().setText(" SHOPPING ").setTabListener(this));
-        actionBar.addTab(actionBar.newTab().setText(" EVENTI ").setTabListener(this));
+
+        actionBar.addTab(actionBar.newTab().setText("TUTTE").setTabListener(this));
+
+        actionBar.addTab(actionBar.newTab().setText("RISTORAZIONE").setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setText("BENESSERE").setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setText("VIAGGI E SVAGO").setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setText("CASA E SERVIZI").setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setText("SPORT E MOTORI").setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setText("SHOPPING").setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setText("EVENTI").setTabListener(this));
 
 
 

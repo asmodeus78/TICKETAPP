@@ -145,7 +145,7 @@ public class SplashActivity extends Activity {
 
         //final Intent intent = new Intent(this,MainActivity.class); // WEB VIEW
         final Intent intent = new Intent(this,FirstActivity.class); // SWIPE E TAB + JSON NOT VIEW
-        //final Intent intent = new Intent(this,MainActivity2.class); // WEB VIEW
+
 
         startActivity(intent); // Launch the Intent
         finish(); // We finish the current Activity
