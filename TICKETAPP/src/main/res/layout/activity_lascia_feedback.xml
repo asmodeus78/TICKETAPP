@@ -1,0 +1,122 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
+    android:paddingBottom="0dp"
+    tools:context="it.ticketclub.ticketapp.LasciaFeedback">
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="#dddddd"
+        android:id="@+id/lay1">
+
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="10dp"
+            android:rating="3"
+            android:id="@+id/ratingBar" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Valutazione: Accettabile"
+            android:id="@+id/txtValutazione"
+            android:layout_below="@+id/ratingBar"
+            android:layout_centerHorizontal="true"
+            android:textColor="#f99d1e"
+            android:paddingBottom="20dp"
+            android:textSize="16dp"
+            android:textAlignment="center" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:background="#aaaaaa"
+            android:layout_alignBottom="@id/txtValutazione"
+            android:layout_height="1dp"></LinearLayout>
+
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lay2"
+        android:layout_alignBottom="@+id/lay1"
+    >
+
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/txtRecensione"
+        android:text="Scrivi recensione"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#aaaaaa"
+
+        android:textSize="18dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/lay1"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/lay3"
+        android:gravity="top"
+        />
+
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="130dp"
+        android:id="@+id/lay3"
+        android:background="#dddddd"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/lay2">
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Invia"
+            android:id="@+id/button"
+            android:textColor="#fff"
+            android:background="#f99d1e"
+            android:layout_below="@+id/textView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="9dp"
+            android:text="Dichiaro che questo commento descrive un’ esperienza reale e rappresenta
+una mia personale opinione in merito. Consapevole della mia responsabilità,
+relativa alle dichiarazioni rilasciate, esonero TicketClub srl da ogni eventuale
+responsabilità derivate dalla pubblicazione della stessa."
+            android:id="@+id/textView"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>

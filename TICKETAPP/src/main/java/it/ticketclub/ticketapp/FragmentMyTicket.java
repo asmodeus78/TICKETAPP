@@ -55,7 +55,7 @@ public class FragmentMyTicket extends Fragment {
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
 
-                        final Intent intent2 = new Intent(getActivity(),SecondActivity.class); // SWIPE E TAB + JSON NOT VIEW
+                        final Intent intent2 = new Intent(getActivity(),LasciaFeedback.class); // SWIPE E TAB + JSON NOT VIEW
                         intent2.putExtra("id",((TextView) view.findViewById(R.id.TK_id)).getText());
                         intent2.putExtra("codice",((TextView) view.findViewById(R.id.TK_codice)).getText());
 

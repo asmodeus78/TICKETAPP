@@ -6,18 +6,18 @@ android {
 
     defaultConfig {
         minSdkVersion 13
-        targetSdkVersion  16
-        versionCode 2
-        versionName "1.4"
+        targetSdkVersion 16
+        versionCode 3
+        versionName "1.5"
     }
 
 }
 
 dependencies {
+    compile project(':facebook')
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:gridlayout-v7:19.1.0'
     compile 'com.android.support:support-v4:19.1.0'
     compile 'com.android.support:appcompat-v7:19.1.0'
     compile 'com.google.android.gms:play-services:4.3.23'
-    compile project(':facebook')
-    compile fileTree(include: ['*.jar'], dir: 'libs')
 }
