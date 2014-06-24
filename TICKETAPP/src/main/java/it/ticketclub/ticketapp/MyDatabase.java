@@ -20,7 +20,7 @@ public class MyDatabase {
 
 
     private static final String DB_NAME="ticketclub.db";//nome del db
-    private static final int DB_VERSION=3; //numero di versione del nostro db
+    private static final int DB_VERSION=4; //numero di versione del nostro db
 
     // GESTIONE DATABASE
     public MyDatabase(Context ctx){
@@ -60,6 +60,8 @@ public class MyDatabase {
         static final String TICKET_SITO_KEY  = "sito";
         static final String TICKET_DATA_SCADENZA_KEY = "dataScadenza";
         static final String TICKET_PREZZO_CR_KEY  = "prezzoCR";
+
+        static final String TICKET_SEO  = "SEO";
     }
     static class MyTicketMetaData {  // i metadati della tabella, accessibili ovunque
         static final String MYTICKET_TABLE = "MYTICKET";
@@ -109,7 +111,7 @@ public class MyDatabase {
     }
 
     //COMMAND FOR INSERT DATA
-    public void insertTicket(int id, String categoria, String codice, String titolo, String titoloSup, float mediaVoti, int scaricati, String descrizione, String indirizzo, String lat, String lon, String nominativo, String telefono, String sito, String dataScadenza, String prezzoCr){ //metodo per inserire i dati
+    public void insertTicket(int id, String categoria, String codice, String titolo, String titoloSup, float mediaVoti, int scaricati, String descrizione, String indirizzo, String lat, String lon, String nominativo, String telefono, String sito, String dataScadenza, String prezzoCr, String seo){ //metodo per inserire i dati
         ContentValues cv=new ContentValues();
         cv.put(TicketMetaData.ID, id);
         cv.put(TicketMetaData.TICKET_CATEGORIA_KEY , categoria);
@@ -130,6 +132,8 @@ public class MyDatabase {
 
         cv.put(TicketMetaData.TICKET_DATA_SCADENZA_KEY, dataScadenza);
         cv.put(TicketMetaData.TICKET_PREZZO_CR_KEY, prezzoCr);
+
+        cv.put(TicketMetaData.TICKET_SEO, seo);
 
         db.insert(TicketMetaData.TICKET_TABLE, null, cv);
 
@@ -181,6 +185,19 @@ public class MyDatabase {
     public Cursor fetchTicketByCateg(String categoria){ //metodo per fare la query di tutti i dati
         return db.query(TicketMetaData.TICKET_TABLE, null,"categoria='" + categoria + "'",null,null,null,null);
     }
+
+    public Cursor fetchTicketByCategCity(String categoria, String citta){
+        Log.d("COLONNA",citta);
+
+        //db.compileStatement("select * from " + TicketMetaData.TICKET_TABLE + " where " + TicketMetaData.TICKET_SEO + " like 'NAPOLI'");
+        //Log.d("COLONNA","categoria='" + categoria + "' and " + TicketMetaData.TICKET_SEO + " LIKE '%" + citta + "%'");
+        return db.query(TicketMetaData.TICKET_TABLE, null,"categoria like '%" + categoria + "%' and " + TicketMetaData.TICKET_SEO + " LIKE '%" + citta + "%'",null,null,null,null);
+
+
+
+
+    }
+
     public Cursor fetchFeedback(String id){
         return db.query(FeedBackMetaData.FEEDBACK_TABLE, null,"idTicket=" + id,null,null,null,null);
     }
@@ -225,7 +242,8 @@ public class MyDatabase {
             + TicketMetaData.TICKET_TELEFONO_KEY + " text null, "
             + TicketMetaData.TICKET_SITO_KEY + " text null, "
             + TicketMetaData.TICKET_DATA_SCADENZA_KEY + " text null, "
-            + TicketMetaData.TICKET_PREZZO_CR_KEY + " integer not null "
+            + TicketMetaData.TICKET_PREZZO_CR_KEY + " integer not null, "
+            + TicketMetaData.TICKET_SEO + " text null "
             //+ TicketMetaData.TICKET_PREZZO_KEY + " money null, "
             //+ TicketMetaData.TICKET_ORDINE_KEY + " integer not null, "
     + ")";
@@ -295,12 +313,15 @@ public class MyDatabase {
         public void onUpgrade(SQLiteDatabase _db, int oldVersion, int newVersion) {
             //qui mettiamo eventuali modifiche al db, se nella nostra nuova versione della app, il db cambia numero di versione
 
-            /*if (oldVersion!=newVersion){
+            if (oldVersion!=newVersion){
 
-                _db.execSQL("DROP " + TicketMetaData.TICKET_TABLE);
-                _db.execSQL("DROP " + FeedBackMetaData.FEEDBACK_TABLE);
+                _db.execSQL("DROP TABLE " + TicketMetaData.TICKET_TABLE);
+                _db.execSQL(TICKET_TABLE_CREATE);
 
-            }*/
+                Log.d("COLONNA","DB TICKET RECREATED");
+
+
+            }
 
         }
 

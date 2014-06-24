@@ -1,7 +1,9 @@
 <RelativeLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#fff"
+    >
 
     <ImageView
         android:layout_width="70dp"
@@ -17,6 +19,7 @@
         android:layout_height="wrap_content"
         android:text="Colonna Giovanni"
         android:id="@+id/TK_nominativo"
+        android:textStyle="bold"
         android:layout_alignTop="@+id/TK_image_profile"
         android:layout_toRightOf="@+id/TK_image_profile" />
 
@@ -34,15 +37,66 @@
         style="?android:textAppearanceSmall"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="Disconnettiti"
         android:background="#f99d1c"
         android:textColor="#ffffff"
         android:textStyle="bold"
-        android:layout_below="@+id/TK_crediti"
-        android:layout_toRightOf="@+id/TK_image_profile"/>
+        android:layout_marginBottom="46dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
+    <LinearLayout
+        android:id="@+id/linea1"
+        android:background="#ccc"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/TK_image_profile"
+        android:layout_centerHorizontal="true"></LinearLayout>
 
+    <Button
+        android:layout_alignLeft="@id/TK_image_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Ticket Scaricati"
+        android:id="@+id/btScaricati"
+        android:layout_below="@+id/linea1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
+        android:background="#fff"
+        />
+
+    <LinearLayout
+        android:id="@+id/linea2"
+        android:background="#ccc"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/btScaricati"
+        android:layout_centerHorizontal="true"></LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Mappa Distributori"
+        android:id="@+id/btDistributori"
+        android:layout_alignLeft="@id/TK_image_profile"
+        android:layout_below="@+id/linea2"
+        android:layout_centerHorizontal="true"
+        android:background="#fff"
+        android:layout_marginTop="0dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/linea3"
+        android:background="#ccc"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/btDistributori"
+        android:layout_centerHorizontal="true"></LinearLayout>
 
 
 </RelativeLayout>

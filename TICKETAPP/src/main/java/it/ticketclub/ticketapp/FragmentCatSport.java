@@ -21,6 +21,7 @@ import java.util.LinkedList;
 
 public class FragmentCatSport extends Fragment {
 
+    public String citta="";
 
     public static FragmentCatSport newInstance() {
         FragmentCatSport fragment = new FragmentCatSport();
@@ -111,8 +112,26 @@ public class FragmentCatSport extends Fragment {
             db.open();  //apriamo il db
 
             Cursor c;
-            c = db.fetchTicketByCateg("Sport e Motori");
+
+            try {
+
+                Setup application = (Setup) getActivity().getApplication() ;
+                citta = application.getTkCitta();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+
+
+            if (citta!="" && citta!= null){
+                c = db.fetchTicketByCategCity("Sport e Motori",citta);
+            }else {
+                c = db.fetchTicketByCateg("Sport e Motori");
+            }
             getActivity().startManagingCursor(c);
+            
+
 
             Log.d("FIRST ACTIVITY", " SPORT E MOTORI " + c.getCount());
 

@@ -21,6 +21,7 @@ import java.util.LinkedList;
 
 public class FragmentCatEventi extends Fragment {
 
+    public String citta="";
 
     public static FragmentCatEventi newInstance() {
         FragmentCatEventi fragment = new FragmentCatEventi();

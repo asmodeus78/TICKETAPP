@@ -1,5 +1,6 @@
 package it.ticketclub.ticketapp;
 
+import android.app.Application;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -13,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.json.JSONException;
+
 import java.util.LinkedList;
 
 /**
@@ -20,6 +23,14 @@ import java.util.LinkedList;
  */
 
 public class FragmentCatRistorazione extends Fragment {
+
+    public String citta="";
+
+
+
+
+
+
 
 
     public static FragmentCatRistorazione newInstance() {
@@ -32,6 +43,8 @@ public class FragmentCatRistorazione extends Fragment {
                              Bundle savedInstanceState) {
 
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+
 
         new GetTicketsFromDb() {
 
@@ -111,7 +124,23 @@ public class FragmentCatRistorazione extends Fragment {
             db.open();  //apriamo il db
 
             Cursor c;
-            c = db.fetchTicketByCateg("Ristorazione");
+
+            try {
+
+                Setup application = (Setup) getActivity().getApplication() ;
+                citta = application.getTkCitta();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+
+
+            if (citta!="" && citta!= null){
+                c = db.fetchTicketByCategCity("Ristorazione",citta);
+            }else {
+                c = db.fetchTicketByCateg("Ristorazione");
+            }
             getActivity().startManagingCursor(c);
 
             Log.d("FIRST ACTIVITY", " RISTORAZIONE " + c.getCount());

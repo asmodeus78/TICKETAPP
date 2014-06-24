@@ -159,23 +159,52 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         //return super.onOptionsItemSelected(item);
 
         switch (item.getItemId()) {
-            case R.id.menu_distributori :
-                ApriMappaDist();
-                return true;
-            case R.id.menu_profilo :
+
+
+            case R.id.menu_profilo:
                 ApriProfilo();
                 return true;
-            case R.id.menu_myTicket :
-                ApriMyTicket();
+
+            case R.id.action_salerno:
+                FiltraCitta("SALERNO");
+                return true;
+
+            case R.id.action_avellino:
+                FiltraCitta("AVELLINO");
+                return true;
+
+            case R.id.action_benevento:
+                FiltraCitta("BENEVENTO");
+                return true;
+
+            case R.id.action_caserta:
+                FiltraCitta("CASERTA");
+                return true;
+
+            case R.id.action_napoli:
+                FiltraCitta("NAPOLI");
+                return true;
+
+            case R.id.action_tutte:
+                FiltraCitta("");
+                return true;
+
+
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    public void ApriMappaDist(){
-        final Intent intent = new Intent(this,MapsActivity.class); // SWIPE E TAB + JSON NOT VIEW
-        startActivity(intent); // Launch the Intent
+
+    public void FiltraCitta(String city){
+        application = (Setup) this.getApplication();
+        application.setTkCitta(city);
+
+        finish();
+        startActivity(getIntent());
     }
+
+
 
     public void ApriProfilo(){
 
@@ -192,22 +221,7 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
 
     }
 
-    public void ApriMyTicket(){
-        final Intent intent;
-        application = (Setup) this.getApplication();
-        if (application.getTkStatusLogin()=="1"){
 
-
-            new GetMyTickets().execute();
-
-
-            intent = new Intent(getApplication(),MyTicket.class); // SWIPE E TAB + JSON NOT VIEW
-        }else {
-            intent = new Intent(this,MyLoginActivity.class); // SWIPE E TAB + JSON NOT VIEW
-        }
-
-        startActivity(intent); // Launch the Intent
-    }
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
@@ -287,109 +301,7 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
 
 
 
-    private class GetMyTickets extends AsyncTask<Void, Void, Void> {
 
-        LinkedList list;
-        View vista;
-
-        public GetMyTickets() {
-            this.list = list;
-            this.vista = null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // Showing progress dialog
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            // Creating service handler class instance
-            ServiceHandler sh = new ServiceHandler();
-
-            // Nuova Gestione Liste
-            //LinkedList listx = new LinkedList();
-
-            // Making a request to url and getting response
-
-            application = (Setup) getApplication();
-            String url="";
-
-            JSONArray tickets = null;
-
-            if (application.getTkStatusLogin()=="1"){
-
-                url = "http://www.ticketclub.it/APP/ticket_view.php?CMD=MY_TICKET&email=" + application.getTkProfileEmail();
-                Log.d("COLONNA",url);
-
-            }
-
-            String jsonStr = sh.makeServiceCall(url, ServiceHandler.GET);
-
-            MyDatabase db=new MyDatabase(getApplicationContext());
-            db.open();  //apriamo il db
-
-            Log.d("Response: ", "> " + jsonStr);
-
-            if (jsonStr != null) {
-                try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
-
-                    // Getting JSON Array node
-                    tickets = jsonObj.getJSONArray("MY_TICKET");
-
-                    // looping through All Tickets
-
-
-
-                    for (int i = 0; i < tickets.length(); i++) {
-                        JSONObject c = tickets.getJSONObject(i);
-
-                        int id = c.getInt("idTicketEmesso");
-                        String idTicket = c.getString("idTicket");
-                        String titoloSup = c.getString("titoloSup");
-                        String codice = c.getString("codice");
-                        String photo = c.getString("codice") + ".jpg";
-                        String cWeb = c.getString("cWeb");
-                        String usato = c.getString("flagUsato");
-                        String feedback = c.getString("flagFeedback");
-                        String dataDownload = c.getString("dataDownload");
-                        //String dataScadenza = c.getString("dataScadenza");
-                        String qta = c.getString("qta");
-
-
-                        //listx.add(new Ticket(id,categoria,codice,titolo,titoloSup,photo,scaricati,mediaVoto));
-
-
-                        db.insertMyTicket (id,idTicket,codice,titoloSup,cWeb,qta,usato,feedback,dataDownload);
-                        Log.d("COLONNA","Inserito " + i);
-
-
-
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Log.e("ServiceHandler", "Couldn't get any data from the url");
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-            //goAhead();
-            // Dismiss the progress dialog
-            //if (pDialog.isShowing())
-            //     pDialog.dismiss();
-
-            // list = result;
-        }
-    }
 
 
 

@@ -21,6 +21,7 @@ import java.util.LinkedList;
 
 public class FragmentCatCasa extends Fragment {
 
+    public String citta="";
 
     public static FragmentCatCasa newInstance() {
         FragmentCatCasa fragment = new FragmentCatCasa();
@@ -111,8 +112,26 @@ public class FragmentCatCasa extends Fragment {
             db.open();  //apriamo il db
 
             Cursor c;
-            c = db.fetchTicketByCateg("Casa e Servizi");
+
+            try {
+
+                Setup application = (Setup) getActivity().getApplication() ;
+                citta = application.getTkCitta();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+
+
+            if (citta!="" && citta!= null){
+                c = db.fetchTicketByCategCity("Casa e Servizi",citta);
+            }else {
+                c = db.fetchTicketByCateg("Casa e Servizi");
+            }
             getActivity().startManagingCursor(c);
+
+
 
             Log.d("FIRST ACTIVITY", " CASA E SERVIZI " + c.getCount());
 

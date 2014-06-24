@@ -361,6 +361,10 @@ public class SplashActivity extends Activity {
                         String dataScadenza = c.getString("dataScadenza");
                         String prezzoCr = c.getString("prezzoCR");
 
+                        String seo = c.getString("SEO").toUpperCase();
+
+                        Log.d("COLONNA",seo);
+
 
 
                        /* if (mediaVoto==""){
@@ -382,7 +386,7 @@ public class SplashActivity extends Activity {
                         //listx.add(new Ticket(id,categoria,codice,titolo,titoloSup,photo,scaricati,mediaVoto));
 
 
-                        db.insertTicket(id,categoria,codice,titolo,titoloSup,Float.parseFloat(mediaVoto),Integer.parseInt(scaricati),descrizione,indirizzo,lat,lon,nominativo,telefono,sito,dataScadenza,prezzoCr);
+                        db.insertTicket(id,categoria,codice,titolo,titoloSup,Float.parseFloat(mediaVoto),Integer.parseInt(scaricati),descrizione,indirizzo,lat,lon,nominativo,telefono,sito,dataScadenza,prezzoCr,seo);
                         Log.d("COLONNA","Inserito " + i);
 
 

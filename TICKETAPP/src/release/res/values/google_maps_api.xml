@@ -11,11 +11,12 @@ https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend
 
     You can also add your credentials to an existing key, using this line:
     80:6B:CD:D8:6C:97:27:48:BA:97:8E:AD:52:F6:9B:49:B6:EE:09:C5;it.ticketclub.ticketapp
+    34:FA:1E:9E:78:96:84:5C:9C:87:3C:2E:2A:54:FF:34:2D:8C:1C:0C
 
     Once you have your key (it starts with "AIza"), replace the "google_maps_key"
     string in this file.
         -->
     </string>
-    <string name="google_maps_key" templateMergeStrategy="preserve">AIzaSyDhhAsDhMse_1NTrWmBV16S1TmU428ytJk</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve">AIzaSyADNzN8U_6-vred7e3y_9ekx7-hTR-MFkc</string>
 
 </resources>

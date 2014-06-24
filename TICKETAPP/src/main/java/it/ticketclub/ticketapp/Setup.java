@@ -20,6 +20,8 @@ public class Setup extends Application {
     private String tkProfileCrediti;
     private String tkID;
 
+    private String tkCitta;
+
 
 
     /*public Setup(){
@@ -47,6 +49,8 @@ public class Setup extends Application {
         return path;
     }
 
+    public String getTkCitta(){return tkCitta;}
+
     // SET IN CLASS
     public void setTkProfileName(String s){
         tkProfileName = s;
@@ -67,5 +71,7 @@ public class Setup extends Application {
     public void setPath(File path){
         this.path = path;
     }
+
+    public void setTkCitta(String s){tkCitta=s;}
 
 }
