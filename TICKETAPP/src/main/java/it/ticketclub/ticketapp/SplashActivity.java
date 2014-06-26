@@ -58,9 +58,11 @@ public class SplashActivity extends Activity {
 
     // URL to get tickets JSON
     public static String url = "http://www.ticketclub.it/APP/ticket_view.php?CMD=TK";
+    public static String url3 ="http://www.ticketclub.it/APP/ticket_view.php?CMD=LOGINID&userid=";
 
-    // URL to get feedback JSON
-    //public static String url2 = "http://www.ticketclub.it/APP/ticket_view.php?CMD=FEEDBACK&data_start=2014-05-10";
+    public static String userid="";
+    static JSONArray myProfile = null;
+
 
     // JSON Node names
     private static final String TAG_ID = "idTicket";
@@ -135,6 +137,17 @@ public class SplashActivity extends Activity {
 
         if (c.getCount()>0){
             db.updateLastDownload(filtro);
+            
+            //recuperare dati utente
+
+
+            if (userid!="0") {
+                url3 = url3 + userid;
+                Log.d("COLONNA" , url3);
+                new GetUserInfoSimple().execute();
+            }
+
+
         }else{
             db.insertConfig(filtro,0,"","","0","0");
         }
@@ -155,6 +168,8 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+
 
         if (savedInstanceState != null){
             this.mStartTime = savedInstanceState.getLong(START_TIME_KEY);
@@ -187,9 +202,8 @@ public class SplashActivity extends Activity {
 
         if (c.moveToFirst()) {
             do {
-
+                userid = c.getString(0);
                 lastUpdate = c.getString(5);
-
             } while (c.moveToNext());
         }
 
@@ -412,6 +426,119 @@ public class SplashActivity extends Activity {
            //     pDialog.dismiss();
 
            // list = result;
+        }
+    }
+
+    private class GetUserInfoSimple extends AsyncTask<Void, Void, Void> {
+
+        LinkedList list;
+        View vista;
+
+        public GetUserInfoSimple() {
+            this.list = list;
+            this.vista = null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // Showing progress dialog
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            // Creating service handler class instance
+            ServiceHandler sh = new ServiceHandler();
+
+            // Making a request to url and getting response
+            String jsonStr = sh.makeServiceCall(url3, ServiceHandler.GET);
+
+            Log.d("Response: ", "> " + jsonStr);
+
+            Setup application = (Setup) getApplication();
+
+            application.setTkStatusLogin("0");
+
+            if (jsonStr != null) {
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+
+                    // Getting JSON Array node
+                    myProfile = jsonObj.getJSONArray("PROFILO");
+
+                    for (int i = 0; i < myProfile.length(); i++) {
+                        JSONObject c = myProfile.getJSONObject(i);
+
+                        String idUtente = c.getString("idutente");
+
+                        if (idUtente!="0") {
+
+                            String email = c.getString("email");
+                            String nominativo = c.getString("nominativo");
+                            String crediti = c.getString("crediti");
+                            String uid = c.getString("idImg");
+
+
+                            Log.d("COLONNA", "mia email:" + email);
+
+
+
+                            MyDatabase db=new MyDatabase(getApplicationContext());
+                            db.open();  //apriamo il db
+                            Cursor d;
+                            d = db.fetchConfig();
+
+                            if (d.getCount()>0){
+                                //update
+                                db.updateConfig(idUtente);
+                            }
+
+
+                            application.setTkStatusLogin("1");
+                            application.setTkProfileEmail(email);
+                            application.setTkProfileName(nominativo);
+                            application.setTkProfileImageId(uid);
+                            application.setTkID(idUtente);
+                            application.setTkProfileCrediti(crediti);
+
+                        }
+
+
+
+
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.e("ServiceHandler", "Couldn't get any data from the url");
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+
+            //goAhead();
+            // Dismiss the progress dialog
+            //if (pDialog.isShowing())
+            //     pDialog.dismiss();
+
+            // list = result;
+
+            Setup application = (Setup) getApplication();
+
+            if (application.getTkStatusLogin()=="1"){
+                Context context = getApplicationContext();
+                CharSequence text = "Ciao, " + application.getTkProfileName() ;
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
         }
     }
 

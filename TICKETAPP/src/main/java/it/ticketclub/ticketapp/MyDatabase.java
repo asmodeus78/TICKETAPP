@@ -17,8 +17,6 @@ public class MyDatabase {
     DbHelper myDbHelper;
     Context mContext;
 
-
-
     private static final String DB_NAME="ticketclub.db";//nome del db
     private static final int DB_VERSION=4; //numero di versione del nostro db
 
@@ -95,6 +93,18 @@ public class MyDatabase {
         static final String CONFIG_ABBONAMENTO_KEY = "abbonamento";
     }
 
+
+    //UPDATE
+
+    public void updateConfig(String idutente){
+        ContentValues cv=new ContentValues();
+        cv.put("idUtente",idutente);
+
+        db.update(ConfigMetaData.CONFIG_TABLE, cv,"nominativo<>'a'",null);
+
+    }
+
+    //COMMAND FOR INSERT DATA
     public void insertMyTicket(int id,String idTicket, String codice, String titoloSup, String cWeb, String qta, String usato, String feedback, String dataDownload){
         ContentValues cv=new ContentValues();
         cv.put(MyTicketMetaData.ID,id);
@@ -109,8 +119,6 @@ public class MyDatabase {
 
         db.insert(MyTicketMetaData.MYTICKET_TABLE, null, cv);
     }
-
-    //COMMAND FOR INSERT DATA
     public void insertTicket(int id, String categoria, String codice, String titolo, String titoloSup, float mediaVoti, int scaricati, String descrizione, String indirizzo, String lat, String lon, String nominativo, String telefono, String sito, String dataScadenza, String prezzoCr, String seo){ //metodo per inserire i dati
         ContentValues cv=new ContentValues();
         cv.put(TicketMetaData.ID, id);
@@ -150,7 +158,6 @@ public class MyDatabase {
 
         db.insert(FeedBackMetaData.FEEDBACK_TABLE, null, cv);
     }
-
     public void insertConfig(String update, int idUtente, String nominativo, String email,String crediti, String abbonamento){
         ContentValues cv=new ContentValues();
 
@@ -170,8 +177,6 @@ public class MyDatabase {
     }
 
 
-
-
     //COMMAND FOR FETCH DATA
     public Cursor fetchTicket(){ //metodo per fare la query di tutti i dati
         return db.query(TicketMetaData.TICKET_TABLE, null,null,null,null,null,null);
@@ -185,19 +190,10 @@ public class MyDatabase {
     public Cursor fetchTicketByCateg(String categoria){ //metodo per fare la query di tutti i dati
         return db.query(TicketMetaData.TICKET_TABLE, null,"categoria='" + categoria + "'",null,null,null,null);
     }
-
     public Cursor fetchTicketByCategCity(String categoria, String citta){
         Log.d("COLONNA",citta);
-
-        //db.compileStatement("select * from " + TicketMetaData.TICKET_TABLE + " where " + TicketMetaData.TICKET_SEO + " like 'NAPOLI'");
-        //Log.d("COLONNA","categoria='" + categoria + "' and " + TicketMetaData.TICKET_SEO + " LIKE '%" + citta + "%'");
         return db.query(TicketMetaData.TICKET_TABLE, null,"categoria like '%" + categoria + "%' and " + TicketMetaData.TICKET_SEO + " LIKE '%" + citta + "%'",null,null,null,null);
-
-
-
-
     }
-
     public Cursor fetchFeedback(String id){
         return db.query(FeedBackMetaData.FEEDBACK_TABLE, null,"idTicket=" + id,null,null,null,null);
     }
@@ -260,8 +256,7 @@ public class MyDatabase {
             + MyTicketMetaData.MYTICKET_USATO_KEY + " text null, "
             + MyTicketMetaData.MYTICKET_FEEDBACK_KEY + " text null, "
             + MyTicketMetaData.MYTICKET_DATA_DOWNLOAD_KEY+ " text null "
-
-            + ")";
+    + ")";
 
 
 
@@ -302,9 +297,6 @@ public class MyDatabase {
             Log.d("COLONNA","DB TICKET CREATED");
             _db.execSQL(TICKET_TABLE_CREATE);
 
-            //Log.d("COLONNA","DB FEEDBACK CREATED si dovrebbe rimuovere");
-            //_db.execSQL(FEEDBACK_TABLE_CREATE);
-
             Log.d("COLONNA","DB MY TYCKET CREATED si dovrebbe rimuovere");
             _db.execSQL(MYTICKET_TABLE_CREATE);
         }
@@ -315,12 +307,11 @@ public class MyDatabase {
 
             if (oldVersion!=newVersion){
 
+                _db.execSQL("DROP TABLE " + ConfigMetaData.CONFIG_TABLE);
                 _db.execSQL("DROP TABLE " + TicketMetaData.TICKET_TABLE);
+
+                _db.execSQL(CONFIG_TABLE_CREATE);
                 _db.execSQL(TICKET_TABLE_CREATE);
-
-                Log.d("COLONNA","DB TICKET RECREATED");
-
-
             }
 
         }

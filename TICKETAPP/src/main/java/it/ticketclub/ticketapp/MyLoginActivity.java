@@ -4,6 +4,7 @@ package it.ticketclub.ticketapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -308,8 +309,19 @@ public class MyLoginActivity extends Activity {
                             Log.d("COLONNA", "mia email:" + email);
 
 
-                            application.setTkStatusLogin("1");
 
+                            MyDatabase db=new MyDatabase(getApplicationContext());
+                            db.open();  //apriamo il db
+                            Cursor d;
+                            d = db.fetchConfig();
+
+                            if (d.getCount()>0){
+                                //update
+                                db.updateConfig(idUtente);
+                            }
+
+
+                            application.setTkStatusLogin("1");
                             application.setTkProfileEmail(email);
                             application.setTkProfileName(nominativo);
                             application.setTkProfileImageId(uid);
@@ -537,7 +549,15 @@ public class MyLoginActivity extends Activity {
                         //Log.d("COLONNA","il mio ticket id è:" + idUtente);
 
 
+                        MyDatabase db=new MyDatabase(getApplicationContext());
+                        db.open();  //apriamo il db
+                        Cursor d;
+                        d = db.fetchConfig();
 
+                        if (d.getCount()>0){
+                            //update
+                            db.updateConfig(idUtente.toString());
+                        }
 
 
                         application.setTkStatusLogin("1");

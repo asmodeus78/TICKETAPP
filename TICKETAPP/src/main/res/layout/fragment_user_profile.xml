@@ -12,6 +12,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_margin="20dp"
+        android:background="@drawable/user"
         android:src="@drawable/user"/>
 
     <TextView

@@ -108,12 +108,17 @@ public class MyProfile extends Activity {
     }
 
     private void onClickLogout() {
-        Session session = Session.getActiveSession();
-        if (!session.isClosed()) {
-            application.setTkStatusLogin("0");
+
+        try {
+            Session session = Session.getActiveSession();
             session.closeAndClearTokenInformation();
-            finish();
+        }catch(NullPointerException e){
+            e.printStackTrace();
         }
+
+        application.setTkStatusLogin("0");
+        finish();
+
     }
 
 
