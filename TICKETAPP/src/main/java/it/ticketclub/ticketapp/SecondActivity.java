@@ -33,6 +33,7 @@ import android.util.Log;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,6 +42,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import android.text.Html;
@@ -69,6 +72,8 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     SectionsPagerAdapter mSectionsPagerAdapter;
+    private ShareActionProvider mShareActionProvider;
+
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -136,11 +141,38 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.second, menu);
+
+        // Locate MenuItem with ShareActionProvider
+        /*MenuItem item = menu.findItem(R.id.menu_item_share);
+
+        ShareActionProvider myShareActionProvider = (ShareActionProvider) item.getActionProvider();
+
+        Intent myIntent = new Intent();
+        myIntent.setAction(Intent.ACTION_SEND);
+        myIntent.putExtra(Intent.EXTRA_TEXT, "Whatever message you want to share");
+        myIntent.setType("text/plain");
+
+        try {
+            myShareActionProvider.setShareIntent(myIntent);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }*/
         return true;
     }
+
+    // Call to update the share intent
+    private void setShareIntent(Intent shareIntent) {
+        //if (mShareActionProvider != null) {
+            //if (getApplicationInfo().targetSdkVersion>=14) {
+                mShareActionProvider.setShareIntent(shareIntent);
+            //}
+        //}
+    }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -157,6 +189,9 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
                 Intent intent = new Intent(this, FirstActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                return true;
+            case R.id.menu_item_share:
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

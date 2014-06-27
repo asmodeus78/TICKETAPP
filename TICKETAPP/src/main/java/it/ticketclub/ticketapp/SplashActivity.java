@@ -323,6 +323,7 @@ public class SplashActivity extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+
             // Showing progress dialog
         }
 

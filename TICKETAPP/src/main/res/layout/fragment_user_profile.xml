@@ -1,3 +1,8 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
 <RelativeLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -15,9 +20,11 @@
         android:background="@drawable/user"
         android:src="@drawable/user"/>
 
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Colonna Giovanni"
         android:id="@+id/TK_nominativo"
         android:textStyle="bold"
@@ -27,24 +34,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="1500 Crediti"
         android:id="@+id/TK_crediti"
         android:layout_below="@+id/TK_nominativo"
         android:layout_toRightOf="@+id/TK_image_profile"
         android:layout_marginTop="5dp"/>
 
-    <Button
-        android:id="@+id/bt_logout"
-        style="?android:textAppearanceSmall"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="Disconnettiti"
-        android:background="#f99d1c"
-        android:textColor="#ffffff"
-        android:textStyle="bold"
-        android:layout_marginBottom="46dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+
 
     <LinearLayout
         android:id="@+id/linea1"
@@ -81,8 +78,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Mappa Distributori"
-        android:id="@+id/btDistributori"
+        android:text="Ricarica Crediti"
+        android:id="@+id/btRicaricaCrediti"
         android:layout_alignLeft="@id/TK_image_profile"
         android:layout_below="@+id/linea2"
         android:layout_centerHorizontal="true"
@@ -96,8 +93,127 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/btDistributori"
+        android:layout_below="@+id/btRicaricaCrediti"
         android:layout_centerHorizontal="true"></LinearLayout>
 
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Mappa Distributori"
+        android:id="@+id/btDistributori"
+        android:layout_alignLeft="@id/TK_image_profile"
+        android:layout_below="@+id/linea3"
+        android:layout_centerHorizontal="true"
+        android:background="#fff"
+        android:layout_marginTop="0dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/linea4"
+        android:background="#ccc"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/btDistributori"
+        android:layout_centerHorizontal="true"></LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="F.A.Q.            "
+        android:id="@+id/btFaq"
+        android:layout_alignLeft="@id/TK_image_profile"
+        android:layout_below="@+id/linea4"
+        android:layout_centerHorizontal="true"
+        android:background="#fff"
+        android:layout_marginTop="0dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/linea5"
+        android:background="#ccc"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/btFaq"
+        android:layout_centerHorizontal="true"></LinearLayout>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Contatti"
+        android:id="@+id/btContatti"
+        android:layout_alignLeft="@id/TK_image_profile"
+        android:layout_below="@+id/linea5"
+        android:layout_centerHorizontal="true"
+        android:background="#fff"
+        android:layout_marginTop="0dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/linea6"
+        android:background="#ccc"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/btContatti"
+        android:layout_centerHorizontal="true"></LinearLayout>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Chi Siamo"
+        android:id="@+id/btChiSiamo"
+        android:layout_alignLeft="@id/TK_image_profile"
+        android:layout_below="@+id/linea6"
+        android:layout_centerHorizontal="true"
+        android:background="#fff"
+        android:layout_marginTop="0dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/linea7"
+        android:background="#ccc"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/btChiSiamo"
+        android:layout_centerHorizontal="true"></LinearLayout>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Esci          "
+        android:id="@+id/bt_logout"
+        android:layout_alignLeft="@+id/TK_image_profile"
+        android:layout_below="@+id/linea7"
+        android:layout_centerHorizontal="true"
+        android:background="#fff"
+        android:layout_marginTop="0dp"
+    />
+
+    <LinearLayout
+        android:id="@+id/linea8"
+        android:background="#ccc"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/bt_logout"
+        android:layout_centerHorizontal="true"></LinearLayout>
+
+
+
+
 </RelativeLayout>
+
+    </ScrollView>
+
