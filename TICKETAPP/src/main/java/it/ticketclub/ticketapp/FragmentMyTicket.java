@@ -1,7 +1,11 @@
 package it.ticketclub.ticketapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.location.Criteria;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.LinkedList;
 
@@ -55,12 +60,66 @@ public class FragmentMyTicket extends Fragment {
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
 
-                        final Intent intent2 = new Intent(getActivity(),LasciaFeedback.class); // SWIPE E TAB + JSON NOT VIEW
-                        intent2.putExtra("id",((TextView) view.findViewById(R.id.TK_id)).getText());
-                        intent2.putExtra("codice",((TextView) view.findViewById(R.id.TK_codice)).getText());
 
-                        startActivity(intent2); // Launch the Intent
-                        //getActivity().finish(); // We finish the current Activity
+
+                        final String TK_ID = ((TextView) view.findViewById(R.id.TK_id)).getText().toString();
+                        final String TK_CODICE = ((TextView) view.findViewById(R.id.TK_codice)).getText().toString();
+                        final String TK_NOME =  ((TextView) view.findViewById(R.id.TK_titoloSup)).getText().toString().split("-")[0];
+
+
+                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which){
+                                    case DialogInterface.BUTTON_NEGATIVE:
+                                        //Mostra button clicked
+                                        Log.d("COLONNA","CLICK MOSTRA " + TK_ID);
+
+                                        break;
+
+                                    case DialogInterface.BUTTON_POSITIVE:
+                                        //Vota button clicked
+                                        //Log.d("COLONNA", "CLICK VOTA " + TK_ID);
+                                        final Intent intent2 = new Intent(getActivity(),LasciaFeedback.class); // SWIPE E TAB + JSON NOT VIEW
+                                        intent2.putExtra("id",TK_ID);
+                                        intent2.putExtra("codice",TK_CODICE);
+                                        startActivity(intent2); // Launch the Intent
+                                        //getActivity().finish(); // We finish the current Activity
+                                        break;
+                                }
+                            }
+                        };
+
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setMessage(TK_NOME)
+                                .setPositiveButton("VOTA", dialogClickListener)
+                                .setNegativeButton("MOSTRA", dialogClickListener)
+                        .show();
+
+
+
+                        /*view.findViewById(R.id.TK_image).setOnClickListener(new View.OnClickListener() {
+                             @Override
+                             public void onClick(View v) {
+                                 Log.d("COLONNA","CLICK IMMAGINE" + TK_ID);
+
+                             }
+                        });
+
+                        view.findViewById(R.id.TK_voto).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                Log.d("COLONNA", "CLICK VOTO" + TK_ID);
+
+                            }
+                        });*/
+
+
+
+
+
 
                     }
                 });

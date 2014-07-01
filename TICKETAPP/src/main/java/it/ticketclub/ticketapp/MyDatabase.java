@@ -18,7 +18,7 @@ public class MyDatabase {
     Context mContext;
 
     private static final String DB_NAME="ticketclub.db";//nome del db
-    private static final int DB_VERSION=4; //numero di versione del nostro db
+    private static final int DB_VERSION=5; //numero di versione del nostro db
 
     // GESTIONE DATABASE
     public MyDatabase(Context ctx){
