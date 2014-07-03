@@ -104,20 +104,40 @@ public class MyDatabase {
 
     }
 
+    public int getRecordOfMyTicket(int mixId) {
+        int count = 0;
+        //SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "select count(*) from " + MyTicketMetaData.MYTICKET_TABLE  + " where " + MyTicketMetaData.ID + "=?",
+                new String[]{String.valueOf(mixId)});
+        while(cursor.moveToFirst()){
+            count = cursor.getInt(0);
+        }
+        return count;
+    }
+
     //COMMAND FOR INSERT DATA
     public void insertMyTicket(int id,String idTicket, String codice, String titoloSup, String cWeb, String qta, String usato, String feedback, String dataDownload){
         ContentValues cv=new ContentValues();
-        cv.put(MyTicketMetaData.ID,id);
-        cv.put(MyTicketMetaData.MYTICKET_ID_KEY,idTicket);
-        cv.put(MyTicketMetaData.MYTICKET_CODICE_KEY,codice);
-        cv.put(MyTicketMetaData.MYTICKET_TITOLO_SUP_KEY,titoloSup);
-        cv.put(MyTicketMetaData.MYTICKET_CWEB_KEY,cWeb);
-        cv.put(MyTicketMetaData.MYTICKET_QTA_KEY,qta);
-        cv.put(MyTicketMetaData.MYTICKET_USATO_KEY,usato);
-        cv.put(MyTicketMetaData.MYTICKET_FEEDBACK_KEY,feedback);
-        cv.put(MyTicketMetaData.MYTICKET_DATA_DOWNLOAD_KEY,dataDownload);
 
-        db.insert(MyTicketMetaData.MYTICKET_TABLE, null, cv);
+        //int nRecord = getRecordOfMyTicket(id);
+
+        //Log.d("GIOVANNI", String.valueOf(nRecord));
+
+        //if (nRecord<=0) {
+            cv.put(MyTicketMetaData.ID, id);
+            cv.put(MyTicketMetaData.MYTICKET_ID_KEY, idTicket);
+            cv.put(MyTicketMetaData.MYTICKET_CODICE_KEY, codice);
+            cv.put(MyTicketMetaData.MYTICKET_TITOLO_SUP_KEY, titoloSup);
+            cv.put(MyTicketMetaData.MYTICKET_CWEB_KEY, cWeb);
+            cv.put(MyTicketMetaData.MYTICKET_QTA_KEY, qta);
+            cv.put(MyTicketMetaData.MYTICKET_USATO_KEY, usato);
+            cv.put(MyTicketMetaData.MYTICKET_FEEDBACK_KEY, feedback);
+            cv.put(MyTicketMetaData.MYTICKET_DATA_DOWNLOAD_KEY, dataDownload);
+            db.insert(MyTicketMetaData.MYTICKET_TABLE, null, cv);
+        //}
+
     }
     public void insertTicket(int id, String categoria, String codice, String titolo, String titoloSup, float mediaVoti, int scaricati, String descrizione, String indirizzo, String lat, String lon, String nominativo, String telefono, String sito, String dataScadenza, String prezzoCr, String seo){ //metodo per inserire i dati
         ContentValues cv=new ContentValues();
@@ -174,6 +194,17 @@ public class MyDatabase {
     public void updateLastDownload(String data){
         String sql ="update " + ConfigMetaData.CONFIG_TABLE + " set " + ConfigMetaData.CONFIG_UPDATE_KEY + "='" + data + "'";
         db.execSQL(sql);
+    }
+
+    public void updateMyTicketUsatoOk(String id){
+        String sql ="update " + MyTicketMetaData.MYTICKET_TABLE + " set " + MyTicketMetaData.MYTICKET_USATO_KEY + "=1 where " + MyTicketMetaData.ID + "=" + id;
+        db.execSQL(sql);
+    }
+
+    public void deleteMyTicketFeedbackOk(String id){
+        String sql ="delete from " + MyTicketMetaData.MYTICKET_TABLE + " where " + MyTicketMetaData.ID + "=" + id;
+        db.execSQL(sql);
+        Log.d("COLONNA:",sql);
     }
 
 
@@ -297,6 +328,8 @@ public class MyDatabase {
             Log.d("COLONNA","DB TICKET CREATED");
             _db.execSQL(TICKET_TABLE_CREATE);
 
+
+            //_db.execSQL("DROP TABLE " + MyTicketMetaData.MYTICKET_TABLE);
             Log.d("COLONNA","DB MY TYCKET CREATED si dovrebbe rimuovere");
             _db.execSQL(MYTICKET_TABLE_CREATE);
         }

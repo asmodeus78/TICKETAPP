@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="C:\Users\Gio\Android studioProjects\TICKETAPP\TICKETAPP\build\intermediates\pre-dexed\debug\classes-cfecfc39122f6eca07c60bdb5e097a727ee4883a.jar"
+        jar="C:\Users\Gio\Android studioProjects\TICKETAPP\build\intermediates\exploded-aar\com.google.android.gms\play-services\4.3.23\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="7676c0cb230efa6ac41c47867d372ed5913029d4"/>
+    <item
+        dex="C:\Users\Gio\Android studioProjects\TICKETAPP\TICKETAPP\build\intermediates\pre-dexed\debug\classes-b6812d35cfce252355d594ef77f56cf96f35c40c.jar"
+        jar="C:\Users\Gio\Android studioProjects\TICKETAPP\build\intermediates\exploded-aar\com.android.support\appcompat-v7\19.1.0\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28"/>
+    <item
+        dex="C:\Users\Gio\Android studioProjects\TICKETAPP\TICKETAPP\build\intermediates\pre-dexed\debug\bolts-android-api-1.1.0-ea9be537bfbf4d6a5cbed3aa67d609db32ecf8b4.jar"
+        jar="C:\Users\Gio\.gradle\caches\modules-2\files-2.1\fr.avianey\bolts-android-api\1.1.0\e55253ce3a7aac54fc331e2099fa950a2caf0f2f\bolts-android-api-1.1.0.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="e55253ce3a7aac54fc331e2099fa950a2caf0f2f"/>
+    <item
+        dex="C:\Users\Gio\Android studioProjects\TICKETAPP\TICKETAPP\build\intermediates\pre-dexed\debug\classes-e156c4444132ed3ce79e774c45bc87ad7496cb58.jar"
+        jar="C:\Users\Gio\Android studioProjects\TICKETAPP\build\intermediates\exploded-aar\TICKETAPP\facebook\unspecified\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="9e5b3d3a5d7709d1ad12873c2bb5d5a1c959f078"/>
+    <item
+        dex="C:\Users\Gio\Android studioProjects\TICKETAPP\TICKETAPP\build\intermediates\pre-dexed\debug\classes-054d8c118b5702f9a87384e3ba034bc3f0941fa3.jar"
+        jar="C:\Users\Gio\Android studioProjects\TICKETAPP\build\intermediates\exploded-aar\com.android.support\gridlayout-v7\19.1.0\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="af4cc326e6cd92f88db12298767e521743aedd36"/>
+    <item
+        dex="C:\Users\Gio\Android studioProjects\TICKETAPP\TICKETAPP\build\intermediates\pre-dexed\debug\support-v4-19.1.0-e311e493b238b75da4095bd5ee7b69d76d73dc42.jar"
+        jar="C:\Program Files (x86)\Android\android-studio\sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
+
+</pre-dex-items>

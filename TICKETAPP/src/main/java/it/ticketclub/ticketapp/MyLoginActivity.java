@@ -209,6 +209,7 @@ public class MyLoginActivity extends Activity {
     private void onClickSignUp(){
 
         final Intent intent = new Intent(getApplication(),SignUp.class); // SWIPE E TAB + JSON NOT VIEW
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent); // Launch the Intent
         finish(); // We finish the current Activity
 
@@ -360,6 +361,7 @@ public class MyLoginActivity extends Activity {
                 Log.d("COLONNA","SIMPLE LOGIN");
 
                 final Intent intent = new Intent(getApplication(),MyProfile.class); // SWIPE E TAB + JSON NOT VIEW
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent); // Launch the Intent
                 finish(); // We finish the current Activity
 
@@ -596,6 +598,7 @@ public class MyLoginActivity extends Activity {
                 Log.d("COLONNA","FB LOGIN");
 
                 final Intent intent = new Intent(getApplication(),MyProfile.class); // SWIPE E TAB + JSON NOT VIEW
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent); // Launch the Intent
                 finish(); // We finish the current Activity
 

@@ -182,7 +182,7 @@ public class FragmentMyTicket extends Fragment {
 
                     //int id = c.getInt(0);
 
-                    String id = c.getString(1);
+                    String id = c.getString(0);
                     String codice = c.getString(2);
                     String photo = c.getString(2) + ".jpg";
                     String cWeb = c.getString(3);

@@ -932,6 +932,36 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
                 Toast.makeText(getActivity(),messaggio,Toast.LENGTH_LONG).show();
 
 
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+
+
+
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+
+                                final Intent intent = new Intent(getActivity(),MyTicket.class); // SWIPE E TAB + JSON NOT VIEW
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent); // Launch the Intent
+
+                                break;
+                        }
+                    }
+                };
+
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Ticket scaricato!")
+                        .setMessage("Vai ai tuoi ticket per mostrare l'offerta")
+                        .setPositiveButton("ANNULLA", dialogClickListener)
+                        .setNegativeButton("VAI", dialogClickListener)
+                        .show();
+
+
                // list = result;
             }
         }
