@@ -1,5 +1,6 @@
 package it.ticketclub.ticketapp;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -9,6 +10,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -40,10 +42,11 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import android.widget.ShareActionProvider;
+
 import android.widget.TextView;
 
 import android.text.Html;
@@ -72,8 +75,8 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     SectionsPagerAdapter mSectionsPagerAdapter;
-    private ShareActionProvider mShareActionProvider;
 
+    static final int REQUEST_SHARE_RESULT = 0;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -146,31 +149,76 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
         getMenuInflater().inflate(R.menu.second, menu);
 
         // Locate MenuItem with ShareActionProvider
-        /*MenuItem item = menu.findItem(R.id.menu_item_share);
 
-        ShareActionProvider myShareActionProvider = (ShareActionProvider) item.getActionProvider();
+        //View sharingButton = findViewById(R.id.menu_item_share);
+        //sharingButton.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        Intent myIntent = new Intent();
-        myIntent.setAction(Intent.ACTION_SEND);
-        myIntent.putExtra(Intent.EXTRA_TEXT, "Whatever message you want to share");
-        myIntent.setType("text/plain");
 
-        try {
-            myShareActionProvider.setShareIntent(myIntent);
-        }catch (NullPointerException e){
-            e.printStackTrace();
-        }*/
+        MenuItem sharingButton = menu.findItem(R.id.menu_item_share);
+
+        sharingButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                shareIt();
+                return true;
+            }
+        });
+
+
         return true;
     }
 
-    // Call to update the share intent
-    private void setShareIntent(Intent shareIntent) {
-        //if (mShareActionProvider != null) {
-            //if (getApplicationInfo().targetSdkVersion>=14) {
-                mShareActionProvider.setShareIntent(shareIntent);
-            //}
-        //}
+
+
+    private void shareIt() {
+        //sharing implementation here
+
+        SingleTicket tick = new SingleTicket(id,getApplicationContext(),getParent());
+
+
+
+
+
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+
+        //sharingIntent.setType("*/*");
+        String shareBody = "Con TicketClub: \n" + tick.getTitolo() + "\n" + tick.getSecondoTitolo();
+
+        //File image = new File(Uri.parse(String.valueOf(Setup.getSetup().getPath() + "/" + tick.getCodice() + ".JPG")).toString());
+        //sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(image));
+        //shareMe(sharingIntent);
+
+        //sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Stacca la felicità");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        //startActivity(Intent.createChooser(sharingIntent, "Condividi e ricaricati"));
+
+        startActivityForResult(Intent.createChooser(sharingIntent,"Condividi e ricaricati"), REQUEST_SHARE_RESULT);
+
     }
+
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("CONDIVISO","RITORNOOOOO E...");
+        if (requestCode == REQUEST_SHARE_RESULT) {
+            if(resultCode == RESULT_OK){
+                //String result=data.getStringExtra("result");
+                Log.d("CONDIVISO","OK");
+            }
+            if (resultCode == RESULT_CANCELED) {
+                //Write your code if there's no result
+
+
+                Log.d("CONDIVISO","KO");
+            }
+
+
+        }
+
+
+        String result=String.valueOf(requestCode);
+        Log.d("CONDIVISO zzz",result);
+    }//onActivityResult
 
 
 
@@ -299,6 +347,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             args.putString(ARG_SECTION_CODICE, codice);
             fragment.setArguments(args);
             return fragment;
+
         }
 
         public PlaceholderFragmentMappa() {
@@ -944,6 +993,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
                             case DialogInterface.BUTTON_NEGATIVE:
 
+                                new GetMyTicket(getActivity()).execute();
                                 final Intent intent = new Intent(getActivity(),MyTicket.class); // SWIPE E TAB + JSON NOT VIEW
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent); // Launch the Intent

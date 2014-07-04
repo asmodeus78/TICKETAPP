@@ -22,7 +22,19 @@ public class Setup extends Application {
 
     private String tkCitta;
 
+    private static Setup instance;
 
+    public void onCreate()
+    {
+        super.onCreate();
+        instance = this;
+    }
+
+
+
+    public static Setup getSetup() {
+        return instance;
+    }
 
     /*public Setup(){
         this.path = path;

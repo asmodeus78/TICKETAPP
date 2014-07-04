@@ -26,15 +26,19 @@
         android:src="@drawable/sfumatura_ticket"
     />
 
+
     <RatingBar
         android:id="@+id/TK_voto"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_marginTop="175dp"
-        android:layout_marginLeft="215dp"
+        android:layout_marginRight="25dp"
         android:rating="0"
         style="@style/RatingBarSmallAppTheme"
-        android:numStars="5"/>
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        android:numStars="5"
+        android:layout_alignTop="@+id/TK_scaricati"
+        android:layout_alignParentRight="true" />
 
     <TextView
         android:id="@+id/TK_titoloSup"
@@ -45,7 +49,7 @@
         android:textSize="14dp"
         android:textStyle="bold"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="132dp"
+        android:layout_marginTop="140dp"
     />
 
     <TextView
@@ -57,7 +61,8 @@
         android:textSize="14dp"
         android:textStyle="normal"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="152dp"
+        android:layout_below="@+id/TK_titoloSup"
+        android:layout_marginTop="5dp"
         android:autoText="false"
     />
 
@@ -70,7 +75,8 @@
         android:textSize="14dp"
         android:textStyle="normal"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="172dp"
+        android:layout_below="@+id/TK_titolo"
+        android:layout_marginTop="5dp"
         android:autoText="false"
         android:enabled="false" />
 
