@@ -1,0 +1,78 @@
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#dddddd"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <it.ticketclub.ticketapp.VerticalTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:background="@android:color/transparent"
+        android:rotation="180"
+        android:padding="4dip"
+        android:text="Putipù - Pozzuoli"
+        android:textColor="#333333"
+        android:textSize="26dp"
+        android:textStyle="bold"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="12dp"
+        android:id="@+id/txtConvenzionato"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true" />
+
+
+    <it.ticketclub.ticketapp.VerticalTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:background="@android:color/transparent"
+        android:rotation="180"
+        android:padding="4dip"
+        android:text="Valido per n° 10 Ticket"
+        android:textColor="#666666"
+        android:textSize="22dp"
+        android:id="@+id/txtValidoN"
+        android:layout_alignTop="@+id/txtConvenzionato"
+        android:layout_toLeftOf="@+id/txtConvenzionato" />
+
+
+
+    <it.ticketclub.ticketapp.VerticalTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:background="@android:color/transparent"
+        android:rotation="180"
+        android:padding="4dip"
+        android:text="Scorri per staccare il ticket quando sei alla cassa   > > > > > > >"
+        android:textColor="#666666"
+        android:textSize="18dp"
+        android:id="@+id/txtScorri"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/matrice"
+        android:src="@drawable/matrice"
+        android:layout_marginLeft="4dp"
+
+        android:layout_alignTop="@+id/txtScorri"
+        android:layout_toRightOf="@+id/txtScorri" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/talloncino"
+        android:src="@drawable/talloncino"
+        android:layout_marginLeft="4dp"
+
+        android:layout_below="@+id/matrice"
+        android:layout_toRightOf="@+id/txtScorri" />
+
+</RelativeLayout>

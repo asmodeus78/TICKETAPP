@@ -74,6 +74,10 @@ public class FragmentMyTicket extends Fragment {
                                     case DialogInterface.BUTTON_NEGATIVE:
                                         //Mostra button clicked
                                         Log.d("COLONNA","CLICK MOSTRA " + TK_ID);
+                                        final Intent intent2b = new Intent(getActivity(),UsaTicket.class); // SWIPE E TAB + JSON NOT VIEW
+                                        intent2b.putExtra("id",TK_ID);
+                                        intent2b.putExtra("codice",TK_CODICE);
+                                        startActivity(intent2b); // Launch the Intent
 
                                         break;
 
