@@ -65,6 +65,8 @@ public class FragmentMyTicket extends Fragment {
                         final String TK_ID = ((TextView) view.findViewById(R.id.TK_id)).getText().toString();
                         final String TK_CODICE = ((TextView) view.findViewById(R.id.TK_codice)).getText().toString();
                         final String TK_NOME =  ((TextView) view.findViewById(R.id.TK_titoloSup)).getText().toString().split("-")[0];
+                        final String TK_DOVE =  ((TextView) view.findViewById(R.id.TK_titoloSup)).getText().toString().split("-")[1];
+                        final String TK_QTA =  ((TextView) view.findViewById(R.id.TK_qta)).getText().toString();
 
 
                         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -77,6 +79,8 @@ public class FragmentMyTicket extends Fragment {
                                         final Intent intent2b = new Intent(getActivity(),UsaTicket.class); // SWIPE E TAB + JSON NOT VIEW
                                         intent2b.putExtra("id",TK_ID);
                                         intent2b.putExtra("codice",TK_CODICE);
+                                        intent2b.putExtra("nome",TK_NOME + " - " + TK_DOVE + "  ");
+                                        intent2b.putExtra("qta",TK_QTA);
                                         startActivity(intent2b); // Launch the Intent
 
                                         break;
