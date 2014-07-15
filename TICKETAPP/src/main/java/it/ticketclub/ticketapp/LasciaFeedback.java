@@ -3,6 +3,7 @@ package it.ticketclub.ticketapp;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -64,6 +65,33 @@ public class LasciaFeedback extends ActionBarActivity {
                       $idutente = $_REQUEST['idutente'];
                       $voto = $_REQUEST['voto'];
                       $commento = $_REQUEST['commento'];*/
+
+                  if (ratingBar.getRating()==0){
+
+                      Toast toast = Toast.makeText(getApplicationContext(), "Seleziona le stelline", Toast.LENGTH_LONG);
+                      toast.show();
+
+                      return;
+
+                  }
+
+                  if (txtRecensione.getText().toString().contentEquals("")){
+
+                      Toast toast = Toast.makeText(getApplicationContext(), "Descrivici la tua esperienza", Toast.LENGTH_LONG);
+                      toast.show();
+
+
+                      return;
+
+                  }
+
+                  if (txtRecensione.getText().toString().length()<30){
+                      Toast toast = Toast.makeText(getApplicationContext(), "La descrizione deve essere di almeno 30 caratteri", Toast.LENGTH_LONG);
+                      toast.show();
+
+                      return;
+
+                  }
 
                   pDialog = new ProgressDialog(LasciaFeedback.this);
                   pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);

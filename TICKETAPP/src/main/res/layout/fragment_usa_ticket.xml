@@ -1,8 +1,11 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:background="#dddddd">
 <RelativeLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#dddddd"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    >
 
 
     <it.ticketclub.ticketapp.VerticalTextView
@@ -12,7 +15,7 @@
         android:background="@android:color/transparent"
         android:rotation="180"
         android:padding="4dip"
-        android:text="Putipù - Pozzuoli"
+        android:text=" "
         android:textColor="#333333"
         android:textSize="26dp"
         android:textStyle="bold"
@@ -30,7 +33,7 @@
         android:background="@android:color/transparent"
         android:rotation="180"
         android:padding="4dip"
-        android:text="Valido per n° 10 Ticket"
+        android:text="Valido per n°    Ticket"
         android:textColor="#666666"
         android:textSize="22dp"
         android:id="@+id/txtValidoN"
@@ -71,7 +74,6 @@
         android:scaleX="1.6"
         android:scaleY="1.6"
         android:id="@+id/TK_image"
-        android:src="@drawable/ticket"
         android:rotation="90"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="55dp"
@@ -88,4 +90,7 @@
         android:layout_below="@+id/matrice"
         android:layout_toRightOf="@+id/txtScorri" />
 
+
+
 </RelativeLayout>
+    </ScrollView>

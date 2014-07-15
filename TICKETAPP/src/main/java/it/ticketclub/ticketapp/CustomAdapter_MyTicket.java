@@ -51,7 +51,12 @@ public class CustomAdapter_MyTicket extends ArrayAdapter<Ticket2> {
             viewHolder.TK_id = (TextView)convertView.findViewById(R.id.TK_id);
             viewHolder.TK_codice = (TextView)convertView.findViewById(R.id.TK_codice);
             //viewHolder.TK_titolo = (TextView)convertView.findViewById(R.id.TK_titolo);
-            viewHolder.TK_titoloSup = (TextView)convertView.findViewById(R.id.TK_titoloSup);
+
+
+                viewHolder.TK_titoloSup = (TextView) convertView.findViewById(R.id.TK_titoloSup);
+                viewHolder.TK_Luogo = (TextView) convertView.findViewById(R.id.TK_Luogo);
+
+
             viewHolder.TK_image  = (ImageView)convertView.findViewById(R.id.TK_image);
            // viewHolder.TK_voto  = (RatingBar)convertView.findViewById(R.id.TK_voto);
             viewHolder.TK_qta  = (TextView)convertView.findViewById(R.id.TK_qta);
@@ -64,8 +69,17 @@ public class CustomAdapter_MyTicket extends ArrayAdapter<Ticket2> {
         viewHolder.TK_id.setText(ticket.getId().toString());
         viewHolder.TK_codice.setText(ticket.getCodice().toString());
        // viewHolder.TK_titolo.setText(ticket.getTitolo());
-        viewHolder.TK_titoloSup.setText(ticket.getTitoloSup());
+
+
         viewHolder.TK_qta.setText(ticket.getQta());
+
+        try {
+            viewHolder.TK_titoloSup.setText(ticket.getTitoloSup().split(" - ")[0]);
+            viewHolder.TK_Luogo.setText(ticket.getTitoloSup().split(" - ")[1]);
+        }catch(ArrayIndexOutOfBoundsException e){
+            viewHolder.TK_titoloSup.setText(ticket.getTitoloSup());
+            viewHolder.TK_Luogo.setText("");
+        }
         //viewHolder.TK_scaricati.setText("Scaricati: " + ticket.getScaricati().toString());
 
         //Log.d("colonna1",ticket.getMediaVoti().toString());
@@ -99,6 +113,7 @@ public class CustomAdapter_MyTicket extends ArrayAdapter<Ticket2> {
         public TextView TK_titoloSup;
         public ImageView TK_image;
         public TextView TK_qta;
+        public TextView TK_Luogo;
         //public TextView TK_scaricati;
     }
 

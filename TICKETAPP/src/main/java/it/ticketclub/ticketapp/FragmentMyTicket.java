@@ -64,8 +64,8 @@ public class FragmentMyTicket extends Fragment {
 
                         final String TK_ID = ((TextView) view.findViewById(R.id.TK_id)).getText().toString();
                         final String TK_CODICE = ((TextView) view.findViewById(R.id.TK_codice)).getText().toString();
-                        final String TK_NOME =  ((TextView) view.findViewById(R.id.TK_titoloSup)).getText().toString().split("-")[0];
-                        final String TK_DOVE =  ((TextView) view.findViewById(R.id.TK_titoloSup)).getText().toString().split("-")[1];
+                        final String TK_NOME =  ((TextView) view.findViewById(R.id.TK_titoloSup)).getText().toString();
+                        final String TK_DOVE =  ((TextView) view.findViewById(R.id.TK_Luogo)).getText().toString();
                         final String TK_QTA =  ((TextView) view.findViewById(R.id.TK_qta)).getText().toString();
 
 
