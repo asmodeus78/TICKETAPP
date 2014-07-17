@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Ticket Club</string>
+    <string name="app_name">TicketClub</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_splash">SplashActivity</string>
@@ -38,5 +38,7 @@
     <string name="action_example">Example action</string>
     <string name="app_id">106160262886252</string>
     <string name="title_activity_lascia_feedback">LasciaFeedback</string>
+    <string name="title_activity_faq">Faq</string>
+    <string name="title_activity_contatti">Contatti</string>
 
 </resources>

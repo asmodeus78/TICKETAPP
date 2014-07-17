@@ -31,6 +31,8 @@ public class MyProfile extends Activity {
     private Button buttonLogout;
     private Button btMyTicket;
     private Button btDistributori;
+    private Button btFaq;
+    private Button btContatti;
     private TextView txtNominativo;
     private TextView txtCrediti;
     private ImageView imgUser;
@@ -52,6 +54,8 @@ public class MyProfile extends Activity {
 
         btMyTicket = (Button)findViewById(R.id.btScaricati);
         btDistributori = (Button)findViewById(R.id.btDistributori);
+        btFaq = (Button)findViewById(R.id.btFaq);
+        btContatti = (Button)findViewById(R.id.btContatti);
 
 
         if (application.getTkStatusLogin()=="1"){
@@ -80,7 +84,19 @@ public class MyProfile extends Activity {
                 public void onClick(View view) { ApriMappaDist(); }
             });
 
+            btFaq.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ApriFaq();
+                }
+            });
 
+            btContatti.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ApriContatti();
+                }
+            });
 
         }
 
@@ -88,6 +104,16 @@ public class MyProfile extends Activity {
 
     public void ApriMappaDist(){
         final Intent intent = new Intent(this,MapsActivity.class); // SWIPE E TAB + JSON NOT VIEW
+        startActivity(intent); // Launch the Intent
+    }
+
+    public void ApriFaq(){
+        final Intent intent = new Intent(this,Faq.class); // SWIPE E TAB + JSON NOT VIEW
+        startActivity(intent); // Launch the Intent
+    }
+
+    public void ApriContatti(){
+        final Intent intent = new Intent(this,Contatti.class); // SWIPE E TAB + JSON NOT VIEW
         startActivity(intent); // Launch the Intent
     }
 
