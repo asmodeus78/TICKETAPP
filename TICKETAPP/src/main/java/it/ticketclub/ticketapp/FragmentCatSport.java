@@ -23,6 +23,7 @@ public class FragmentCatSport extends Fragment {
 
     public String citta="";
 
+
     public static FragmentCatSport newInstance() {
         FragmentCatSport fragment = new FragmentCatSport();
         return fragment;
@@ -32,7 +33,11 @@ public class FragmentCatSport extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
+
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+
 
         new GetTicketsFromDb() {
 
@@ -51,6 +56,13 @@ public class FragmentCatSport extends Fragment {
                 CustomAdapter adapter = new CustomAdapter(getActivity(), R.layout.row_ticket, result);
                 adapter.notifyDataSetChanged();
                 listView.setAdapter(adapter);
+
+                TextView resultText = (TextView) vista.findViewById(R.id.resultText);
+                if (result.isEmpty()) {
+                    resultText.setText("Nessun risultato trovato");
+                }else{
+                    resultText.setText("");
+                }
 
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> parent, View view,
@@ -134,6 +146,9 @@ public class FragmentCatSport extends Fragment {
 
 
             Log.d("FIRST ACTIVITY", " SPORT E MOTORI " + c.getCount());
+
+
+
 
 
 

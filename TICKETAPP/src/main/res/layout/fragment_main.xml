@@ -8,10 +8,19 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="it.ticketclub.ticketapp.FirstActivity$PlaceholderFragment">
 
+
     <TextView
-        android:id="@+id/section_label"
+        android:id="@+id/resultText"
+        android:text=""
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:textColor="#f99d1c"
+        android:textSize="20dp"
+        android:layout_marginTop="103dp" />
+
 
     <ListView
         android:id="@+id/ListViewDemo"
@@ -19,6 +28,7 @@
         android:layout_height="fill_parent"
         android:padding="0dp"
         android:clickable="true" />
+
 
 
 

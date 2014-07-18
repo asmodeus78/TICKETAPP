@@ -39,7 +39,7 @@
         android:id="@+id/TK_crediti"
         android:layout_below="@+id/TK_nominativo"
         android:layout_toRightOf="@+id/TK_image_profile"
-        android:layout_marginTop="5dp"/>
+       />
 
 
 

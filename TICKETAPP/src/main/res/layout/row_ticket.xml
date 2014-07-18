@@ -48,9 +48,9 @@
         android:text="McDonald's - Caserta - Napoli"
         android:textSize="14dp"
         android:textStyle="bold"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="140dp"
-    />
+        android:layout_marginBottom="5dp"
+        android:layout_above="@+id/TK_titolo"
+        android:layout_alignLeft="@+id/TK_codice" />
 
     <TextView
         android:id="@+id/TK_titolo"
@@ -60,11 +60,10 @@
         android:textColor="#fff"
         android:textSize="14dp"
         android:textStyle="normal"
-        android:layout_marginLeft="8dp"
-        android:layout_below="@+id/TK_titoloSup"
-        android:layout_marginTop="5dp"
         android:autoText="false"
-    />
+        android:layout_marginBottom="5dp"
+        android:layout_above="@+id/TK_scaricati"
+        android:layout_alignLeft="@+id/TK_titoloSup" />
 
     <TextView
         android:id="@+id/TK_scaricati"
@@ -74,11 +73,11 @@
         android:textColor="#fff"
         android:textSize="14dp"
         android:textStyle="normal"
-        android:layout_marginLeft="8dp"
-        android:layout_below="@+id/TK_titolo"
-        android:layout_marginTop="5dp"
         android:autoText="false"
-        android:enabled="false" />
+        android:enabled="false"
+        android:layout_marginBottom="20dp"
+        android:layout_alignBottom="@+id/TK_image"
+        android:layout_alignLeft="@+id/TK_titolo" />
 
 
 

@@ -30,7 +30,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -45,6 +49,7 @@ import android.widget.Toast;
 public class FirstActivity extends ActionBarActivity implements ActionBar.TabListener {
 
     private MenuItem mSpinnerItem = null;
+
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -67,8 +72,60 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
 
+
+
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+        LayoutInflater mInflater = LayoutInflater.from(this);
+
+        View mCustomView = mInflater.inflate(R.layout.custom_actionbar, null);
+
+        actionBar.setCustomView(mCustomView);
+        actionBar.setDisplayShowCustomEnabled(true);
+
+        View homeIcon = findViewById(android.R.id.home);
+        ((View) homeIcon.getParent()).setVisibility(View.GONE);
+
+
+
+
+        ImageButton btCerca = (ImageButton) findViewById(R.id.cerca);
+
+        /*btCerca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View viewPopUp = this.getLayoutInflater().inflate(R.layout.form_popup, null);
+                PopupWindow pw = new PopupWindow(viewPopUp, RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT, true);
+
+                //((TextView)pw.getContentView().findViewById(R.id.my_textview)).setText("hello there");
+
+                pw.showAtLocation();
+
+            }
+        });*/
+
+        ImageButton btProfile = (ImageButton) findViewById(R.id.btProfile);
+        btProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ApriProfilo();
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         //actionBar.setHomeButtonEnabled(true);
@@ -161,9 +218,9 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         switch (item.getItemId()) {
 
 
-            case R.id.menu_profilo:
+            /*case R.id.menu_profilo:
                 ApriProfilo();
-                return true;
+                return true;*/
 
             case R.id.action_salerno:
                 FiltraCitta("SALERNO");

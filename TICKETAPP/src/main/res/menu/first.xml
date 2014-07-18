@@ -60,13 +60,13 @@
 
     </item>
 
-
+<!--
     <item
         android:id="@+id/menu_profilo"
         android:icon="@drawable/ic_action_overflow"
         app:showAsAction="always"
         android:title="More">
-        <!--
+
         <menu>
             <item android:id="@+id/menu_myTicket"
                 android:title="Ticket Scaricati"
@@ -83,10 +83,10 @@
                 app:showAsAction="never"
             />
         </menu>
-        -->
+
     </item>
 
-
+-->
 
 
 

@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.location.Criteria;
 import android.location.LocationManager;
@@ -109,6 +110,11 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        //View homeIcon = findViewById(android.R.id.home);
+        //((View) homeIcon.getParent()).setVisibility(View.GONE);
+
+        this.setTitleColor(Color.WHITE);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -391,6 +397,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             String nominativo = c3.getString(11);
             String telefono = c3.getString(12);
             String sitoWeb = c3.getString(13);
+
 
             Double latDest = Double.valueOf("0");
             Double lonDest = Double.valueOf("0");
@@ -696,6 +703,10 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
 
 
+
+
+
+
             //getArguments().getInt(ARG_SECTION_NUMBER);
 
             Setup conf = new Setup();
@@ -734,9 +745,13 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
                         String dataScadenza = c2.getString(14);
                         String crediti = c2.getString(15);
                         String codice = c2.getString(1);
+                        String nominativo = c2.getString(11);
 
 
+                        getActivity().setTitle(nominativo);
+                        //getActivity().setTitleColor(Color.WHITE);
 
+                        //getActivity().setI
 
 
 

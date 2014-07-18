@@ -621,6 +621,8 @@ public class SplashActivity extends Activity {
 
                         String seo = c.getString("SEO").toUpperCase();
 
+                        String ordine = c.getString("ordine");
+
                         Log.d("COLONNA",seo);
 
 
@@ -644,7 +646,7 @@ public class SplashActivity extends Activity {
                         //listx.add(new Ticket(id,categoria,codice,titolo,titoloSup,photo,scaricati,mediaVoto));
 
 
-                        db.insertTicket(id,categoria,codice,titolo,titoloSup,Float.parseFloat(mediaVoto),Integer.parseInt(scaricati),descrizione,indirizzo,lat,lon,nominativo,telefono,sito,dataScadenza,prezzoCr,seo);
+                        db.insertTicket(id,categoria,codice,titolo,titoloSup,Float.parseFloat(mediaVoto),Integer.parseInt(scaricati),descrizione,indirizzo,lat,lon,nominativo,telefono,sito,dataScadenza,prezzoCr,seo,ordine);
                         Log.d("COLONNA","Inserito " + i);
 
 

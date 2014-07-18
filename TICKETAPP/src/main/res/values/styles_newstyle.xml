@@ -45,7 +45,15 @@
         <item name="backgroundSplit">@drawable/ab_bottom_solid_newstyle</item>
         <item name="progressBarStyle">@style/ProgressBar.Newstyle</item>
         <item name="android:textColor">#ffffff</item>
+        <item name="android:titleTextStyle">@style/Theme.Newstyle.MyActionBar.TitleTextStyle</item>
     </style>
+    <style name="Theme.Newstyle.MyActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
 
     <style name="ActionBar.Transparent.Newstyle" parent="@style/Widget.AppCompat.Light.ActionBar">
         <item name="background">@drawable/ab_transparent_newstyle</item>

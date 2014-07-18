@@ -18,7 +18,7 @@ public class MyDatabase {
     Context mContext;
 
     private static final String DB_NAME="ticketclub.db";//nome del db
-    private static final int DB_VERSION=5; //numero di versione del nostro db
+    private static final int DB_VERSION=6; //numero di versione del nostro db
 
     // GESTIONE DATABASE
     public MyDatabase(Context ctx){
@@ -51,7 +51,7 @@ public class MyDatabase {
         static final String TICKET_SCARICATI_KEY  = "scaricati";
         static final String TICKET_MEDIA_VOTI_KEY  = "mediaVoti";
         static final String TICKET_NOMINATIVO_KEY  = "nominativo";
-        //static final String TICKET_ORDINE_KEY  = "ordine";
+        static final String TICKET_ORDINE_KEY  = "ordine";
         //static final String TICKET_PREZZO_KEY  = "prezzo";
 
         static final String TICKET_TELEFONO_KEY  = "telefono";
@@ -139,7 +139,7 @@ public class MyDatabase {
         //}
 
     }
-    public void insertTicket(int id, String categoria, String codice, String titolo, String titoloSup, float mediaVoti, int scaricati, String descrizione, String indirizzo, String lat, String lon, String nominativo, String telefono, String sito, String dataScadenza, String prezzoCr, String seo){ //metodo per inserire i dati
+    public void insertTicket(int id, String categoria, String codice, String titolo, String titoloSup, float mediaVoti, int scaricati, String descrizione, String indirizzo, String lat, String lon, String nominativo, String telefono, String sito, String dataScadenza, String prezzoCr, String seo, String ordine){ //metodo per inserire i dati
         ContentValues cv=new ContentValues();
         cv.put(TicketMetaData.ID, id);
         cv.put(TicketMetaData.TICKET_CATEGORIA_KEY , categoria);
@@ -162,6 +162,8 @@ public class MyDatabase {
         cv.put(TicketMetaData.TICKET_PREZZO_CR_KEY, prezzoCr);
 
         cv.put(TicketMetaData.TICKET_SEO, seo);
+
+        cv.put(TicketMetaData.TICKET_ORDINE_KEY, ordine);
 
         db.insert(TicketMetaData.TICKET_TABLE, null, cv);
 
@@ -210,20 +212,20 @@ public class MyDatabase {
 
     //COMMAND FOR FETCH DATA
     public Cursor fetchTicket(){ //metodo per fare la query di tutti i dati
-        return db.query(TicketMetaData.TICKET_TABLE, null,null,null,null,null,null);
+        return db.query(TicketMetaData.TICKET_TABLE, null,null,null,null,null,TicketMetaData.TICKET_ORDINE_KEY);
     }
     public Cursor fetchMyTicket(){ //metodo per fare la query di tutti i dati
-        return db.query(MyTicketMetaData.MYTICKET_TABLE, null,null,null,null,null,null);
+        return db.query(MyTicketMetaData.MYTICKET_TABLE, null,null,null,null,null,MyTicketMetaData.ID + " desc");
     }
     public Cursor fetchSingleTicket(String id){ //metodo per fare la query di tutti i dati
         return db.query(TicketMetaData.TICKET_TABLE, null,"idTicket=" + id,null,null,null,null);
     }
     public Cursor fetchTicketByCateg(String categoria){ //metodo per fare la query di tutti i dati
-        return db.query(TicketMetaData.TICKET_TABLE, null,"categoria='" + categoria + "'",null,null,null,null);
+        return db.query(TicketMetaData.TICKET_TABLE, null,"categoria='" + categoria + "'",null,null,null,TicketMetaData.TICKET_ORDINE_KEY);
     }
     public Cursor fetchTicketByCategCity(String categoria, String citta){
         Log.d("COLONNA",citta);
-        return db.query(TicketMetaData.TICKET_TABLE, null,"categoria like '%" + categoria + "%' and " + TicketMetaData.TICKET_SEO + " LIKE '%" + citta + "%'",null,null,null,null);
+        return db.query(TicketMetaData.TICKET_TABLE, null,"categoria like '%" + categoria + "%' and " + TicketMetaData.TICKET_SEO + " LIKE '%" + citta + "%'",null,null,null,TicketMetaData.TICKET_ORDINE_KEY);
     }
     public Cursor fetchFeedback(String id){
         return db.query(FeedBackMetaData.FEEDBACK_TABLE, null,"idTicket=" + id,null,null,null,null);
@@ -270,9 +272,9 @@ public class MyDatabase {
             + TicketMetaData.TICKET_SITO_KEY + " text null, "
             + TicketMetaData.TICKET_DATA_SCADENZA_KEY + " text null, "
             + TicketMetaData.TICKET_PREZZO_CR_KEY + " integer not null, "
-            + TicketMetaData.TICKET_SEO + " text null "
+            + TicketMetaData.TICKET_SEO + " text null, "
             //+ TicketMetaData.TICKET_PREZZO_KEY + " money null, "
-            //+ TicketMetaData.TICKET_ORDINE_KEY + " integer not null, "
+            + TicketMetaData.TICKET_ORDINE_KEY + " integer not null "
     + ")";
 
     //COMMAND FOR CREATE TABLE

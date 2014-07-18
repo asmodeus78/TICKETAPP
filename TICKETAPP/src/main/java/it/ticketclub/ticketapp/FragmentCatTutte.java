@@ -52,6 +52,13 @@ public class FragmentCatTutte extends Fragment {
                 adapter.notifyDataSetChanged();
                 listView.setAdapter(adapter);
 
+                TextView resultText = (TextView) vista.findViewById(R.id.resultText);
+                if (result.isEmpty()) {
+                    resultText.setText("Nessun risultato trovato");
+                }else{
+                    resultText.setText("");
+                }
+
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
