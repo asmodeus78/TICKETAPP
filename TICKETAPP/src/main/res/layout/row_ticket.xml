@@ -79,6 +79,19 @@
         android:layout_alignBottom="@+id/TK_image"
         android:layout_alignLeft="@+id/TK_titolo" />
 
+    <TextView
+        android:id="@+id/TK_km"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Km 0"
+        android:textColor="#fff"
+        android:textSize="14dp"
+        android:textStyle="normal"
+        android:autoText="false"
+        android:enabled="false"
+        android:layout_alignTop="@+id/TK_voto"
+        android:layout_centerHorizontal="true" />
+
 
 
     <TextView

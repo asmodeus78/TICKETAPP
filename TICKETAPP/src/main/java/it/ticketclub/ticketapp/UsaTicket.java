@@ -1,9 +1,11 @@
 package it.ticketclub.ticketapp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipDescription;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,6 +22,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import junit.framework.Test;
@@ -27,6 +30,7 @@ import junit.framework.Test;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -44,7 +48,8 @@ public class UsaTicket extends Activity
     ImageView talloncino;
     int touch=0;
 
-    String codice,id,nome,qta;
+    String codice,id,nome,qta,cweb,usato;
+    AlertDialog dialog;
 
     private static final String IMAGEVIEW_TAG = "The Android Logo";
 
@@ -59,22 +64,56 @@ public class UsaTicket extends Activity
 
         if (e != null) {
             codice = e.getString("codice");
-        }
-        if (e != null) {
             id = e.getString("id");
-        }
-        if (e != null) {
             nome = e.getString("nome");
-        }
-        if (e != null) {
             qta = e.getString("qta");
+            cweb = e.getString("cweb");
+            usato = e.getString("usato");
         }
+
+        Log.d("COLONNAA",usato);
+
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //Mostra button clicked
+                        final Intent intent2 = new Intent(getApplicationContext(), LasciaFeedback.class); // SWIPE E TAB + JSON NOT VIEW
+                        intent2.putExtra("id", id);
+                        intent2.putExtra("codice", codice);
+                        startActivity(intent2); // Launch the Intent
+
+                        break;
+
+                    case DialogInterface.BUTTON_POSITIVE:
+                        //Vota button clicked
+                        //Log.d("COLONNA", "CLICK VOTA " + TK_ID);
+
+                        final Intent intent = new Intent(getApplicationContext(),MyTicket.class); // SWIPE E TAB + JSON NOT VIEW
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent); // Launch the Intent
+
+                        finish();
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Ticket usato!")
+                .setMessage("Ora puoi lasciare un feedback per recuperare i crediti spesi!")
+                .setPositiveButton("Vota più tardi", dialogClickListener)
+                .setNegativeButton("VAI", dialogClickListener);
+
+        dialog = builder.create();
 
 
 
         ImageView TK_image = (ImageView) findViewById(R.id.TK_image);
         VerticalTextView txtConvenzionato = (VerticalTextView) findViewById(R.id.txtConvenzionato);
         VerticalTextView txtValidoN = (VerticalTextView) findViewById(R.id.txtValidoN);
+        final TextView codice_sicurezza = (TextView)findViewById(R.id.codice_sicurezza);
 
 
 
@@ -92,88 +131,73 @@ public class UsaTicket extends Activity
         }
 
         talloncino = (ImageView) findViewById(R.id.talloncino);
+        codice_sicurezza.setText(cweb);
 
-        slideup = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slideup);
-        talloncino.setTag(IMAGEVIEW_TAG);
+        if (usato.contentEquals("1")){
+            talloncino.setVisibility(View.INVISIBLE);
+            codice_sicurezza.setVisibility(View.INVISIBLE);
+        }else {
 
-        //talloncino.setOnLongClickListener(new MyClickListener());
+            slideup = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slideup);
+            talloncino.setTag(IMAGEVIEW_TAG);
+            talloncino.setOnTouchListener(new View.OnTouchListener() {
+                int prevX
+                        ,
+                        prevY
+                        ,
+                        primaY;
 
-        talloncino.setOnTouchListener(new View.OnTouchListener() {
-            int prevX,prevY,primaY;
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
 
+                    final RelativeLayout.LayoutParams par = (RelativeLayout.LayoutParams) v.getLayoutParams();
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_MOVE: {
+                            par.topMargin += (int) event.getRawY() - prevY;
+                            prevY = (int) event.getRawY();
+                            v.setLayoutParams(par);
 
-
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                final RelativeLayout.LayoutParams par=(RelativeLayout.LayoutParams)v.getLayoutParams();
-                switch(event.getAction())
-                {
-                    case MotionEvent.ACTION_MOVE:
-                    {
-                        par.topMargin+=(int)event.getRawY()-prevY;
-                        prevY=(int)event.getRawY();
-                        v.setLayoutParams(par);
-
-                        return true;
-                    }
-                    case MotionEvent.ACTION_UP:
-                    {
-                        par.topMargin+=(int)event.getRawY()-prevY;
-                        v.setLayoutParams(par);
-                        return true;
-                    }
-                    case MotionEvent.ACTION_DOWN:
-                    {
-                        prevY=(int)event.getRawY();
-                        par.bottomMargin=-2*v.getHeight();
-                        v.setLayoutParams(par);
-
-                        if (touch==0){
-                            MediaPlayer mp = MediaPlayer.create(UsaTicket.this, R.raw.paper_rip);
-                            mp.start();
-                            talloncino.startAnimation(slideup);
-                            touch=1;
-
-                            pDialog = new ProgressDialog(UsaTicket.this);
-                            pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                            pDialog.setTitle("Attendere Prego...");
-                            pDialog.setMessage("Sto inviando il feedback...");
-                            pDialog.setCancelable(false);
-                            pDialog.setProgress(0);
-                            pDialog.show();
-
-                            url = "http://www.ticketclub.it/APP/ticket_view.php?CMD=USA";
-                            url += "&idticketemesso=" + id;
-
-
-
-                            Log.d("COLONNA5",url);
-                            new TicketUsato().execute();
+                            return true;
                         }
+                        case MotionEvent.ACTION_UP: {
+                            par.topMargin += (int) event.getRawY() - prevY;
+                            v.setLayoutParams(par);
+                            return true;
+                        }
+                        case MotionEvent.ACTION_DOWN: {
+                            prevY = (int) event.getRawY();
+                            par.bottomMargin = -2 * v.getHeight();
+                            v.setLayoutParams(par);
 
-                        return true;
+                            if (touch == 0) {
+                                MediaPlayer mp = MediaPlayer.create(UsaTicket.this, R.raw.strappo);
+                                codice_sicurezza.setVisibility(View.INVISIBLE);
+
+                                mp.start();
+                                talloncino.startAnimation(slideup);
+                                touch = 1;
+
+
+
+                                url = "http://www.ticketclub.it/APP/ticket_view.php?CMD=USA";
+                                url += "&idticketemesso=" + id;
+
+
+                                Log.d("COLONNA5", url);
+                                new TicketUsato().execute();
+                            }
+
+                            return true;
+                        }
                     }
+
+
+                    return false;
                 }
+            });
 
+        }
 
-
-
-                return false;
-            }
-        });
-
-
-        /*talloncino.setOnDragListener(new View.OnDragListener() {
-            @Override
-            public boolean onDrag(View v, DragEvent event) {
-
-
-
-                return true;
-            }
-        });*/
 
     }
 
@@ -272,9 +296,7 @@ public class UsaTicket extends Activity
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-            if(pDialog.isShowing()) {
-                pDialog.dismiss();
-            }
+
 
             if (messaggio.equals("OK")){
                 MyDatabase db=new MyDatabase(getApplicationContext());
@@ -286,11 +308,9 @@ public class UsaTicket extends Activity
 
                 Toast.makeText(getApplicationContext(),"TICKET USATO",Toast.LENGTH_LONG).show();
 
-                final Intent intent = new Intent(getApplicationContext(),MyTicket.class); // SWIPE E TAB + JSON NOT VIEW
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent); // Launch the Intent
+                dialog.show();
 
-                finish();
+
             }else{
                 Toast.makeText(getApplicationContext(),"Errore riprova più tardi",Toast.LENGTH_LONG).show();
             }

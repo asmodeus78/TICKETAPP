@@ -60,6 +60,10 @@ public class CustomAdapter_MyTicket extends ArrayAdapter<Ticket2> {
             viewHolder.TK_image  = (ImageView)convertView.findViewById(R.id.TK_image);
            // viewHolder.TK_voto  = (RatingBar)convertView.findViewById(R.id.TK_voto);
             viewHolder.TK_qta  = (TextView)convertView.findViewById(R.id.TK_qta);
+
+            viewHolder.TK_cweb = (TextView)convertView.findViewById(R.id.TK_cweb);
+            viewHolder.TK_usato = (TextView)convertView.findViewById(R.id.TK_usato);
+
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -72,6 +76,8 @@ public class CustomAdapter_MyTicket extends ArrayAdapter<Ticket2> {
 
 
         viewHolder.TK_qta.setText(ticket.getQta());
+        viewHolder.TK_cweb.setText(ticket.getcWeb());
+        viewHolder.TK_usato.setText(ticket.getUsato());
 
         try {
             viewHolder.TK_titoloSup.setText(ticket.getTitoloSup().split(" - ")[0]);
@@ -114,6 +120,8 @@ public class CustomAdapter_MyTicket extends ArrayAdapter<Ticket2> {
         public ImageView TK_image;
         public TextView TK_qta;
         public TextView TK_Luogo;
+        public TextView TK_cweb;
+        public TextView TK_usato;
         //public TextView TK_scaricati;
     }
 

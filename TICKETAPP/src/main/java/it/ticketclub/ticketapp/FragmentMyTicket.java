@@ -67,6 +67,8 @@ public class FragmentMyTicket extends Fragment {
                         final String TK_NOME =  ((TextView) view.findViewById(R.id.TK_titoloSup)).getText().toString();
                         final String TK_DOVE =  ((TextView) view.findViewById(R.id.TK_Luogo)).getText().toString();
                         final String TK_QTA =  ((TextView) view.findViewById(R.id.TK_qta)).getText().toString();
+                        final String TK_CWEB = ((TextView) view.findViewById(R.id.TK_cweb)).getText().toString();
+                        final String TK_USATO = ((TextView) view.findViewById(R.id.TK_usato)).getText().toString();
 
 
                         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -81,6 +83,8 @@ public class FragmentMyTicket extends Fragment {
                                         intent2b.putExtra("codice",TK_CODICE);
                                         intent2b.putExtra("nome",TK_NOME + " - " + TK_DOVE + "  ");
                                         intent2b.putExtra("qta",TK_QTA);
+                                        intent2b.putExtra("cweb",TK_CWEB);
+                                        intent2b.putExtra("usato",TK_USATO);
                                         startActivity(intent2b); // Launch the Intent
 
                                         break;
@@ -88,10 +92,12 @@ public class FragmentMyTicket extends Fragment {
                                     case DialogInterface.BUTTON_POSITIVE:
                                         //Vota button clicked
                                         //Log.d("COLONNA", "CLICK VOTA " + TK_ID);
-                                        final Intent intent2 = new Intent(getActivity(),LasciaFeedback.class); // SWIPE E TAB + JSON NOT VIEW
-                                        intent2.putExtra("id",TK_ID);
-                                        intent2.putExtra("codice",TK_CODICE);
-                                        startActivity(intent2); // Launch the Intent
+
+                                            final Intent intent2 = new Intent(getActivity(), LasciaFeedback.class); // SWIPE E TAB + JSON NOT VIEW
+                                            intent2.putExtra("id", TK_ID);
+                                            intent2.putExtra("codice", TK_CODICE);
+                                            startActivity(intent2); // Launch the Intent
+
                                         //getActivity().finish(); // We finish the current Activity
                                         break;
                                 }
@@ -101,31 +107,15 @@ public class FragmentMyTicket extends Fragment {
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setMessage(TK_NOME)
-                                .setPositiveButton("VOTA", dialogClickListener)
-                                .setNegativeButton("MOSTRA", dialogClickListener)
-                        .show();
+                            .setPositiveButton("VOTA", dialogClickListener)
+                            .setNegativeButton("MOSTRA", dialogClickListener);
 
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
 
-
-                        /*view.findViewById(R.id.TK_image).setOnClickListener(new View.OnClickListener() {
-                             @Override
-                             public void onClick(View v) {
-                                 Log.d("COLONNA","CLICK IMMAGINE" + TK_ID);
-
-                             }
-                        });
-
-                        view.findViewById(R.id.TK_voto).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                Log.d("COLONNA", "CLICK VOTO" + TK_ID);
-
-                            }
-                        });*/
-
-
-
+                        if (TK_USATO.contentEquals("0")) {
+                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                        }
 
 
 

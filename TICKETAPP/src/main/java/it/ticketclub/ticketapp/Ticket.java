@@ -10,12 +10,14 @@ public class Ticket {
     private String titolo;
     private String titoloSup;
     private String foto;
+    private String lat;
+    private String lon;
 
     private Integer scaricati;
     private Float mediaVoti;
 
 
-    public Ticket(Integer id, String categoria, String codice, String titolo, String titoloSup, String foto, Integer scaricati, Float mediaVoti){
+    public Ticket(Integer id, String categoria, String codice, String titolo, String titoloSup, String foto, Integer scaricati, Float mediaVoti, String lat, String lon){
         this.id = id;
         this.categoria = categoria;
         this.codice = codice;
@@ -24,6 +26,8 @@ public class Ticket {
         this.foto = foto;
         this.scaricati = scaricati;
         this.mediaVoti = mediaVoti;
+        this.lat = lat;
+        this.lon = lon;
     }
 
     public Integer getId(){
@@ -68,6 +72,19 @@ public class Ticket {
     public void setScaricati(Integer scaricati){this.scaricati = scaricati; }
     public void setMediaVoti(Float mediaVoti){this.mediaVoti = mediaVoti; }
 
+    public String getLat() {
+        return lat;
+    }
 
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
 
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
 }

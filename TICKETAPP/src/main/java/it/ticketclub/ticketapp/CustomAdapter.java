@@ -4,6 +4,9 @@ import android.content.Context;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Environment;
 import android.text.Html;
 import android.util.Log;
@@ -16,9 +19,12 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import it.ticketclub.ticketapp.Ticket;
@@ -44,6 +50,16 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
 
     public View getViewOptimize(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder = null;
+
+        LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        Criteria crit = new Criteria();
+        crit.setAccuracy(Criteria.ACCURACY_FINE);
+        String provider = locationManager.getBestProvider(crit, true);
+
+        Location loc = locationManager.getLastKnownLocation(provider);
+        Location loc2 = locationManager.getLastKnownLocation(provider);
+
+
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.row_ticket, null);
@@ -56,6 +72,7 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
             viewHolder.TK_image  = (ImageView)convertView.findViewById(R.id.TK_image);
             viewHolder.TK_voto  = (RatingBar)convertView.findViewById(R.id.TK_voto);
             viewHolder.TK_scaricati  = (TextView)convertView.findViewById(R.id.TK_scaricati);
+            viewHolder.TK_km = (TextView)convertView.findViewById(R.id.TK_km);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -67,6 +84,40 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
         viewHolder.TK_titolo.setText(Html.fromHtml(ticket.getTitolo()));
         viewHolder.TK_titoloSup.setText(Html.fromHtml(ticket.getTitoloSup()));
         viewHolder.TK_scaricati.setText("Scaricati: " + ticket.getScaricati().toString());
+
+
+        String km = "0";
+
+        try {
+            double myLat = locationManager.getLastKnownLocation(provider).getLatitude();
+            double myLon = locationManager.getLastKnownLocation(provider).getLongitude();
+
+            double destLat = Double.parseDouble(ticket.getLat());
+            double destLon = Double.parseDouble(ticket.getLon());
+
+            loc2.setLatitude(destLat);
+            loc2.setLongitude(destLon);
+
+            double kmTemp = loc.distanceTo(loc2) / 1000;
+
+            DecimalFormat f = new DecimalFormat("#0.0");
+
+
+
+            km = String.valueOf(f.format(kmTemp)).replace(",",".");
+
+
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }catch (NumberFormatException e){
+            e.printStackTrace();
+        }
+
+
+
+
+
+        viewHolder.TK_km.setText("a  " + km + " Km");
 
         //Log.d("colonna1",ticket.getMediaVoti().toString());
 
@@ -100,8 +151,8 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
         public ImageView TK_image;
         public RatingBar TK_voto;
         public TextView TK_scaricati;
+        public TextView TK_km;
     }
-
 
 }
 

@@ -90,6 +90,17 @@
         android:layout_below="@+id/matrice"
         android:layout_toRightOf="@+id/txtScorri" />
 
+    <TextView
+        android:id="@+id/codice_sicurezza"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:text="WG000361H"
+        android:layout_marginLeft="57dp"
+        android:layout_alignBottom="@+id/txtScorri"
+        android:layout_alignLeft="@+id/TK_image" />
+
 
 
 </RelativeLayout>

@@ -153,13 +153,15 @@ public class FragmentCatShopping extends Fragment {
                     String titolo = c.getString(2);
                     String titoloSup = c.getString(3);
                     String categoria = c.getString(4);
+                    String lat = c.getString(9);
+                    String lon = c.getString(10);
 
                     Integer scaricati = c.getInt(5);
                     float mediaVoto = c.getFloat(6);
 
                     //String descrizione = c.getString(7);
 
-                    listx.add(new Ticket(id, categoria, codice, titolo, titoloSup, photo, scaricati, mediaVoto));
+                    listx.add(new Ticket(id, categoria, codice, titolo, titoloSup, photo, scaricati, mediaVoto, lat, lon));
 
                 } while (c.moveToNext());
             }
