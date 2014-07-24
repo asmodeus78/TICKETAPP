@@ -22,6 +22,7 @@ import java.util.LinkedList;
 public class FragmentCatEventi extends Fragment {
 
     public String citta="";
+    public String cerca="";
 
     public static FragmentCatEventi newInstance() {
         FragmentCatEventi fragment = new FragmentCatEventi();
@@ -119,7 +120,35 @@ public class FragmentCatEventi extends Fragment {
             db.open();  //apriamo il db
 
             Cursor c;
-            c = db.fetchTicketByCateg("Eventi");
+
+
+            try {
+
+                Setup application = (Setup) getActivity().getApplication() ;
+                citta = application.getTkCitta();
+                cerca = application.getTkCerca();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+
+            if (citta!="" && citta!=null && cerca!="" && cerca!=null){
+                c = db.fetchTicketByCategRicercaCitta("Eventi",cerca,citta);
+            }else{
+                if (citta!="" && citta!= null) {
+                    c = db.fetchTicketByCategCity("Eventi", citta);
+                }else {
+                    if (cerca!="" && cerca!=null){
+                        c = db.fetchTicketByCategRicercaCitta("Eventi",cerca,"");
+                    }else {
+                        c = db.fetchTicketByCateg("Eventi");
+                    }
+                }
+            }
+
+
+
             getActivity().startManagingCursor(c);
 
             Log.d("FIRST ACTIVITY", " EVENTI " + c.getCount());

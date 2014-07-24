@@ -5,7 +5,7 @@
     android:background="#f99d1c" >
 
     <ImageView
-        android:id="@+id/title_text"
+        android:id="@+id/logos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -16,14 +16,15 @@
 
     <ImageButton
         android:id="@+id/cerca"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="8dp"
-        android:background="@null"
+        android:background="#f99d1c"
+        android:queryHint="Cerca un ticket..."
         android:src="@drawable/ic_action_action_search"
-        />
+    />
 
     <ImageButton
         android:id="@+id/btProfile"
@@ -34,5 +35,34 @@
         android:layout_marginRight="8dp"
         android:background="@null"
         android:src="@drawable/ic_action_overflow" />
+
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text=""
+        android:textColor="#ffffff"
+        android:id="@+id/search_text"
+        android:hint="Cerca un ticket..."
+        android:visibility="invisible"
+        android:layout_marginLeft="95dp"
+        android:imeOptions="actionSearch"
+        android:inputType="textFilter|text"
+        android:singleLine="true" />
+
+
+    <ImageButton
+        android:id="@+id/btClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"
+        android:background="@null"
+        android:visibility="invisible"
+        android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
 </RelativeLayout>

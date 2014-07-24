@@ -22,6 +22,7 @@ import java.util.LinkedList;
 public class FragmentCatCasa extends Fragment {
 
     public String citta="";
+    public String cerca="";
 
     public static FragmentCatCasa newInstance() {
         FragmentCatCasa fragment = new FragmentCatCasa();
@@ -124,18 +125,27 @@ public class FragmentCatCasa extends Fragment {
 
                 Setup application = (Setup) getActivity().getApplication() ;
                 citta = application.getTkCitta();
+                cerca = application.getTkCerca();
 
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
 
 
-
-            if (citta!="" && citta!= null){
-                c = db.fetchTicketByCategCity("Casa e Servizi",citta);
-            }else {
-                c = db.fetchTicketByCateg("Casa e Servizi");
+            if (citta!="" && citta!=null && cerca!="" && cerca!=null){
+                c = db.fetchTicketByCategRicercaCitta("Casa e Servizi",cerca,citta);
+            }else{
+                if (citta!="" && citta!= null) {
+                    c = db.fetchTicketByCategCity("Casa e Servizi", citta);
+                }else {
+                    if (cerca!="" && cerca!=null){
+                        c = db.fetchTicketByCategRicercaCitta("Casa e Servizi",cerca,"");
+                    }else {
+                        c = db.fetchTicketByCateg("Casa e Servizi");
+                    }
+                }
             }
+
             getActivity().startManagingCursor(c);
 
 

@@ -1,17 +1,9 @@
 package it.ticketclub.ticketapp;
 
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-
-
-import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.os.AsyncTask;
-import android.provider.Settings;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -20,30 +12,22 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
+
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Toast;
 
 
 public class FirstActivity extends ActionBarActivity implements ActionBar.TabListener {
@@ -78,7 +62,7 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
-        LayoutInflater mInflater = LayoutInflater.from(this);
+        final LayoutInflater mInflater = LayoutInflater.from(this);
 
         View mCustomView = mInflater.inflate(R.layout.custom_actionbar, null);
 
@@ -89,24 +73,70 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         ((View) homeIcon.getParent()).setVisibility(View.GONE);
 
 
+        final ImageView logos = (ImageView) findViewById(R.id.logos);
+        final ImageButton btCerca = (ImageButton) findViewById(R.id.cerca);
+        final ImageButton btClose = (ImageButton) findViewById(R.id.btClose);
+        final ImageButton btProfile = (ImageButton) findViewById(R.id.btProfile);
+        final EditText textSearch = (EditText) findViewById(R.id.search_text);
+
+       // textSearch.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
 
-        ImageButton btCerca = (ImageButton) findViewById(R.id.cerca);
+        Setup application = (Setup) getApplication() ;
+        //citta = application.getTkCitta();
+        String RICERCA_HOLD = application.getTkCerca();
 
-        /*btCerca.setOnClickListener(new View.OnClickListener() {
+        try {
+            if (!RICERCA_HOLD.contentEquals("")) {
+                logos.setVisibility(View.INVISIBLE);
+                btClose.setVisibility(View.VISIBLE);
+                textSearch.setVisibility(View.VISIBLE);
+                btProfile.setVisibility(View.INVISIBLE);
+
+                textSearch.setText(RICERCA_HOLD);
+            }
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
+
+        textSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId==EditorInfo.IME_ACTION_SEARCH){
+                    Log.d("COLONNA",textSearch.getText().toString());
+                    FiltraTesto(textSearch.getText().toString());
+                }
+                return false;
+            }
+        });
+
+
+        btCerca.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View viewPopUp = this.getLayoutInflater().inflate(R.layout.form_popup, null);
-                PopupWindow pw = new PopupWindow(viewPopUp, RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT, true);
-
-                //((TextView)pw.getContentView().findViewById(R.id.my_textview)).setText("hello there");
-
-                pw.showAtLocation();
-
+                logos.setVisibility(View.INVISIBLE);
+                btClose.setVisibility(View.VISIBLE);
+                textSearch.setVisibility(View.VISIBLE);
+                btProfile.setVisibility(View.INVISIBLE);
             }
-        });*/
+        });
 
-        ImageButton btProfile = (ImageButton) findViewById(R.id.btProfile);
+
+        btClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logos.setVisibility(View.VISIBLE);
+                btClose.setVisibility(View.INVISIBLE);
+                textSearch.setVisibility(View.INVISIBLE);
+                btProfile.setVisibility(View.VISIBLE);
+
+                textSearch.setText("");
+                FiltraTesto(textSearch.getText().toString());
+            }
+        });
+
+
         btProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,17 +215,8 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater minf = getMenuInflater();
         minf.inflate(R.menu.first,menu);
-        //minf.inflate(R.menu.fragment_menu_top,menu);
 
 
-        //LayoutParams layout_params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-        /*View customNav = LayoutInflater.from(this).inflate(R.layout.fragment_menu_top, null);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setCustomView(customNav);*/
-
-
-        //mSpinnerItem = menu.findItem(R.id.action_citta);
-        //setupSpinner(mSpinnerItem);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -256,6 +277,14 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
     public void FiltraCitta(String city){
         application = (Setup) this.getApplication();
         application.setTkCitta(city);
+
+        finish();
+        startActivity(getIntent());
+    }
+
+    public void FiltraTesto(String testo){
+        application = (Setup) this.getApplication();
+        application.setTkCerca(testo);
 
         finish();
         startActivity(getIntent());

@@ -22,6 +22,7 @@ import java.util.LinkedList;
 public class FragmentCatSport extends Fragment {
 
     public String citta="";
+    public String cerca="";
 
 
     public static FragmentCatSport newInstance() {
@@ -129,19 +130,26 @@ public class FragmentCatSport extends Fragment {
 
                 Setup application = (Setup) getActivity().getApplication() ;
                 citta = application.getTkCitta();
+                cerca = application.getTkCerca();
 
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
 
 
-
-            if (citta!="" && citta!= null){
-                c = db.fetchTicketByCategCity("Sport e Motori",citta);
-            }else {
-                c = db.fetchTicketByCateg("Sport e Motori");
+            if (citta!="" && citta!=null && cerca!="" && cerca!=null){
+                c = db.fetchTicketByCategRicercaCitta("Sport e Motori",cerca,citta);
+            }else{
+                if (citta!="" && citta!= null) {
+                    c = db.fetchTicketByCategCity("Sport e Motori", citta);
+                }else {
+                    if (cerca!="" && cerca!=null){
+                        c = db.fetchTicketByCategRicercaCitta("Sport e Motori",cerca,"");
+                    }else {
+                        c = db.fetchTicketByCateg("Sport e Motori");
+                    }
+                }
             }
-            getActivity().startManagingCursor(c);
             
 
 

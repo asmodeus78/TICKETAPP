@@ -21,6 +21,9 @@ public class Setup extends Application {
     private String tkID;
 
     private String tkCitta;
+    private String tkCerca;
+
+
 
     private static Setup instance;
 
@@ -85,5 +88,14 @@ public class Setup extends Application {
     }
 
     public void setTkCitta(String s){tkCitta=s;}
+
+
+    public String getTkCerca() {
+        return tkCerca;
+    }
+
+    public void setTkCerca(String tkCerca) {
+        this.tkCerca = tkCerca;
+    }
 
 }

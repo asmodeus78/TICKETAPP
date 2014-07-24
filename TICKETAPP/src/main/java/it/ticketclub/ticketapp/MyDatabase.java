@@ -227,6 +227,19 @@ public class MyDatabase {
         Log.d("COLONNA",citta);
         return db.query(TicketMetaData.TICKET_TABLE, null,"categoria like '%" + categoria + "%' and " + TicketMetaData.TICKET_SEO + " LIKE '%" + citta + "%'",null,null,null,TicketMetaData.TICKET_ORDINE_KEY);
     }
+
+    public Cursor fetchTicketByRicerca(String cerca){
+        return db.query(TicketMetaData.TICKET_TABLE, null,"seo like '%" + cerca + "%'",null,null,null,TicketMetaData.TICKET_ORDINE_KEY);
+    }
+    public Cursor fetchTicketByRicercaCitta(String cerca, String citta){
+        return db.query(TicketMetaData.TICKET_TABLE, null,"seo like '%" + cerca + "%' and seo LIKE '%" + citta + "%'",null,null,null,TicketMetaData.TICKET_ORDINE_KEY);
+    }
+    public Cursor fetchTicketByCategRicercaCitta(String categoria, String cerca, String citta){
+        return db.query(TicketMetaData.TICKET_TABLE, null,"categoria like '%" + categoria + "%' and seo like '%" + cerca + "%' and " + TicketMetaData.TICKET_SEO + " LIKE '%" + citta + "%'",null,null,null,TicketMetaData.TICKET_ORDINE_KEY);
+    }
+
+
+
     public Cursor fetchFeedback(String id){
         return db.query(FeedBackMetaData.FEEDBACK_TABLE, null,"idTicket=" + id,null,null,null,null);
     }

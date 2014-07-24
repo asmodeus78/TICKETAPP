@@ -25,6 +25,7 @@ import java.util.LinkedList;
 public class FragmentCatRistorazione extends Fragment {
 
     public String citta="";
+    public String cerca="";
 
 
 
@@ -136,18 +137,29 @@ public class FragmentCatRistorazione extends Fragment {
 
                 Setup application = (Setup) getActivity().getApplication() ;
                 citta = application.getTkCitta();
+                cerca = application.getTkCerca();
 
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
 
 
-
-            if (citta!="" && citta!= null){
-                c = db.fetchTicketByCategCity("Ristorazione",citta);
-            }else {
-                c = db.fetchTicketByCateg("Ristorazione");
+            if (citta!="" && citta!=null && cerca!="" && cerca!=null){
+                c = db.fetchTicketByCategRicercaCitta("Ristorazione",cerca,citta);
+            }else{
+                if (citta!="" && citta!= null) {
+                    c = db.fetchTicketByCategCity("Ristorazione", citta);
+                }else {
+                    if (cerca!="" && cerca!=null){
+                        c = db.fetchTicketByCategRicercaCitta("Ristorazione",cerca,"");
+                    }else {
+                        c = db.fetchTicketByCateg("Ristorazione");
+                    }
+                }
             }
+
+
+
             getActivity().startManagingCursor(c);
 
             Log.d("FIRST ACTIVITY", " RISTORAZIONE " + c.getCount());
