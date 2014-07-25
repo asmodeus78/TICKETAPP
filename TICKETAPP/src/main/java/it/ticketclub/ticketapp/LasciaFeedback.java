@@ -1,19 +1,14 @@
 package it.ticketclub.ticketapp;
 
-import android.app.AlertDialog;
-import android.app.Application;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -24,8 +19,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.LinkedList;
-
-import it.ticketclub.ticketapp.R;
 
 public class LasciaFeedback extends ActionBarActivity {
 

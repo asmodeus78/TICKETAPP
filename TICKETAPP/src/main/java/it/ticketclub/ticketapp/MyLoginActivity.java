@@ -2,7 +2,9 @@ package it.ticketclub.ticketapp;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +57,8 @@ public class MyLoginActivity extends Activity {
     private Button buttonLoginLogout;
     private Button buttonSignUp;
 
+    private TextView txtPasswordLost;
+
     private Session.StatusCallback statusCallback = new SessionStatusCallback();
 
     public Setup application;
@@ -64,17 +69,58 @@ public class MyLoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_login);
 
-
+        /**********************************************************************/
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        final AlertDialog alertd = alert.create();
+        /**********************************************************************/
 
         application = (Setup) this.getApplication();
 
         buttonLoginLogout = (Button) findViewById(R.id.authButton);
         textInstructionsOrLink = (TextView) findViewById(R.id.instructionsOrLink);
-
-
         buttonSimplelogin = (Button) findViewById(R.id.bt_login);
-
         buttonSignUp = (Button) findViewById(R.id.bt_registrati);
+
+        txtPasswordLost = (TextView) findViewById(R.id.txtPasswordLost);
+        txtPasswordLost.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+
+                alert.setTitle("Recupera password");
+                //alert.setMessage("Match this to which alphabet?");
+                EditText input = new EditText(MyLoginActivity.this);
+                input.setHint("Inserisci la tua mail");
+
+                if(input.getParent() == null) {
+                    alert.setView(input);
+                } else {
+                    input = null;
+                    input = new EditText(MyLoginActivity.this);
+                    alert.setView(input);
+                }
+
+                final EditText input2 = input;
+
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String value = input2.getText().toString();
+
+                        Log.d("COLONNAA",value);
+                        //insertValue(value,st1,st2,st3,st4);
+                    }
+                });
+
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+                        dialog.cancel();
+                        alertd.dismiss();
+                    }
+                });
+
+                alert.show();
+            }
+        });
 
         Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
 

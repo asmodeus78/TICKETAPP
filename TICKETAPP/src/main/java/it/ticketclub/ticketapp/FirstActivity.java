@@ -1,20 +1,15 @@
 package it.ticketclub.ticketapp;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -22,8 +17,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -33,6 +28,10 @@ import android.widget.TextView;
 public class FirstActivity extends ActionBarActivity implements ActionBar.TabListener {
 
     private MenuItem mSpinnerItem = null;
+
+    private MenuItem mnuCity = null ;
+
+    private String RICERCA_CITTA="";
 
 
     /**
@@ -69,6 +68,8 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         actionBar.setCustomView(mCustomView);
         actionBar.setDisplayShowCustomEnabled(true);
 
+
+
         View homeIcon = findViewById(android.R.id.home);
         ((View) homeIcon.getParent()).setVisibility(View.GONE);
 
@@ -79,11 +80,10 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         final ImageButton btProfile = (ImageButton) findViewById(R.id.btProfile);
         final EditText textSearch = (EditText) findViewById(R.id.search_text);
 
-       // textSearch.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
 
         Setup application = (Setup) getApplication() ;
-        //citta = application.getTkCitta();
+        RICERCA_CITTA = application.getTkCitta();
         String RICERCA_HOLD = application.getTkCerca();
 
         try {
@@ -105,7 +105,18 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId==EditorInfo.IME_ACTION_SEARCH){
                     Log.d("COLONNA",textSearch.getText().toString());
+
+
                     FiltraTesto(textSearch.getText().toString());
+                   // InputMethodManager.HIDE_NOT_ALWAYS;
+
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
+
+
+
+
+
                 }
                 return false;
             }
@@ -217,6 +228,20 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         minf.inflate(R.menu.first,menu);
 
 
+
+
+        mnuCity = menu.findItem(R.id.txtCitySel);
+
+        try{
+            if (!RICERCA_CITTA.contentEquals("")) {
+                mnuCity.setTitle(RICERCA_CITTA);
+
+            }
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -236,6 +261,9 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
 
         //return super.onOptionsItemSelected(item);
 
+
+
+
         switch (item.getItemId()) {
 
 
@@ -244,28 +272,68 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                 return true;*/
 
             case R.id.action_salerno:
+                mnuCity.setTitle("Salerno");
                 FiltraCitta("SALERNO");
                 return true;
 
             case R.id.action_avellino:
+                mnuCity.setTitle("Avellino");
                 FiltraCitta("AVELLINO");
                 return true;
 
             case R.id.action_benevento:
+                mnuCity.setTitle("Benevento");
                 FiltraCitta("BENEVENTO");
                 return true;
 
             case R.id.action_caserta:
+                mnuCity.setTitle("Caserta");
                 FiltraCitta("CASERTA");
                 return true;
 
             case R.id.action_napoli:
+                mnuCity.setTitle("Napoli");
                 FiltraCitta("NAPOLI");
                 return true;
 
             case R.id.action_tutte:
+                mnuCity.setTitle("Tutte le Città");
                 FiltraCitta("");
                 return true;
+
+
+            case R.id.action_salerno1:
+                mnuCity.setTitle("Salerno");
+                FiltraCitta("SALERNO");
+                return true;
+
+            case R.id.action_avellino1:
+                mnuCity.setTitle("Avellino");
+                FiltraCitta("AVELLINO");
+                return true;
+
+            case R.id.action_benevento1:
+                mnuCity.setTitle("Benevento");
+                FiltraCitta("BENEVENTO");
+                return true;
+
+            case R.id.action_caserta1:
+                mnuCity.setTitle("Caserta");
+                FiltraCitta("CASERTA");
+                return true;
+
+            case R.id.action_napoli1:
+                mnuCity.setTitle("Napoli");
+                FiltraCitta("NAPOLI");
+                return true;
+
+            case R.id.action_tutte1:
+                mnuCity.setTitle("Tutte le Città");
+                FiltraCitta("");
+                return true;
+
+
+
 
 
             default:
@@ -278,16 +346,23 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         application = (Setup) this.getApplication();
         application.setTkCitta(city);
 
-        finish();
-        startActivity(getIntent());
+        overridePendingTransition(0,0);
+        Intent i = getIntent();
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+        overridePendingTransition(0,0);
     }
 
     public void FiltraTesto(String testo){
         application = (Setup) this.getApplication();
         application.setTkCerca(testo);
 
-        finish();
-        startActivity(getIntent());
+        overridePendingTransition(0,0);
+        Intent i = getIntent();
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+        overridePendingTransition(0, 0);
+
     }
 
 

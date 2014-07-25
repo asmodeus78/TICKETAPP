@@ -3,18 +3,8 @@ package it.ticketclub.ticketapp;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
-import android.text.Html;
-import android.text.Spanned;
-import android.util.Log;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
-/**
- * Created by Gio on 04/07/2014.
- */
 public class SingleTicket extends Activity {
 
     private String idTicket;
@@ -42,7 +32,7 @@ public class SingleTicket extends Activity {
     }
 
 
-
+/*
     public String getIdTicket() {
         return idTicket;
     }
@@ -50,7 +40,7 @@ public class SingleTicket extends Activity {
     public void setIdTicket(String idTicket) {
         this.idTicket = idTicket;
     }
-
+    */
     public String getDescrizione() {
         return descrizione;
     }
@@ -75,7 +65,7 @@ public class SingleTicket extends Activity {
         this.crediti = crediti;
     }
 
-    public SingleTicket(String idTicket,Context ctx,Activity act) {
+    public SingleTicket(String idTicket,Context ctx) {
         this.idTicket = idTicket;
 
         MyDatabase db2=new MyDatabase(ctx);

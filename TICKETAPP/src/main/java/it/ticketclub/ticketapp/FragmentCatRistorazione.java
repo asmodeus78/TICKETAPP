@@ -1,6 +1,5 @@
 package it.ticketclub.ticketapp;
 
-import android.app.Application;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -13,8 +12,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.json.JSONException;
 
 import java.util.LinkedList;
 
@@ -35,8 +32,7 @@ public class FragmentCatRistorazione extends Fragment {
 
 
     public static FragmentCatRistorazione newInstance() {
-        FragmentCatRistorazione fragment = new FragmentCatRistorazione();
-        return fragment;
+        return new FragmentCatRistorazione();
     }
 
     @Override

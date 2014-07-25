@@ -31,6 +31,9 @@
         <item name="android:actionModeBackground">@drawable/cab_background_top_newstyle</item>
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_newstyle</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Newstyle</item>
+
+        <item name="actionMenuTextColor">#ffffff</item>
+        <item name="android:actionMenuTextColor">#ffffff</item>
     </style>
 
     <style name="ActionBarTabStyle.Newstyle" parent="@android:style/Widget.Holo.ActionBar.TabView">
@@ -49,6 +52,7 @@
     <style name="ActionBarTabTextStyle.Newstyle" parent="@android:style/Widget.Holo.ActionBar.TabText">
         <item name="android:textColor">@color/tabtext_color_newstyle</item>
     </style>
+
 
 
 

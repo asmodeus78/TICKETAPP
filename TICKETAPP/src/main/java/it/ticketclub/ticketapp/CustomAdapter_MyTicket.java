@@ -1,7 +1,6 @@
 package it.ticketclub.ticketapp;
 
 import android.content.Context;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
@@ -11,20 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
-
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
-import it.ticketclub.ticketapp.Ticket;
 
-/**
- * Created by Gio on 15/04/2014.
- */
 public class CustomAdapter_MyTicket extends ArrayAdapter<Ticket2> {
 
     public static final File root = Environment.getExternalStorageDirectory();
@@ -42,7 +33,7 @@ public class CustomAdapter_MyTicket extends ArrayAdapter<Ticket2> {
     }
 
     public View getViewOptimize(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder = null;
+        ViewHolder viewHolder;
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.row_my_ticket, null);
@@ -70,8 +61,8 @@ public class CustomAdapter_MyTicket extends ArrayAdapter<Ticket2> {
         }
         Ticket2 ticket = getItem(position);
 
-        viewHolder.TK_id.setText(ticket.getId().toString());
-        viewHolder.TK_codice.setText(ticket.getCodice().toString());
+        viewHolder.TK_id.setText(ticket.getId());
+        viewHolder.TK_codice.setText(ticket.getCodice());
        // viewHolder.TK_titolo.setText(ticket.getTitolo());
 
 

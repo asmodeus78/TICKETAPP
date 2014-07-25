@@ -106,7 +106,21 @@
                     android:text="Accedi"
                     android:background="#f99d1c"
                     android:textColor="#ffffff"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    android:enabled="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="recupera password"
+                    android:id="@+id/txtPasswordLost"
+                    android:textColor="#f99d1c"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:autoText="false" />
 
                 <Button
                     android:id="@+id/bt_registrati"
@@ -117,7 +131,9 @@
                     android:text="Registrati"
                     android:background="#17901a"
                     android:textColor="#ffffff"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    android:enabled="true" />
 
 
                 <TextView

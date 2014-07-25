@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import it.ticketclub.ticketapp.R;
-
 public class Faq extends Activity {
 
     ExpandableListAdapter listAdapter;

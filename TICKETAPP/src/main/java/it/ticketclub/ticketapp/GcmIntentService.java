@@ -1,7 +1,6 @@
 package it.ticketclub.ticketapp;
 
 import android.app.IntentService;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -14,9 +13,7 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-/**
- * Created by Gio on 17/07/2014.
- */
+
 public class GcmIntentService extends IntentService {
     public static final int NOTIFICATION_ID = 1;
     private NotificationManager mNotificationManager;
@@ -60,6 +57,7 @@ public class GcmIntentService extends IntentService {
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
                 Log.i("PUSHNOTIFY", "Completed work @ " + SystemClock.elapsedRealtime());

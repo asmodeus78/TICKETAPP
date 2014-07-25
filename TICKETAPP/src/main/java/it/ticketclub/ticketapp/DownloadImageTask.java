@@ -5,20 +5,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Environment;
-
 import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 
-/**
- * Created by Gio on 15/04/2014.
- */
+
 class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     ImageView bmImage;
     public static final File root = Environment.getExternalStorageDirectory();
@@ -33,7 +29,7 @@ class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     protected Bitmap doInBackground(String... urls) {
         Log.d("colonna", path.toString());
 
-        String urldisplay="";
+        String urldisplay;
         if (urls[0].length()>30){
             urldisplay = "" + urls[0];
         }else {

@@ -1,7 +1,6 @@
 package it.ticketclub.ticketapp;
 
 import android.content.Context;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Criteria;
@@ -18,20 +17,11 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-
-import com.google.android.gms.maps.model.LatLng;
-
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import it.ticketclub.ticketapp.Ticket;
 
-/**
- * Created by Gio on 15/04/2014.
- */
 public class CustomAdapter extends ArrayAdapter<Ticket> {
 
     public static final File root = Environment.getExternalStorageDirectory();
@@ -49,7 +39,7 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
     }
 
     public View getViewOptimize(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder = null;
+        ViewHolder viewHolder;
 
         LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         Criteria crit = new Criteria();
@@ -80,7 +70,7 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
         Ticket ticket = getItem(position);
 
         viewHolder.TK_id.setText(ticket.getId().toString());
-        viewHolder.TK_codice.setText(ticket.getCodice().toString());
+        viewHolder.TK_codice.setText(ticket.getCodice());
         viewHolder.TK_titolo.setText(Html.fromHtml(ticket.getTitolo()));
         viewHolder.TK_titoloSup.setText(Html.fromHtml(ticket.getTitoloSup()));
         viewHolder.TK_scaricati.setText("Scaricati: " + ticket.getScaricati().toString());
@@ -89,8 +79,6 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
         String km = "0";
 
         try {
-            double myLat = locationManager.getLastKnownLocation(provider).getLatitude();
-            double myLon = locationManager.getLastKnownLocation(provider).getLongitude();
 
             double destLat = Double.parseDouble(ticket.getLat());
             double destLon = Double.parseDouble(ticket.getLon());
@@ -101,8 +89,6 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
             double kmTemp = loc.distanceTo(loc2) / 1000;
 
             DecimalFormat f = new DecimalFormat("#0.0");
-
-
 
             km = String.valueOf(f.format(kmTemp)).replace(",",".");
 

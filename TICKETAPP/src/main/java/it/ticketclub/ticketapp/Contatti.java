@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import it.ticketclub.ticketapp.R;
 
 public class Contatti extends Activity {
 

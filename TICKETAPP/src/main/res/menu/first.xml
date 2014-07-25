@@ -59,6 +59,41 @@
 
     </item>
 
+    <item android:id="@+id/txtCitySel"
+        android:title="Tutte le Città"
+        app:showAsAction="always">
+
+    <menu>
+        <item android:id="@+id/action_tutte1"
+            android:title="Tutte"
+            app:showAsAction="never"
+            />
+        <item android:id="@+id/action_avellino1"
+            android:title="Avellino"
+            app:showAsAction="never"
+            />
+        <item android:id="@+id/action_benevento1"
+            android:title="Benevento"
+            app:showAsAction="never"
+            />
+        <item android:id="@+id/action_caserta1"
+            android:title="Caserta"
+            app:showAsAction="never"
+            />
+        <item android:id="@+id/action_napoli1"
+            android:title="Napoli"
+            app:showAsAction="never"
+            />
+        <item android:id="@+id/action_salerno1"
+            android:title="Salerno"
+            app:showAsAction="never"
+            />
+
+    </menu>
+    </item>
+
+
+
 <!--
     <item
         android:id="@+id/menu_profilo"

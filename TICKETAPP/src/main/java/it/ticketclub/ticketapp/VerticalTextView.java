@@ -1,17 +1,13 @@
 package it.ticketclub.ticketapp;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Canvas;
-import android.graphics.Path;
 import android.graphics.Rect;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-/**
- * Created by Gio on 08/07/2014.
- */
+
 public class VerticalTextView extends TextView {
     private Rect bounds = new Rect();
     private TextPaint textPaint;
