@@ -105,6 +105,8 @@ public class MyLoginActivity extends Activity {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String value = input2.getText().toString();
 
+                        sendPwdInBackground(value);
+
                         Log.d("COLONNAA",value);
                         //insertValue(value,st1,st2,st3,st4);
                     }
@@ -261,6 +263,9 @@ public class MyLoginActivity extends Activity {
 
 
     }
+
+
+
 
 
     private String md5(String in) {
@@ -687,6 +692,57 @@ public class MyLoginActivity extends Activity {
             }
         }
         return false;
+
+    }
+
+
+
+
+    private void sendRetrivePwd(String email) {
+        // Your implementation here.
+
+        // Creating service handler class instance
+        ServiceHandler sh2 = new ServiceHandler();
+
+        // Making a request to url and getting response
+        String jsonStr = sh2.makeServiceCall("http://www.ticketclub.it/APP/ticket_view.php?CMD=RETR_PWD&email=" + email, ServiceHandler.GET);
+
+
+
+
+    }
+
+    private class sendPwdAsync extends AsyncTask<String, String, Void> {
+
+        @Override
+        protected Void doInBackground(String... params) {
+
+                Log.d("COLONNA4",params[0]);
+
+                sendRetrivePwd(params[0]);
+
+
+                return null;
+
+        }
+
+        @Override
+        protected void onPostExecute(Void msg) {
+            Context context = getApplicationContext();
+            CharSequence text = "una mail con la tua password ti sarà inviata al più presto";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+
+    }
+
+    private void sendPwdInBackground(String email)  {
+
+
+        new sendPwdAsync().execute(email);
+
+
 
     }
 

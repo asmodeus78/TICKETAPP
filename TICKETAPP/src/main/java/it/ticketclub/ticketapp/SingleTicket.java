@@ -7,6 +7,14 @@ import android.database.Cursor;
 
 public class SingleTicket extends Activity {
 
+    public String getIdTicket() {
+        return idTicket;
+    }
+
+    public void setIdTicket(String idTicket) {
+        this.idTicket = idTicket;
+    }
+
     private String idTicket;
     private String descrizione;
     private String codice;

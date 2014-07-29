@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +16,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -23,6 +26,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -48,9 +52,11 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -154,7 +160,8 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
         sharingButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                shareIt();
+                //shareIt();
+                shareIntent();
                 return true;
             }
         });
@@ -174,30 +181,149 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
 
 
-        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
 
         //sharingIntent.setType("*/*");
-        String shareBody = "Con TicketClub: \n" + tick.getTitolo() + "\n" + tick.getSecondoTitolo();
+        String shareBody = "Con TicketClub: \n" + tick.getTitolo() + "\n" + tick.getSecondoTitolo() + "\n" + "http://www.ticketclub.it/new_sito3/ticket-" + tick.getIdTicket() + "-" + tick.getTitolo().replace(" ","-");
 
         //File image = new File(Uri.parse(String.valueOf(Setup.getSetup().getPath() + "/" + tick.getCodice() + ".JPG")).toString());
         //sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(image));
         //shareMe(sharingIntent);
 
-        //sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Stacca la felicità");
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Stacca la felicità");
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+        sharingIntent.putExtra("return-data", true); //added snippet
         //startActivity(Intent.createChooser(sharingIntent, "Condividi e ricaricati"));
 
         startActivityForResult(Intent.createChooser(sharingIntent,"Condividi e ricaricati"), REQUEST_SHARE_RESULT);
 
     }
 
+    private class ricaricaCrediti extends AsyncTask<String, String, Void> {
+        @Override
+        protected Void doInBackground(String... params) {
+            String email = Setup.getSetup().getTkProfileEmail();
+            String crediti = "5";
+            String causale = "HAI CONDIVISO UN TICKET";
+
+            ServiceHandler sh = new ServiceHandler();
+            sh.makeServiceCall("http://www.ticketclub.it/APP/ticket_view.php?CMD=RICARICA&email=" + email + "&crediti=" + crediti + "&causale=" + causale.replace(" ","%20"),ServiceHandler.GET);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result){
+            super.onPostExecute(result);
+
+            Context context = getApplicationContext();
+            CharSequence text = "Complimenti\n" +
+                    "Hai condiviso un nostro Ticket e noi ti abbiamo premiato\ncon 5 crediti!";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+    }
+
+    private Intent shareIntent() {
+        List<Intent> targetedShareIntents = new ArrayList<Intent>();
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+
+
+
+        PackageManager pm = getPackageManager();
+        List<ResolveInfo> activityList = pm.queryIntentActivities(shareIntent, 0);
+        for (final ResolveInfo app : activityList) {
+            String packageName = app.activityInfo.packageName;
+            Log.d("COLONNA", "packageName(" + packageName +")");
+
+
+
+
+            SingleTicket tick = new SingleTicket(id,getApplicationContext());
+
+            Intent targetedShareIntent = new Intent(Intent.ACTION_SEND);
+            targetedShareIntent.setType("text/plain");
+            String shareBody = "Con TicketClub: \n" + tick.getTitolo() + "\n" + tick.getSecondoTitolo() + "\n" + "http://www.ticketclub.it/new_sito3/ticket-" + tick.getIdTicket() + "-" + tick.getTitolo().replace(" ","-");
+
+            //File image = new File(Uri.parse(String.valueOf(Setup.getSetup().getPath() + "/" + tick.getCodice() + ".JPG")).toString());
+            //sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(image));
+            //shareMe(sharingIntent);
+
+            targetedShareIntent.putExtra(Intent.EXTRA_SUBJECT, "Stacca la felicità");
+            targetedShareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+            targetedShareIntent.putExtra("return-data", true); //added snippet
+            //startActivity(Intent.createChooser(sharingIntent, "Condividi e ricaricati"));
+
+            /*if (TextUtils.equals(packageName, "com.twitter.android")) {
+                targetedShareIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+                        shareMsg);
+            } else if (TextUtils.equals(packageName, "com.facebook.android")) {
+                targetedShareIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+                        shareMsg);
+            } else if (TextUtils.equals(packageName, "com.google.android.apps.plus")) {
+                targetedShareIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+                        shareMsg);
+            } else if (TextUtils.equals(packageName, "com.google.android.gm")) {
+                targetedShareIntent.putExtra(android.content.Intent.EXTRA_EMAIL,
+                        new String[] {"email@hotmail.com", "email@gmail.com"});
+                targetedShareIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+                        emailMsg);
+            } else if (TextUtils.equals(packageName, "com.android.email")) {
+                targetedShareIntent.putExtra(android.content.Intent.EXTRA_EMAIL,
+                        new String[] {"email@hotmail.com", "email@gmail.com"});
+            } else if (TextUtils.equals(packageName, "com.android.ms")) {
+                targetedShareIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+                        shareMsg);
+            }*/
+
+            if (packageName.contentEquals("com.android.email")
+                 || packageName.contentEquals("com.google.android.gm")
+                 || packageName.contentEquals("com.android.mms")
+                 || packageName.contentEquals("com.facebook.katana")
+                 || packageName.contentEquals("com.twitter.android")
+                 || packageName.contentEquals("com.google.android.apps.plus")
+                 || packageName.contentEquals("com.whatsapp")
+            ) {
+                targetedShareIntent.setPackage(packageName);
+                targetedShareIntents.add(targetedShareIntent);
+            }
+
+        }
+        Intent chooserIntent = Intent.createChooser(targetedShareIntents.remove(0),
+                "Condividi e ricaricati");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS,
+                targetedShareIntents.toArray(new Parcelable[]{}));
+        startActivity(chooserIntent);
+        return shareIntent;
+    }
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("CONDIVISO","RITORNOOOOO E...");
-        if (requestCode == REQUEST_SHARE_RESULT) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.d("CONDIVISO1",String.valueOf(requestCode));
+        Log.d("CONDIVISO2",String.valueOf(resultCode));
+        Log.d("CONDIVISO3",String.valueOf(data));
+
+
+        Log.d("CONDIVISO4","RITORNOOOOO E...");
+        //if (requestCode == REQUEST_SHARE_RESULT) {
             if(resultCode == RESULT_OK){
                 //String result=data.getStringExtra("result");
+
+
+                new ricaricaCrediti().execute();
+
+
+
+
+
+
+
                 Log.d("CONDIVISO","OK");
             }
             if (resultCode == RESULT_CANCELED) {
@@ -208,11 +334,10 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             }
 
 
-        }
+        //}
 
 
-        String result=String.valueOf(requestCode);
-        Log.d("CONDIVISO zzz",result);
+
     }//onActivityResult
 
 
@@ -1092,6 +1217,15 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
                     CustomAdapter_Feedback adapter = new CustomAdapter_Feedback(getActivity(), R.layout.row_feedback, result);
                     adapter.notifyDataSetChanged();
                     listView.setAdapter(adapter);
+
+
+                    TextView resultText = (TextView) vista.findViewById(R.id.resultText);
+                    if (result.isEmpty()) {
+                        resultText.setText("Al momento non ci sono feedback");
+                    }else{
+                        resultText.setText("");
+                    }
+
                 }
 
 
