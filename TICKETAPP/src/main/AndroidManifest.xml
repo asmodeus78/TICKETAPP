@@ -71,8 +71,10 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
             <meta-data
                 android:name="android.support.UI_OPTIONS"
                 android:value="splitActionBarWhenNarrow" />
@@ -157,7 +159,7 @@
             android:name=".Chisiamo"
             android:label="@string/title_activity_chisiamo"
             android:logo="@drawable/icons"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 

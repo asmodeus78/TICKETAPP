@@ -38,6 +38,7 @@ public class LasciaFeedback extends ActionBarActivity {
         Bundle dati = getIntent().getExtras();
         final String idMyTicket = dati.getString("id");
         final String codice = dati.getString("codice");
+        final String qta = dati.getString("qta");
         idt = idMyTicket;
 
 
@@ -96,7 +97,7 @@ public class LasciaFeedback extends ActionBarActivity {
 
                   Setup application = (Setup) getApplication();
 
-                  url += "&codice=" + codice + "&idutente=" + application.getTkID() + "&voto=" + ratingBar.getRating() + "&commento=" + txtRecensione.getText().toString().replace(" ","%20") + "&idticketemesso=" + idMyTicket;
+                  url += "&qta=" + qta + "&codice=" + codice + "&idutente=" + application.getTkID() + "&voto=" + ratingBar.getRating() + "&commento=" + txtRecensione.getText().toString().replace(" ","%20") + "&idticketemesso=" + idMyTicket;
 
 
                   Log.d("COLONNA5",url);

@@ -96,6 +96,7 @@ public class FragmentMyTicket extends Fragment {
                                             final Intent intent2 = new Intent(getActivity(), LasciaFeedback.class); // SWIPE E TAB + JSON NOT VIEW
                                             intent2.putExtra("id", TK_ID);
                                             intent2.putExtra("codice", TK_CODICE);
+                                            intent2.putExtra("qta",TK_QTA);
                                             startActivity(intent2); // Launch the Intent
 
                                         //getActivity().finish(); // We finish the current Activity

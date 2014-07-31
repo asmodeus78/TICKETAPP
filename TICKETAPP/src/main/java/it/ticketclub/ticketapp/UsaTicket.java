@@ -75,6 +75,7 @@ public class UsaTicket extends Activity
                         final Intent intent2 = new Intent(getApplicationContext(), LasciaFeedback.class); // SWIPE E TAB + JSON NOT VIEW
                         intent2.putExtra("id", id);
                         intent2.putExtra("codice", codice);
+                        intent2.putExtra("qta", qta);
                         startActivity(intent2); // Launch the Intent
 
                         break;
@@ -117,11 +118,8 @@ public class UsaTicket extends Activity
 
         txtConvenzionato.setText(nome);
 
-        if (qta.contentEquals("1")) {
-            txtValidoN.setText("Valido per " + qta + " persona");
-        }else{
-            txtValidoN.setText("Valido per " + qta + " persone");
-        }
+        txtValidoN.setText("Valido per " + qta + " Ticket");
+
 
         talloncino = (ImageView) findViewById(R.id.talloncino);
         codice_sicurezza.setText(cweb);

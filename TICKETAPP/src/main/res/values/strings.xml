@@ -41,5 +41,6 @@
     <string name="title_activity_faq">Faq</string>
     <string name="title_activity_contatti">Contatti</string>
     <string name="title_activity_chisiamo">Chi Siamo</string>
+    <string name="title_activity_share">Condividi e Ricaricati</string>
 
 </resources>

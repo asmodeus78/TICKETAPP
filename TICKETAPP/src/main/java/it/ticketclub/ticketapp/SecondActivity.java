@@ -1,11 +1,13 @@
 package it.ticketclub.ticketapp;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +19,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.renderscript.Element;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -25,6 +28,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
+import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
@@ -35,8 +39,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -157,20 +163,43 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
         MenuItem sharingButton = menu.findItem(R.id.menu_item_share);
 
-        sharingButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                //shareIt();
-                shareIntent();
-                return true;
-            }
-        });
+        if (sharingButton != null) {
+            sharingButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    //shareIt();
+                    shareIntent();
+                    //shareDialog();
+
+
+
+                    return true;
+                }
+            });
+        }
 
 
         return true;
     }
 
+    private void shareDialog(){
 
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Condividi e ricaricati")
+                .setItems(R.array.share, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // The 'which' argument contains the index position
+                        // of the selected item
+                    }
+                });
+
+
+                AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+    }
 
     private void shareIt() {
         //sharing implementation here
@@ -232,16 +261,11 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
 
-
-
         PackageManager pm = getPackageManager();
         List<ResolveInfo> activityList = pm.queryIntentActivities(shareIntent, 0);
         for (final ResolveInfo app : activityList) {
             String packageName = app.activityInfo.packageName;
             Log.d("COLONNA", "packageName(" + packageName +")");
-
-
-
 
             SingleTicket tick = new SingleTicket(id,getApplicationContext());
 
@@ -249,36 +273,9 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             targetedShareIntent.setType("text/plain");
             String shareBody = "Con TicketClub: \n" + tick.getTitolo() + "\n" + tick.getSecondoTitolo() + "\n" + "http://www.ticketclub.it/new_sito3/ticket-" + tick.getIdTicket() + "-" + tick.getTitolo().replace(" ","-");
 
-            //File image = new File(Uri.parse(String.valueOf(Setup.getSetup().getPath() + "/" + tick.getCodice() + ".JPG")).toString());
-            //sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(image));
-            //shareMe(sharingIntent);
-
             targetedShareIntent.putExtra(Intent.EXTRA_SUBJECT, "Stacca la felicità");
             targetedShareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
             targetedShareIntent.putExtra("return-data", true); //added snippet
-            //startActivity(Intent.createChooser(sharingIntent, "Condividi e ricaricati"));
-
-            /*if (TextUtils.equals(packageName, "com.twitter.android")) {
-                targetedShareIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-                        shareMsg);
-            } else if (TextUtils.equals(packageName, "com.facebook.android")) {
-                targetedShareIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-                        shareMsg);
-            } else if (TextUtils.equals(packageName, "com.google.android.apps.plus")) {
-                targetedShareIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-                        shareMsg);
-            } else if (TextUtils.equals(packageName, "com.google.android.gm")) {
-                targetedShareIntent.putExtra(android.content.Intent.EXTRA_EMAIL,
-                        new String[] {"email@hotmail.com", "email@gmail.com"});
-                targetedShareIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-                        emailMsg);
-            } else if (TextUtils.equals(packageName, "com.android.email")) {
-                targetedShareIntent.putExtra(android.content.Intent.EXTRA_EMAIL,
-                        new String[] {"email@hotmail.com", "email@gmail.com"});
-            } else if (TextUtils.equals(packageName, "com.android.ms")) {
-                targetedShareIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-                        shareMsg);
-            }*/
 
             if (packageName.contentEquals("com.android.email")
                  || packageName.contentEquals("com.google.android.gm")
@@ -293,49 +290,34 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             }
 
         }
-        Intent chooserIntent = Intent.createChooser(targetedShareIntents.remove(0),
-                "Condividi e ricaricati");
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS,
-                targetedShareIntents.toArray(new Parcelable[]{}));
-        startActivity(chooserIntent);
+        Intent chooserIntent = Intent.createChooser(targetedShareIntents.remove(0),"Condividi e ricaricati");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[]{}));
+        startActivityForResult(chooserIntent, REQUEST_SHARE_RESULT);
+
+
+
         return shareIntent;
     }
 
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         Log.d("CONDIVISO1",String.valueOf(requestCode));
         Log.d("CONDIVISO2",String.valueOf(resultCode));
         Log.d("CONDIVISO3",String.valueOf(data));
-
-
         Log.d("CONDIVISO4","RITORNOOOOO E...");
-        //if (requestCode == REQUEST_SHARE_RESULT) {
+        /*if (requestCode == REQUEST_SHARE_RESULT) {
             if(resultCode == RESULT_OK){
-                //String result=data.getStringExtra("result");
-
-
                 new ricaricaCrediti().execute();
-
-
-
-
-
-
-
                 Log.d("CONDIVISO","OK");
             }
             if (resultCode == RESULT_CANCELED) {
                 //Write your code if there's no result
-
-
                 Log.d("CONDIVISO","KO");
             }
+        }*/
 
-
-        //}
-
+        new ricaricaCrediti().execute();
 
 
     }//onActivityResult
@@ -933,7 +915,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             btscarica.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+/*
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -941,36 +923,31 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
                             case DialogInterface.BUTTON_POSITIVE:
                                 //Yes button clicked
 
-                                final Intent intent;
-
-                                if (application.getTkStatusLogin()=="1"){
-
-                                    //new GetMyTickets().execute();
-
-                                    String cmd = "SCARICA_TICKET";
-                                    String email = application.getTkProfileEmail();
-                                    String crediti = textView2.getText().toString();
-                                    String codice = textView5.getText().toString();
-
-                                    urlDownload = "http://www.ticketclub.it/APP/ticket_view.php?CMD=" + cmd + "&crediti=" + crediti + "&email=" + email + "&&qta=1&codice=" + codice;
-
-                                    Log.d("URLD",urlDownload);
 
 
-
-                                    new GetDownloadTickets().execute();
-
-
-
-                                }else {
-                                    intent = new Intent(getActivity(),MyLoginActivity.class); // SWIPE E TAB + JSON NOT VIEW
-                                    startActivity(intent); // Launch the Intent
-                                }
 
                                 break;
 
                             case DialogInterface.BUTTON_NEGATIVE:
                                 //No button clicked
+                                break;
+
+                            case DialogInterface.BUTTON_NEUTRAL:
+                                //No button clicked
+                                final Intent intent;
+                                if (application.getTkStatusLogin()=="1"){
+                                    //new GetMyTickets().execute();
+                                    String cmd = "SCARICA_TICKET";
+                                    String email = application.getTkProfileEmail();
+                                    String crediti = textView2.getText().toString();
+                                    String codice = textView5.getText().toString();
+                                    urlDownload = "http://www.ticketclub.it/APP/ticket_view.php?CMD=" + cmd + "&crediti=" + crediti + "&email=" + email + "&&qta=1&codice=" + codice;
+                                    Log.d("URLD",urlDownload);
+                                    new GetDownloadTickets().execute();
+                                }else {
+                                    intent = new Intent(getActivity(),MyLoginActivity.class); // SWIPE E TAB + JSON NOT VIEW
+                                    startActivity(intent); // Launch the Intent
+                                }
                                 break;
                         }
                         }
@@ -978,11 +955,70 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setMessage("Vuoi scaricare il ticket ?").setPositiveButton("Yes", dialogClickListener)
-                            .setNegativeButton("No", dialogClickListener).show();
+                    builder.setTitle("TicketClub")
+                            .setMessage("Quantita: 1")
+                            .setPositiveButton("+", dialogClickListener)
+                            .setNeutralButton("OK",dialogClickListener)
+                            .setNegativeButton("-", dialogClickListener).show();
+*/
+
+                    LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    final View layout = inflater.inflate(R.layout.qta_selector, (ViewGroup) getActivity().findViewById(R.id.dialogNticket));
+
+                    SeekBar sb = (SeekBar)layout.findViewById(R.id.seekBar1);
+                    final TextView nt = (TextView)layout.findViewById(R.id.txtNticket);
+
+                    AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+
+                    alert.setView(layout);
+                    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            //Put actions for OK button here
+                            final Intent intent;
+                            if (application.getTkStatusLogin()=="1"){
+                                //new GetMyTickets().execute();
+                                String cmd = "SCARICA_TICKET";
+                                String email = application.getTkProfileEmail();
+                                String crediti = textView2.getText().toString();
+                                String codice = textView5.getText().toString();
+                                String qta = nt.getText().toString();
+                                urlDownload = "http://www.ticketclub.it/APP/ticket_view.php?CMD=" + cmd + "&crediti=" + crediti + "&email=" + email + "&qta=" + qta + "&codice=" + codice;
+                                Log.d("URLD",urlDownload);
+                                new GetDownloadTickets().execute();
+                            }else {
+                                intent = new Intent(getActivity(),MyLoginActivity.class); // SWIPE E TAB + JSON NOT VIEW
+                                startActivity(intent); // Launch the Intent
+                            }
+                        }
+                    });
+                    alert.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            //Put actions for CANCEL button here, or leave in blank
+                        }
+                    });
+                    alert.show();
 
 
 
+                    sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
+                            //Do something here with new value
+
+
+                            nt.setText("" + (progress+1));
+
+                        }
+
+                        @Override
+                        public void onStartTrackingTouch(SeekBar seekBar) {
+
+                        }
+
+                        @Override
+                        public void onStopTrackingTouch(SeekBar seekBar) {
+
+                        }
+                    });
 
 
 
