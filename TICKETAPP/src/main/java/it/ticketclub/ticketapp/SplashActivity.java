@@ -212,10 +212,16 @@ public class SplashActivity extends Activity {
         if (checkPlayServices()) {
             gcm = GoogleCloudMessaging.getInstance(this);
             regid = getRegistrationId(context);
+            //mDisplay.setVisibility(View.VISIBLE);
+            //mDisplay.setText(regid);
+            Log.d("GCM",regid);
 
-            if (regid.isEmpty()) {
+
+            //if (regid.isEmpty()) {
                 registerInBackground();
-            }
+            //}else{
+            //    sendRegistrationIdToBackend();
+            //}
         } else {
             Log.i("PUSHNOTIFY", "No valid Google Play Services APK found.");
         }
@@ -596,6 +602,8 @@ public class SplashActivity extends Activity {
                     for (int i = 0; i < tickets.length(); i++) {
                         JSONObject c = tickets.getJSONObject(i);
 
+
+
                         Integer id = c.getInt(TAG_ID);
                         String categoria = c.getString(TAG_CATEGORIA);
                         String titolo = c.getString(TAG_TITOLO);
@@ -640,6 +648,14 @@ public class SplashActivity extends Activity {
                         }
 
                         //listx.add(new Ticket(id,categoria,codice,titolo,titoloSup,photo,scaricati,mediaVoto));
+                        File path = new File(root.getAbsolutePath()+ "/Android/data/" + getApplication().getApplicationInfo().packageName + "/cache/");
+                        String CheckFile = photo;
+
+                        if (new File(path,CheckFile).exists()){
+
+                        }else {
+                            new DownloadImageTask2().execute(photo);
+                        }
 
 
                         db.insertTicket(id,categoria,codice,titolo,titoloSup,Float.parseFloat(mediaVoto),Integer.parseInt(scaricati),descrizione,indirizzo,lat,lon,nominativo,telefono,sito,dataScadenza,prezzoCr,seo,ordine);

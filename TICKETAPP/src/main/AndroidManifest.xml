@@ -161,6 +161,10 @@
             android:logo="@drawable/icons"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name=".Impostazioni"
+            android:label="@string/title_activity_impostazioni" >
+        </activity>
     </application>
 
     <!--

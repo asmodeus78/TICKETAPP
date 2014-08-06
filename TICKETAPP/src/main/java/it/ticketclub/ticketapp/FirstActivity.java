@@ -23,9 +23,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class FirstActivity extends ActionBarActivity implements ActionBar.TabListener {
+
+    GPSTracker gps;
 
     private MenuItem mSpinnerItem = null;
 
@@ -154,6 +157,13 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                 ApriProfilo();
             }
         });
+
+        gps = new GPSTracker(this);
+
+        if(!gps.canGetLocation()){
+            Toast.makeText(getApplicationContext(), "Impossibile trovare la posizione", Toast.LENGTH_LONG).show();
+            gps.showSettingsAlert();
+        }
 
 
 

@@ -1,10 +1,15 @@
 package it.ticketclub.ticketapp;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.RingtoneManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +28,7 @@ public class FragmentCatRistorazione extends Fragment {
 
     public String citta="";
     public String cerca="";
+
 
 
 
@@ -79,6 +85,8 @@ public class FragmentCatRistorazione extends Fragment {
                         startActivity(intent2); // Launch the Intent
                         //getActivity().finish(); // We finish the current Activity
 
+
+
                     }
                 });
             }
@@ -88,8 +96,6 @@ public class FragmentCatRistorazione extends Fragment {
 
         return rootView;
     }
-
-
 
 
 

@@ -266,8 +266,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Esci          "
-        android:id="@+id/bt_logout"
+        android:text="Impostazioni          "
+        android:id="@+id/bt_impostazioni"
         android:layout_alignLeft="@+id/TK_image_profile"
         android:layout_below="@+id/linea7"
         android:layout_centerHorizontal="true"
@@ -282,20 +282,52 @@
         android:id="@+id/imageView6"
         android:src="@drawable/abc_ic_ab_back_holo_light"
         android:rotation="-180"
+        android:layout_alignRight="@+id/bt_impostazioni"
+        android:layout_alignTop="@+id/bt_impostazioni"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="10dp" />
+
+    <LinearLayout
+        android:background="#ccc"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/bt_impostazioni"
+        android:id="@+id/linea8"
+        android:layout_centerHorizontal="true"></LinearLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Esci          "
+        android:id="@+id/bt_logout"
+        android:layout_alignLeft="@+id/TK_image_profile"
+        android:layout_below="@+id/linea8"
+        android:layout_centerHorizontal="true"
+        android:background="#fff"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView7"
+        android:src="@drawable/abc_ic_ab_back_holo_light"
+        android:rotation="-180"
         android:layout_alignRight="@+id/bt_logout"
         android:layout_alignTop="@+id/bt_logout"
         android:layout_marginTop="2dp"
         android:layout_marginRight="10dp" />
+
     <LinearLayout
-        android:id="@+id/linea8"
         android:background="#ccc"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/bt_logout"
         android:layout_centerHorizontal="true"></LinearLayout>
-
-
 
 
 </RelativeLayout>

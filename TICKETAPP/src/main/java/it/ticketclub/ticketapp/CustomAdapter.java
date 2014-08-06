@@ -3,7 +3,6 @@ package it.ticketclub.ticketapp;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Environment;
@@ -27,10 +26,18 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
     public static final File root = Environment.getExternalStorageDirectory();
     File path = new File(root.getAbsolutePath()+ "/Android/data/" + getContext().getApplicationInfo().packageName + "/cache/");
 
+    private Location loc = new Location(LocationManager.NETWORK_PROVIDER);
+    private Location loc2 = new Location(LocationManager.NETWORK_PROVIDER);
+
+    private String km;
+
 
     public CustomAdapter(Context context, int textViewResourceId,
                                  List<Ticket> objects) {
         super(context, textViewResourceId, objects);
+
+
+
     }
 
     @Override
@@ -39,15 +46,8 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
     }
 
     public View getViewOptimize(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
 
-        LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        Criteria crit = new Criteria();
-        crit.setAccuracy(Criteria.ACCURACY_FINE);
-        String provider = locationManager.getBestProvider(crit, true);
-
-        Location loc = locationManager.getLastKnownLocation(provider);
-        Location loc2 = locationManager.getLastKnownLocation(provider);
+        ViewHolder viewHolder = new ViewHolder();
 
 
         if (convertView == null) {
@@ -76,29 +76,25 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
         viewHolder.TK_scaricati.setText("Scaricati: " + ticket.getScaricati().toString());
 
 
-        String km = "0";
+        km="0";
 
         try {
+            loc2.setLatitude(Double.parseDouble(ticket.getLat()));
+            loc2.setLongitude(Double.parseDouble(ticket.getLon()));
 
-            double destLat = Double.parseDouble(ticket.getLat());
-            double destLon = Double.parseDouble(ticket.getLon());
-
-            loc2.setLatitude(destLat);
-            loc2.setLongitude(destLon);
+            loc.setLatitude(Setup.getSetup().getLat());
+            loc.setLongitude(Setup.getSetup().getLon());
 
             double kmTemp = loc.distanceTo(loc2) / 1000;
-
+            Log.d("POSbb", String.valueOf(kmTemp));
             DecimalFormat f = new DecimalFormat("#0.0");
+            km = String.valueOf(f.format(kmTemp)).replace(",", ".");
 
-            km = String.valueOf(f.format(kmTemp)).replace(",",".");
-
-
-        }catch (NullPointerException e){
-            e.printStackTrace();
+        }catch(NullPointerException e) {
+            Log.d("POSXABERR","errore calcolo distanza");
         }catch (NumberFormatException e){
-            e.printStackTrace();
+            Log.d("POSXABERR","errore non è un numero");
         }
-
 
 
 
@@ -118,7 +114,10 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
             viewHolder.TK_image.setImageBitmap(bMap);
             Log.d("colonna","carico foto da sd");
         }else {
-            new DownloadImageTask(viewHolder.TK_image).execute(ticket.getFoto());
+            //new DownloadImageTask(viewHolder.TK_image).execute(ticket.getFoto());
+            viewHolder.TK_image.setImageResource(R.drawable.loading2);
+            //new DownloadImageTask(viewHolder.TK_image).execute(ticket.getFoto());
+            //new DownloadImageTask2().execute(ticket.getFoto());
             Log.d("colonna","scarico il file della foto da internet: " + ticket.getFoto());
         }
 
@@ -138,6 +137,13 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
         public RatingBar TK_voto;
         public TextView TK_scaricati;
         public TextView TK_km;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        //do your sorting here
+
+        super.notifyDataSetChanged();
     }
 
 }

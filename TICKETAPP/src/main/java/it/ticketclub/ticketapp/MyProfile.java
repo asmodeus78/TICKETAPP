@@ -24,6 +24,7 @@ public class MyProfile extends Activity {
     private TextView txtNominativo;
     private TextView txtCrediti;
     private ImageView imgUser;
+    private TextView btImpostazioni;
 
 
     @Override
@@ -45,6 +46,7 @@ public class MyProfile extends Activity {
         btFaq = (TextView)findViewById(R.id.btFaq);
         btContatti = (TextView)findViewById(R.id.btContatti);
         btChisiamo = (TextView)findViewById(R.id.btChisiamo);
+        btImpostazioni = (TextView)findViewById(R.id.bt_impostazioni);
 
 
         if (application.getTkStatusLogin().contentEquals("1")){
@@ -94,10 +96,22 @@ public class MyProfile extends Activity {
                 }
             });
 
+            btImpostazioni.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ApriImpostazioni();
+                }
+            });
+
 
 
         }
 
+    }
+
+    public void ApriImpostazioni(){
+        final Intent intent = new Intent(this,Impostazioni.class); // SWIPE E TAB + JSON NOT VIEW
+        startActivity(intent); // Launch the Intent
     }
 
     public void ApriMappaDist(){

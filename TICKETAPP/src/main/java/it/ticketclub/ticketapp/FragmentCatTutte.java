@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 
 /**
@@ -51,6 +52,15 @@ public class FragmentCatTutte extends Fragment {
                 ListView listView = (ListView)vista.findViewById(R.id.ListViewDemo);
                 CustomAdapter adapter = new CustomAdapter(getActivity(), R.layout.row_ticket, result);
                 adapter.notifyDataSetChanged();
+                //adapter.sort();
+
+                /*adapter.sort(new Comparator<Ticket>() {
+                    @Override
+                    public int compare(Ticket lhs, Ticket rhs) {
+                        return lhs.compareTo(rhs);
+                    }
+                });*/
+
                 listView.setAdapter(adapter);
 
                 TextView resultText = (TextView) vista.findViewById(R.id.resultText);

@@ -214,7 +214,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
         sharingIntent.setType("text/plain");
 
         //sharingIntent.setType("*/*");
-        String shareBody = "Con TicketClub: \n" + tick.getTitolo() + "\n" + tick.getSecondoTitolo() + "\n" + "http://www.ticketclub.it/new_sito3/ticket-" + tick.getIdTicket() + "-" + tick.getTitolo().replace(" ","-");
+        String shareBody = "Con TicketClub: \n" + tick.getTitolo() + "\n" + tick.getSecondoTitolo() + "\n" + "http://www.ticketclub.it/new_sito3/ticket.php?id=" + tick.getIdTicket();
 
         //File image = new File(Uri.parse(String.valueOf(Setup.getSetup().getPath() + "/" + tick.getCodice() + ".JPG")).toString());
         //sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(image));
@@ -271,7 +271,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
             Intent targetedShareIntent = new Intent(Intent.ACTION_SEND);
             targetedShareIntent.setType("text/plain");
-            String shareBody = "Con TicketClub: \n" + tick.getTitolo() + "\n" + tick.getSecondoTitolo() + "\n" + "http://www.ticketclub.it/new_sito3/ticket-" + tick.getIdTicket() + "-" + tick.getTitolo().replace(" ","-");
+            String shareBody = "Con TicketClub: \n" + tick.getTitolo() + "\n" + tick.getSecondoTitolo() + "\n" + "http://www.ticketclub.it/new_sito3/ticket.php?id=" + tick.getIdTicket();
 
             targetedShareIntent.putExtra(Intent.EXTRA_SUBJECT, "Stacca la felicità");
             targetedShareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
