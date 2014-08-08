@@ -17,7 +17,7 @@
         android:padding="4dip"
         android:text=" "
         android:textColor="#333333"
-        android:textSize="26dp"
+        android:textSize="24dp"
         android:textStyle="bold"
         android:layout_marginRight="5dp"
         android:layout_marginTop="12dp"
@@ -35,7 +35,7 @@
         android:padding="4dip"
         android:text="Valido per n°    Ticket"
         android:textColor="#666666"
-        android:textSize="22dp"
+        android:textSize="20dp"
         android:id="@+id/txtValidoN"
         android:layout_alignTop="@+id/txtConvenzionato"
         android:layout_toLeftOf="@+id/txtConvenzionato" />
@@ -51,9 +51,9 @@
         android:background="@android:color/transparent"
         android:rotation="180"
         android:padding="4dip"
-        android:text="Scorri per staccare il ticket quando sei alla cassa   > > > > > > >"
+        android:text="Scorri per staccare il ticket quando sei alla cassa   > > > > > > "
         android:textColor="#666666"
-        android:textSize="18dp"
+        android:textSize="17dp"
         android:id="@+id/txtScorri"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true" />
@@ -71,12 +71,12 @@
     <ImageView
         android:layout_width="217dp"
         android:layout_height="360dp"
-        android:scaleX="1.6"
-        android:scaleY="1.6"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
         android:id="@+id/TK_image"
         android:rotation="90"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="55dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="42dp"
         android:layout_alignTop="@+id/matrice"
          />
 
@@ -97,9 +97,12 @@
         android:textSize="18dp"
         android:textStyle="bold"
         android:text="WG000361H"
-        android:layout_marginLeft="57dp"
-        android:layout_alignBottom="@+id/txtScorri"
-        android:layout_alignLeft="@+id/TK_image" />
+        android:layout_alignBottom="@+id/talloncino"
+        android:layout_alignLeft="@+id/TK_image"
+        android:layout_alignRight="@+id/talloncino"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:textAlignment="center" />
 
 
 

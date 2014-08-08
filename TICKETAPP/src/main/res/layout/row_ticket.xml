@@ -17,6 +17,7 @@
         android:src="@drawable/loading2"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
+        android:visibility="invisible"
     />
 
     <ImageView
@@ -122,8 +123,12 @@
         android:enabled="false"
         android:visibility="invisible" />
 
-
-
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progress_spinner"
+        android:layout_below="@+id/TK_codice"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

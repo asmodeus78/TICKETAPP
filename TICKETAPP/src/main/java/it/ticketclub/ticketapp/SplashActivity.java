@@ -651,11 +651,13 @@ public class SplashActivity extends Activity {
                         File path = new File(root.getAbsolutePath()+ "/Android/data/" + getApplication().getApplicationInfo().packageName + "/cache/");
                         String CheckFile = photo;
 
-                        if (new File(path,CheckFile).exists()){
+                        /*if (new File(path,CheckFile).exists()){
 
                         }else {
                             new DownloadImageTask2().execute(photo);
-                        }
+                        }*/
+
+                        Log.d("Loading",""+i);
 
 
                         db.insertTicket(id,categoria,codice,titolo,titoloSup,Float.parseFloat(mediaVoto),Integer.parseInt(scaricati),descrizione,indirizzo,lat,lon,nominativo,telefono,sito,dataScadenza,prezzoCr,seo,ordine);

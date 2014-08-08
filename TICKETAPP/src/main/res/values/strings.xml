@@ -42,5 +42,6 @@
     <string name="title_activity_contatti">Contatti</string>
     <string name="title_activity_chisiamo">Chi Siamo</string>
     <string name="title_activity_share">Condividi e Ricaricati</string>
+    <string name="title_activity_ricarica">Ricarica Crediti</string>
 
 </resources>

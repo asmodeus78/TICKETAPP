@@ -72,12 +72,19 @@ public class UsaTicket extends Activity
                 switch (which){
                     case DialogInterface.BUTTON_NEGATIVE:
                         //Mostra button clicked
+
+                        final Intent intent3 = new Intent(getApplicationContext(),MyTicket.class); // SWIPE E TAB + JSON NOT VIEW
+                        intent3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent3); // Launch the Intent
+
                         final Intent intent2 = new Intent(getApplicationContext(), LasciaFeedback.class); // SWIPE E TAB + JSON NOT VIEW
                         intent2.putExtra("id", id);
                         intent2.putExtra("codice", codice);
                         intent2.putExtra("qta", qta);
+                        intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent2); // Launch the Intent
 
+                        finish();
                         break;
 
                     case DialogInterface.BUTTON_POSITIVE:
