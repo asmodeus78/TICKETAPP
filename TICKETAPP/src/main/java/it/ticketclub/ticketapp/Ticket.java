@@ -16,6 +16,8 @@ public class Ticket {
     private Integer scaricati;
     private Float mediaVoti;
 
+    private double distanza;
+
 
     public Ticket(Integer id, String categoria, String codice, String titolo, String titoloSup, String foto, Integer scaricati, Float mediaVoti, String lat, String lon){
         this.id = id;
@@ -28,6 +30,29 @@ public class Ticket {
         this.mediaVoti = mediaVoti;
         this.lat = lat;
         this.lon = lon;
+        this.distanza=0;
+    }
+
+    public Ticket(Integer id, String categoria, String codice, String titolo, String titoloSup, String foto, Integer scaricati, Float mediaVoti, String lat, String lon,Double distanza){
+        this.id = id;
+        this.categoria = categoria;
+        this.codice = codice;
+        this.titolo = titolo;
+        this.titoloSup = titoloSup;
+        this.foto = foto;
+        this.scaricati = scaricati;
+        this.mediaVoti = mediaVoti;
+        this.lat = lat;
+        this.lon = lon;
+        this.distanza = distanza;
+    }
+
+    public void setDistanza(double km){
+        this.distanza = km;
+    }
+
+    public double getDistanza(){
+        return distanza;
     }
 
     public Integer getId(){

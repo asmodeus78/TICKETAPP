@@ -5,6 +5,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.location.Location;
+import android.location.LocationManager;
 import android.media.RingtoneManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,6 +20,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
+import java.util.Comparator;
 import java.util.LinkedList;
 
 /**
@@ -26,15 +30,12 @@ import java.util.LinkedList;
 
 public class FragmentCatRistorazione extends Fragment {
 
+    private Location loc = new Location(LocationManager.NETWORK_PROVIDER);
+    private Location loc2 = new Location(LocationManager.NETWORK_PROVIDER);
+    private String km;
+
     public String citta="";
     public String cerca="";
-
-
-
-
-
-
-
 
 
     public static FragmentCatRistorazione newInstance() {
@@ -64,6 +65,20 @@ public class FragmentCatRistorazione extends Fragment {
 
                 ListView listView = (ListView)vista.findViewById(R.id.ListViewDemo);
                 CustomAdapter adapter = new CustomAdapter(getActivity(), R.layout.row_ticket, result);
+                adapter.sort(
+                        new Comparator<Ticket>() {
+                            @Override
+                            public int compare(Ticket obj1,Ticket obj2) {
+                                double distanza1 = obj1.getDistanza();
+                                double distanza2 = obj2.getDistanza();
+
+                                if (distanza1>distanza2) return 1;
+                                if (distanza1<distanza2) return -1;
+
+                                return 0;
+                            }
+                        }
+                );
                 adapter.notifyDataSetChanged();
                 listView.setAdapter(adapter);
 
@@ -185,9 +200,37 @@ public class FragmentCatRistorazione extends Fragment {
                     Integer scaricati = c.getInt(5);
                     float mediaVoto = c.getFloat(6);
 
+                    Double distanza = Double.valueOf(0);
+
+
+
+                    km="0";
+
+                    try {
+                        loc2.setLatitude(Double.parseDouble(lat));
+                        loc2.setLongitude(Double.parseDouble(lon));
+
+                        loc.setLatitude(Setup.getSetup().getLat());
+                        loc.setLongitude(Setup.getSetup().getLon());
+
+                        double kmTemp = loc.distanceTo(loc2) / 1000;
+
+                        DecimalFormat f = new DecimalFormat("#0.0");
+                        km = String.valueOf(f.format(kmTemp)).replace(",", ".");
+
+                        distanza = kmTemp;
+
+                    }catch(NullPointerException e) {
+                        Log.d("POSXABERR","errore calcolo distanza");
+                    }catch (NumberFormatException e){
+                        Log.d("POSXABERR","errore non è un numero");
+                    }
+
+
                     //String descrizione = c.getString(7);
 
-                    listx.add(new Ticket(id, categoria, codice, titolo, titoloSup, photo, scaricati, mediaVoto, lat, lon));
+                    //listx.add(new Ticket(id, categoria, codice, titolo, titoloSup, photo, scaricati, mediaVoto, lat, lon));
+                    listx.add(new Ticket(id, categoria, codice, titolo, titoloSup, photo, scaricati, mediaVoto, lat, lon, distanza));
 
                 } while (c.moveToNext());
             }

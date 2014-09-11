@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.text.DecimalFormat;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -88,8 +89,12 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
 
 
         km="0";
+        DecimalFormat f = new DecimalFormat("#0.0");
+        km = String.valueOf(f.format(ticket.getDistanza())).replace(",", ".");
 
+/*
         try {
+
             loc2.setLatitude(Double.parseDouble(ticket.getLat()));
             loc2.setLongitude(Double.parseDouble(ticket.getLon()));
 
@@ -101,13 +106,15 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
             DecimalFormat f = new DecimalFormat("#0.0");
             km = String.valueOf(f.format(kmTemp)).replace(",", ".");
 
+            ticket.setDistanza(kmTemp);
+
         }catch(NullPointerException e) {
             Log.d("POSXABERR","errore calcolo distanza");
         }catch (NumberFormatException e){
             Log.d("POSXABERR","errore non è un numero");
         }
 
-
+*/
 
 
         viewHolder.TK_km.setText("a  " + km + " Km");

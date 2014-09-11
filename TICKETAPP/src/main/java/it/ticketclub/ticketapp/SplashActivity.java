@@ -238,20 +238,25 @@ public class SplashActivity extends Activity {
         db.open();  //apriamo il db
         Cursor c;
 
-        /*CANCELLO TICKET SCADUTI*/
-        Calendar data = Calendar.getInstance();
+        //MODIFICA DEL 11/09/2014
+        /*CANCELLO TICKET SCADUTI - no tutti*/
+        /*
+            Calendar data = Calendar.getInstance();
 
-        String anno = String.valueOf(data.get(Calendar.YEAR));
-        String mese = String.valueOf(data.get(Calendar.MONTH) + 1) ;
-        String giorno = String.valueOf(data.get(Calendar.DAY_OF_MONTH));
+            String anno = String.valueOf(data.get(Calendar.YEAR));
+            String mese = String.valueOf(data.get(Calendar.MONTH) + 1) ;
+            String giorno = String.valueOf(data.get(Calendar.DAY_OF_MONTH));
 
-        if (mese.length()<2){mese="0" + mese;}
-        if (giorno.length()<2){giorno="0" + giorno;}
+            if (mese.length()<2){mese="0" + mese;}
+            if (giorno.length()<2){giorno="0" + giorno;}
 
-        String filtro = anno + "-" + mese + "-" + giorno;
-        Log.d("COLONNA","DATA OGGI " +filtro);
+            String filtro = anno + "-" + mese + "-" + giorno;
+            Log.d("COLONNA","DATA OGGI " +filtro);
 
-        db.deleteTicketByData(filtro);
+            db.deleteTicketByData(filtro);
+        */
+        //MODIFICATA IN DATA 11/09/2014
+        db.deleteTicket();
 
 
 
@@ -262,7 +267,7 @@ public class SplashActivity extends Activity {
         if (c.moveToFirst()) {
             do {
                 userid = c.getString(0);
-                lastUpdate = c.getString(5);
+                //lastUpdate = c.getString(5);
             } while (c.moveToNext());
         }
 
