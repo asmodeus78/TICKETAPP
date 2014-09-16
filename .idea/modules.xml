@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Parse-1.6.0/Parse-1.6.0.iml" filepath="$PROJECT_DIR$/Parse-1.6.0/Parse-1.6.0.iml" />
       <module fileurl="file://$PROJECT_DIR$/TICKETAPP.iml" filepath="$PROJECT_DIR$/TICKETAPP.iml" />
       <module fileurl="file://$PROJECT_DIR$/TICKETAPP/TICKETAPP-TICKETAPP.iml" filepath="$PROJECT_DIR$/TICKETAPP/TICKETAPP-TICKETAPP.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/facebook/facebook.iml" filepath="$PROJECT_DIR$/libraries/facebook/facebook.iml" />

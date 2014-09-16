@@ -115,6 +115,7 @@ public class UsaTicket extends Activity
         VerticalTextView txtConvenzionato = (VerticalTextView) findViewById(R.id.txtConvenzionato);
         VerticalTextView txtValidoN = (VerticalTextView) findViewById(R.id.txtValidoN);
         final TextView codice_sicurezza = (TextView)findViewById(R.id.codice_sicurezza);
+        final TextView codice_sicurezza2 = (TextView)findViewById(R.id.codice_sicurezza2);
 
 
 
@@ -130,6 +131,7 @@ public class UsaTicket extends Activity
 
         talloncino = (ImageView) findViewById(R.id.talloncino);
         codice_sicurezza.setText(cweb);
+        codice_sicurezza2.setText(cweb);
 
         if (usato.contentEquals("1")){
             talloncino.setVisibility(View.INVISIBLE);

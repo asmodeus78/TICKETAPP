@@ -39,6 +39,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.parse.Parse;
+import com.parse.ParseAnalytics;
+import com.parse.ParseInstallation;
+import com.parse.PushService;
+
 
 public class SplashActivity extends Activity {
 
@@ -203,6 +208,13 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
 
 
+        Parse.initialize(this, "t8ZFE43JWi0GWw0xv56T4PsQfp2YhUpQfszTuZr3", "GXjxj3LcZTnHZFc3fcy57vCoenQSqMHB4RgfOR3J");
+        ParseInstallation.getCurrentInstallation().saveInBackground();
+        PushService.setDefaultPushCallback(this, FirstActivity.class);
+
+        ParseAnalytics.trackAppOpened(getIntent());
+
+
         mDisplay = (TextView) findViewById(R.id.display);
 
         context = getApplicationContext();
@@ -212,16 +224,10 @@ public class SplashActivity extends Activity {
         if (checkPlayServices()) {
             gcm = GoogleCloudMessaging.getInstance(this);
             regid = getRegistrationId(context);
-            //mDisplay.setVisibility(View.VISIBLE);
-            //mDisplay.setText(regid);
+
             Log.d("GCM",regid);
+            registerInBackground();
 
-
-            //if (regid.isEmpty()) {
-                registerInBackground();
-            //}else{
-            //    sendRegistrationIdToBackend();
-            //}
         } else {
             Log.i("PUSHNOTIFY", "No valid Google Play Services APK found.");
         }

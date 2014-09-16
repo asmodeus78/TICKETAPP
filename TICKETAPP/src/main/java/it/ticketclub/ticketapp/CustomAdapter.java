@@ -24,7 +24,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.text.DecimalFormat;
-import java.util.Comparator;
 import java.util.List;
 
 
@@ -127,9 +126,40 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
 
         String CheckFile = ticket.getFoto();
 
+
+
+
         if (new File(path,CheckFile).exists()){
 
             Bitmap bMap = BitmapFactory.decodeFile(path + "/" + CheckFile);
+
+
+
+           /* ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bMap.compress(Bitmap.CompressFormat.PNG, 100, baos); //bm is the bitmap object
+            byte[] bitmapBytes = baos.toByteArray();
+
+            MessageDigest md = null;
+            try {
+                md = MessageDigest.getInstance("MD5");
+                md.update(bitmapBytes);
+                byte[] hash = md.digest();
+
+                try {
+                    String md51 = returnHex(hash);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+
+*/
+
+
+
+
             viewHolder.TK_image.setImageBitmap(bMap);
             viewHolder.TK_image.setVisibility(View.VISIBLE);
             viewHolder.progress.setVisibility(View.GONE);
@@ -201,9 +231,20 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
 
 
 
+
+
        // profile_photo.setImageBitmap(mIcon_val);
 
         return convertView;
+    }
+
+    static String returnHex(byte[] inBytes) throws Exception {
+        String hexString = null;
+        for (int i=0; i < inBytes.length; i++) { //for loop ID:1
+            hexString +=
+                    Integer.toString( ( inBytes[i] & 0xff ) + 0x100, 16).substring( 1 );
+        }                                   // Belongs to for loop ID:1
+        return hexString;
     }
 
     private class ViewHolder {
@@ -220,6 +261,8 @@ public class CustomAdapter extends ArrayAdapter<Ticket> {
         public int position;
 
     }
+
+
 
     private void persistImage(Bitmap bitmap, String name, File path2) {
 

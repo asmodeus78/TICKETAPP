@@ -25,6 +25,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.Parse;
+import com.parse.ParseAnalytics;
+import com.parse.ParseInstallation;
+import com.parse.PushService;
+
 
 public class FirstActivity extends ActionBarActivity implements ActionBar.TabListener {
 
@@ -57,6 +62,12 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
+
+        Parse.initialize(this, "t8ZFE43JWi0GWw0xv56T4PsQfp2YhUpQfszTuZr3", "GXjxj3LcZTnHZFc3fcy57vCoenQSqMHB4RgfOR3J");
+        ParseInstallation.getCurrentInstallation().saveInBackground();
+        PushService.setDefaultPushCallback(this, FirstActivity.class);
+
+        ParseAnalytics.trackAppOpened(getIntent());
 
 
 

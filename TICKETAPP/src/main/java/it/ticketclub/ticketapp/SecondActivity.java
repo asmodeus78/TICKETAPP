@@ -1,13 +1,11 @@
 package it.ticketclub.ticketapp;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,8 +16,8 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Parcelable;
-import android.renderscript.Element;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -28,9 +26,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
-import android.text.InputType;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,9 +35,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,6 +52,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -87,6 +88,11 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
     String codice;
     String id;
+    public static final File root = Environment.getExternalStorageDirectory();
+
+    public static File path = new File(root.getAbsolutePath()+ "/Android/data/it.ticketclub.ticketapp/cache/");
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -795,7 +801,8 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_offerta, container, false);
-            ImageView imageView = (ImageView) rootView.findViewById(R.id.TK_image);
+            final ImageView imageView = (ImageView) rootView.findViewById(R.id.TK_image);
+            final ProgressBar progress = (ProgressBar) rootView.findViewById(R.id.progressBar);
 
 
 
@@ -807,8 +814,76 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
             Setup conf = new Setup();
 
-            Bitmap bMap = BitmapFactory.decodeFile(conf.getPath() + "/" +  getArguments().getString(ARG_SECTION_CODICE) + ".jpg");
-            imageView.setImageBitmap(bMap);
+            //Bitmap bMap = BitmapFactory.decodeFile(conf.getPath() + "/" +  getArguments().getString(ARG_SECTION_CODICE) + ".jpg");
+            //imageView.setImageBitmap(bMap);
+
+            //new DownloadImageTask(imageView).execute(getArguments().getString(ARG_SECTION_CODICE) + ".jpg");
+
+
+            /******/
+
+
+
+            imageView.setVisibility(View.INVISIBLE);
+            progress.setVisibility(View.VISIBLE);
+
+            new AsyncTask<String, Void, Bitmap>() {
+                private String v;
+                public String codeimage="";
+
+                @Override
+                protected Bitmap doInBackground(String... params) {
+                    v = params[0];
+
+                    String urldisplay;
+                    if (v.length()>30){
+                        urldisplay = "" + v + ".jpg";
+                    }else {
+                        urldisplay = "http://www.ticketclub.it/TICKET_NEW/biglietti/" + v + ".jpg";
+                    }
+
+                    codeimage = v + ".jpg";
+
+                    Bitmap mIcon11 = null;
+                    try {
+                        InputStream in = new java.net.URL(urldisplay).openStream();
+                        mIcon11 = BitmapFactory.decodeStream(in);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        //Log.e("Error", e.getMessage());
+                        e.printStackTrace();
+                    }
+                    return mIcon11;
+
+                    //return null;
+                }
+
+                @Override
+                protected void onPostExecute(Bitmap bitmap) {
+                    super.onPostExecute(bitmap);
+
+                    File file = new File(path,codeimage);
+                    if (!file.exists()){
+                        persistImage(bitmap,codeimage,path);
+                    }
+
+
+                        progress.setVisibility(View.GONE);
+                        imageView.setVisibility(View.VISIBLE);
+                        //v.TK_image.setImageBitmap(bitmap);
+
+                        Bitmap bMap = BitmapFactory.decodeFile(path + "/" + v + ".jpg");
+                        imageView.setImageBitmap(bMap);
+
+                }
+            }.execute(getArguments().getString(ARG_SECTION_CODICE));
+
+
+
+
+
+            /********/
 
             final TextView textView = (TextView) rootView.findViewById(R.id.TK_descrizione);
             final TextView textView2 = (TextView) rootView.findViewById(R.id.TK_crediti);
@@ -1039,6 +1114,22 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
             //textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
+        }
+
+        private void persistImage(Bitmap bitmap, String name, File path2) {
+
+
+            File imageFile = new File(path2, name);
+
+            OutputStream os;
+            try {
+                os = new FileOutputStream(imageFile);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+                os.flush();
+                os.close();
+            } catch (Exception e) {
+                //Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
+            }
         }
 
 
