@@ -24,6 +24,10 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.parse.Parse;
+import com.parse.ParseAnalytics;
+import com.parse.ParseInstallation;
+import com.parse.PushService;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -38,11 +42,6 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import com.parse.Parse;
-import com.parse.ParseAnalytics;
-import com.parse.ParseInstallation;
-import com.parse.PushService;
 
 
 public class SplashActivity extends Activity {
@@ -207,17 +206,20 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        context = getApplicationContext();
 
-        Parse.initialize(this, "t8ZFE43JWi0GWw0xv56T4PsQfp2YhUpQfszTuZr3", "GXjxj3LcZTnHZFc3fcy57vCoenQSqMHB4RgfOR3J");
-        ParseInstallation.getCurrentInstallation().saveInBackground();
-        PushService.setDefaultPushCallback(this, FirstActivity.class);
-
-        ParseAnalytics.trackAppOpened(getIntent());
-
+        try {
+            Parse.initialize(context, "t8ZFE43JWi0GWw0xv56T4PsQfp2YhUpQfszTuZr3", "GXjxj3LcZTnHZFc3fcy57vCoenQSqMHB4RgfOR3J");
+            ParseInstallation.getCurrentInstallation().saveInBackground();
+            PushService.setDefaultPushCallback(context, FirstActivity.class);
+            ParseAnalytics.trackAppOpened(getIntent());
+        }catch (RuntimeException e){
+            e.printStackTrace();
+        }
 
         mDisplay = (TextView) findViewById(R.id.display);
 
-        context = getApplicationContext();
+
 
         // Check device for Play Services APK. If check succeeds, proceed with
         //  GCM registration.

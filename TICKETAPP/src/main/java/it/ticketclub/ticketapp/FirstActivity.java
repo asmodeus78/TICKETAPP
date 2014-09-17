@@ -63,11 +63,16 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
 
-        Parse.initialize(this, "t8ZFE43JWi0GWw0xv56T4PsQfp2YhUpQfszTuZr3", "GXjxj3LcZTnHZFc3fcy57vCoenQSqMHB4RgfOR3J");
-        ParseInstallation.getCurrentInstallation().saveInBackground();
-        PushService.setDefaultPushCallback(this, FirstActivity.class);
+        Context context = getApplicationContext();
 
-        ParseAnalytics.trackAppOpened(getIntent());
+        try {
+            Parse.initialize(context, "t8ZFE43JWi0GWw0xv56T4PsQfp2YhUpQfszTuZr3", "GXjxj3LcZTnHZFc3fcy57vCoenQSqMHB4RgfOR3J");
+            ParseInstallation.getCurrentInstallation().saveInBackground();
+            PushService.setDefaultPushCallback(context, FirstActivity.class);
+            ParseAnalytics.trackAppOpened(getIntent());
+        }catch (RuntimeException e){
+            e.printStackTrace();
+        }
 
 
 
