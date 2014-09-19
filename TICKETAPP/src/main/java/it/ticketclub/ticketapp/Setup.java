@@ -3,12 +3,19 @@ package it.ticketclub.ticketapp;
 import android.app.Application;
 import android.os.Environment;
 
+import com.parse.Parse;
+import com.parse.PushService;
+
 import java.io.File;
 
 /**
  * Created by Gio on 08/05/2014.
  */
 public class Setup extends Application {
+
+
+
+
 
     public static File root = Environment.getExternalStorageDirectory();
     File path = new File(root.getAbsolutePath()+ "/Android/data/it.ticketclub.ticketapp/cache/");
@@ -50,6 +57,10 @@ public class Setup extends Application {
     {
         super.onCreate();
         instance = this;
+
+        Parse.initialize(this, "t8ZFE43JWi0GWw0xv56T4PsQfp2YhUpQfszTuZr3", "GXjxj3LcZTnHZFc3fcy57vCoenQSqMHB4RgfOR3J");
+        PushService.setDefaultPushCallback(this, SplashActivity.class);
+
     }
 
 

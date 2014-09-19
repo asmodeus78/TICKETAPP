@@ -25,11 +25,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.Parse;
-import com.parse.ParseAnalytics;
-import com.parse.ParseInstallation;
-import com.parse.PushService;
-
 
 public class FirstActivity extends ActionBarActivity implements ActionBar.TabListener {
 
@@ -63,18 +58,8 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
 
-        Context context = getApplicationContext();
-
-        try {
-            Parse.initialize(context, "t8ZFE43JWi0GWw0xv56T4PsQfp2YhUpQfszTuZr3", "GXjxj3LcZTnHZFc3fcy57vCoenQSqMHB4RgfOR3J");
-            ParseInstallation.getCurrentInstallation().saveInBackground();
-            PushService.setDefaultPushCallback(context, FirstActivity.class);
-            ParseAnalytics.trackAppOpened(getIntent());
-        }catch (RuntimeException e){
-            e.printStackTrace();
-        }
-
-
+        // Track app opens.
+        //ParseAnalytics.trackAppOpened(getIntent());
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();

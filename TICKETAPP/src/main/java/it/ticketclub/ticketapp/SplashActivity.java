@@ -24,10 +24,6 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.parse.Parse;
-import com.parse.ParseAnalytics;
-import com.parse.ParseInstallation;
-import com.parse.PushService;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -206,33 +202,12 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        context = getApplicationContext();
 
-        try {
-            Parse.initialize(context, "t8ZFE43JWi0GWw0xv56T4PsQfp2YhUpQfszTuZr3", "GXjxj3LcZTnHZFc3fcy57vCoenQSqMHB4RgfOR3J");
-            ParseInstallation.getCurrentInstallation().saveInBackground();
-            PushService.setDefaultPushCallback(context, FirstActivity.class);
-            ParseAnalytics.trackAppOpened(getIntent());
-        }catch (RuntimeException e){
-            e.printStackTrace();
-        }
 
         mDisplay = (TextView) findViewById(R.id.display);
 
 
 
-        // Check device for Play Services APK. If check succeeds, proceed with
-        //  GCM registration.
-        if (checkPlayServices()) {
-            gcm = GoogleCloudMessaging.getInstance(this);
-            regid = getRegistrationId(context);
-
-            Log.d("GCM",regid);
-            registerInBackground();
-
-        } else {
-            Log.i("PUSHNOTIFY", "No valid Google Play Services APK found.");
-        }
 
 
 
@@ -396,64 +371,7 @@ public class SplashActivity extends Activity {
         }
     }
 
-    /**
-     * Registers the application with GCM servers asynchronously.
-     * <p>
-     * Stores the registration ID and app versionCode in the application's
-     * shared preferences.
-     */
-    private class registerAsync extends AsyncTask<String, String, String> {
 
-        @Override
-        protected String doInBackground(String... params) {
-
-            String msg = "";
-            try {
-                if (gcm == null) {
-                    gcm = GoogleCloudMessaging.getInstance(context);
-                }
-                regid = gcm.register(SENDER_ID);
-                msg = "Device registered, registration ID=" + regid;
-
-                // You should send the registration ID to your server over HTTP,
-                // so it can use GCM/HTTP or CCS to send messages to your app.
-                // The request to your server should be authenticated if your app
-                // is using accounts.
-                sendRegistrationIdToBackend();
-
-                // For this demo: we don't need to send it because the device
-                // will send upstream messages to a server that echo back the
-                // message using the 'from' address in the message.
-
-                // Persist the regID - no need to register again.
-                storeRegistrationId(context, regid);
-            } catch (IOException ex) {
-                msg = "Error :" + ex.getMessage();
-                // If there is an error, don't just keep trying to register.
-                // Require the user to click a button again, or perform
-                // exponential back-off.
-            }
-            return msg;
-
-
-
-        }
-
-        @Override
-        protected void onPostExecute(String msg) {
-            mDisplay.append(msg + "\n");
-        }
-
-    }
-
-    private void registerInBackground()  {
-
-
-        new registerAsync().execute();
-
-
-
-    }
 
 
     /**
