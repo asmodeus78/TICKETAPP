@@ -16,6 +16,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.LinkedList;
 
 /**
@@ -50,9 +52,15 @@ public class SignUp extends Activity {
                     TelephonyManager tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
                     String mPhoneNumber = tMgr.getLine1Number();
 
-                    url4 = "http://www.ticketclub.it/APP/ticket_view.php?CMD=REG_USER&email=" + email.getText().toString() + "&nominativo=" + nominativo.getText().toString() + "&pwd=" + passwd.getText().toString() + "&cellulare=" + mPhoneNumber;
+                    try {
+                        url4 = "http://www.ticketclub.it/APP/ticket_view.php?CMD=REG_USER&email=" + email.getText().toString() + "&nominativo=" + URLEncoder.encode(nominativo.getText().toString(),"UTF-8") + "&pwd=" + passwd.getText().toString() + "&cellulare=" + mPhoneNumber;
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
 
-                    Log.d("REGISTRATI",mPhoneNumber);
+
+
+                    //Log.d("REGISTRATI",mPhoneNumber);
 
                     new regNewUser().execute();
 
