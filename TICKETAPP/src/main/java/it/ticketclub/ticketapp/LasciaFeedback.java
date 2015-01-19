@@ -18,6 +18,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.LinkedList;
 
 public class LasciaFeedback extends ActionBarActivity {
@@ -25,6 +27,7 @@ public class LasciaFeedback extends ActionBarActivity {
     private static ProgressDialog pDialog;
 
     public static String url = "http://www.ticketclub.it/APP/ticket_view.php?CMD=INVIA_FEEDBACK";
+    public static String url2 ="";
     public static String idt = "";
 
 
@@ -97,10 +100,14 @@ public class LasciaFeedback extends ActionBarActivity {
 
                   Setup application = (Setup) getApplication();
 
-                  url += "&qta=" + qta + "&codice=" + codice + "&idutente=" + application.getTkID() + "&voto=" + ratingBar.getRating() + "&commento=" + txtRecensione.getText().toString().replace(" ","%20") + "&idticketemesso=" + idMyTicket;
+                  try {
+                      url2 = "&qta=" + qta + "&codice=" + codice + "&idutente=" + application.getTkID() + "&voto=" + ratingBar.getRating() + "&commento=" + URLEncoder.encode(txtRecensione.getText().toString(),"UTF-8") + "&idticketemesso=" + idMyTicket;
+                  } catch (UnsupportedEncodingException e) {
+                      e.printStackTrace();
+                  }
 
 
-                  Log.d("COLONNA5",url);
+                  Log.d("COLONNA5",url + url2);
                   new inviaFeedback().execute();
 
 
@@ -191,7 +198,7 @@ public class LasciaFeedback extends ActionBarActivity {
             ServiceHandler sh = new ServiceHandler();
 
             // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(url, ServiceHandler.GET);
+            String jsonStr = sh.makeServiceCall(url + url2, ServiceHandler.GET);
 
             MyDatabase db=new MyDatabase(getApplicationContext());
             db.open();  //apriamo il db

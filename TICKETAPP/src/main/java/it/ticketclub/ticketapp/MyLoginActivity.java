@@ -28,6 +28,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
@@ -705,9 +707,11 @@ public class MyLoginActivity extends Activity {
         ServiceHandler sh2 = new ServiceHandler();
 
         // Making a request to url and getting response
-        String jsonStr = sh2.makeServiceCall("http://www.ticketclub.it/APP/ticket_view.php?CMD=RETR_PWD&email=" + email, ServiceHandler.GET);
-
-
+        try {
+            String jsonStr = sh2.makeServiceCall("http://www.ticketclub.it/APP/ticket_view.php?CMD=RETR_PWD&email=" + URLEncoder.encode(email, "UTF-8"), ServiceHandler.GET);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
 
     }

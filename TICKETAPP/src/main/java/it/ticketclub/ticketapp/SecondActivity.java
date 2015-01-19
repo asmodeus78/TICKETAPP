@@ -220,7 +220,7 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
         sharingIntent.setType("text/plain");
 
         //sharingIntent.setType("*/*");
-        String shareBody = "Con TicketClub: \n" + tick.getTitolo() + "\n" + tick.getSecondoTitolo() + "\n" + "http://www.ticketclub.it/new_sito3/ticket.php?id=" + tick.getIdTicket();
+        String shareBody = "Con TicketClub: \n" + tick.getTitolo() + "\n" + tick.getSecondoTitolo() + "\n" + "http://www.ticketclub.it/ticket.php?id=" + tick.getIdTicket();
 
         //File image = new File(Uri.parse(String.valueOf(Setup.getSetup().getPath() + "/" + tick.getCodice() + ".JPG")).toString());
         //sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(image));
@@ -277,11 +277,16 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
             Intent targetedShareIntent = new Intent(Intent.ACTION_SEND);
             targetedShareIntent.setType("text/plain");
-            String shareBody = "Con TicketClub: \n" + tick.getTitolo() + "\n" + tick.getSecondoTitolo() + "\n" + "http://www.ticketclub.it/new_sito3/ticket.php?id=" + tick.getIdTicket();
+            String shareBody = "Con TicketClub: \n" + tick.getTitolo() + "\n" + tick.getSecondoTitolo() + "\n" + "http://www.ticketclub.it/ticket.php?id=" + tick.getIdTicket();
 
+            File image = new File(Uri.parse(String.valueOf(Setup.getSetup().getPath() + "/" + tick.getCodice() + ".JPG")).toString());
+            targetedShareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(image));
             targetedShareIntent.putExtra(Intent.EXTRA_SUBJECT, "Stacca la felicità");
             targetedShareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
             targetedShareIntent.putExtra("return-data", true); //added snippet
+
+
+            //shareMe(sharingIntent);
 
             if (packageName.contentEquals("com.android.email")
                  || packageName.contentEquals("com.google.android.gm")
@@ -294,6 +299,8 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
                 targetedShareIntent.setPackage(packageName);
                 targetedShareIntents.add(targetedShareIntent);
             }
+
+
 
         }
         Intent chooserIntent = Intent.createChooser(targetedShareIntents.remove(0),"Condividi e ricaricati");
@@ -539,64 +546,69 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
                 @Override
                 public void onClick(View v) {
 
-                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            switch (which){
-                                case DialogInterface.BUTTON_POSITIVE:
-                                    //Yes button clicked
+                    GPSTracker gps;
+                    gps = new GPSTracker(getActivity());
+
+                    if(!gps.canGetLocation()){
+                        Toast.makeText(getActivity(), "Impossibile trovare la posizione", Toast.LENGTH_LONG).show();
+                        gps.showSettingsAlert();
+                    }else {
+
+                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case DialogInterface.BUTTON_POSITIVE:
+                                        //Yes button clicked
 
 
-                                    Criteria criteria = new Criteria();
-                                    criteria.setAccuracy(Criteria.ACCURACY_LOW);
-                                    criteria.setAltitudeRequired(false);
-                                    criteria.setBearingRequired(false);
-                                    criteria.setCostAllowed(true);
-                                    criteria.setPowerRequirement(Criteria.POWER_LOW);
-                                    String provider = locationManager.getBestProvider(criteria, true);
+                                        Criteria criteria = new Criteria();
+                                        criteria.setAccuracy(Criteria.ACCURACY_LOW);
+                                        criteria.setAltitudeRequired(false);
+                                        criteria.setBearingRequired(false);
+                                        criteria.setCostAllowed(true);
+                                        criteria.setPowerRequirement(Criteria.POWER_LOW);
+                                        String provider = locationManager.getBestProvider(criteria, true);
 
 
+                                        if (provider != null) {
+
+                                            Toast.makeText(getActivity(),
+                                                    "Navigo verso " + textView1.getText().toString() + " ... ",
+                                                    Toast.LENGTH_LONG).show();
+
+                                            Double Latitude = locationManager.getLastKnownLocation(provider).getLatitude();
+                                            Double Longitude = locationManager.getLastKnownLocation(provider).getLongitude();
+                                            //String Location = textView1.getText().toString();
 
 
-                                    if (provider != null) {
+                                            Uri routeUri = Uri.parse("http://maps.google.com/maps?&saddr=" + Latitude + "," + Longitude + "&daddr=" + LocationDest);
 
-                                        Toast.makeText(getActivity(),
-                                                "Navigo verso " + textView1.getText().toString() + " ... ",
-                                                Toast.LENGTH_LONG).show();
+                                            Intent i = new Intent(Intent.ACTION_VIEW, routeUri);
+                                            startActivity(i);
+                                        } else {
 
-                                        Double Latitude = locationManager.getLastKnownLocation(provider).getLatitude();
-                                        Double Longitude= locationManager.getLastKnownLocation(provider).getLongitude();
-                                        //String Location = textView1.getText().toString();
+                                            Toast.makeText(getActivity(),
+                                                    "Attiva il GPS per avviare la navigazione ... ",
+                                                    Toast.LENGTH_LONG).show();
 
-
-                                        Uri routeUri = Uri.parse("http://maps.google.com/maps?&saddr=" + Latitude + "," + Longitude + "&daddr=" + LocationDest);
-
-                                        Intent i = new Intent(Intent.ACTION_VIEW, routeUri);
-                                        startActivity(i);
-                                    } else{
-
-                                        Toast.makeText(getActivity(),
-                                                "Attiva il GPS per avviare la navigazione ... ",
-                                                Toast.LENGTH_LONG).show();
-
-                                        System.out.println("objectInstance is null, do not attempt to initialize field2");
-                                    }
+                                            System.out.println("objectInstance is null, do not attempt to initialize field2");
+                                        }
 
 
-                                    break;
+                                        break;
 
-                                case DialogInterface.BUTTON_NEGATIVE:
-                                    //No button clicked
-                                    break;
+                                    case DialogInterface.BUTTON_NEGATIVE:
+                                        //No button clicked
+                                        break;
+                                }
                             }
-                        }
-                    };
+                        };
 
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setMessage("Vuoi andare a " + textView1.getText().toString() + "?").setPositiveButton("Yes", dialogClickListener)
-                            .setNegativeButton("No", dialogClickListener).show();
-
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setMessage("Vuoi andare a " + textView1.getText().toString() + "?").setPositiveButton("Yes", dialogClickListener)
+                                .setNegativeButton("No", dialogClickListener).show();
+                    }
                 }
             });
 
