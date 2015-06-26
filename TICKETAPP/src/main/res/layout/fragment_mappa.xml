@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout android:id="@+id/rel1" xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -31,6 +31,7 @@
         android:src="@drawable/gps_ico"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
+        android:visibility="gone"
         />
     <TextView
         android:layout_width="wrap_content"
@@ -55,6 +56,7 @@
         android:src="@drawable/tel_ico"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
+        android:visibility="gone"
         />
     <TextView
         android:layout_width="wrap_content"
@@ -76,6 +78,7 @@
         android:src="@drawable/link_ico"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
+        android:visibility="gone"
         />
     <TextView
         android:layout_width="wrap_content"

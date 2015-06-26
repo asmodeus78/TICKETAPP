@@ -11,7 +11,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -38,6 +40,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -477,6 +480,9 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             View rootView = inflater.inflate(R.layout.fragment_mappa, container, false);
 
 
+            RelativeLayout relativeLayout1 = (RelativeLayout) rootView.findViewById(R.id.rel1);
+
+
             MyDatabase db3=new MyDatabase(getActivity().getApplicationContext());
             db3.open();  //apriamo il db
             Cursor c3;
@@ -486,8 +492,17 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             getActivity().startManagingCursor(c3);
 
             final TextView textView = (TextView) rootView.findViewById(R.id.TK_nominativo);
+
             final TextView textView1 = (TextView) rootView.findViewById(R.id.TK_indirizzo);
+
             final TextView textView2 = (TextView) rootView.findViewById(R.id.TK_telefono);
+
+            final ImageView imageView1 = (ImageView) rootView.findViewById(R.id.imageView);
+
+
+
+
+
             final TextView textView3 = (TextView) rootView.findViewById(R.id.TK_sitoweb);
             textView1.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
             textView2.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
@@ -506,6 +521,214 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
             String nominativo = c3.getString(11);
             String telefono = c3.getString(12);
             String sitoWeb = c3.getString(13);
+
+                String sedi = c3.getString(18);
+                String recapiti = c3.getString(19);
+
+
+
+
+                Log.d("COLONNA TEST 1",c3.getString(19));
+
+                String[] sede = sedi.split("\\|");
+                String[] recapito = recapiti.split("\\|");
+
+
+                /*if (sedi.contains("|")) {
+                    // Split it.
+
+
+                } else {
+
+                    sede = new String[c3.getString(19)];
+                }*/
+
+                    Log.d("COLONNA TEST 2", String.valueOf(sedi));
+                    //List<TextView> textList = new ArrayList<TextView>(sedi.length);
+                    int prevTextViewId = 0;
+                    for (int x=0;x<sede.length;x++){
+                        final RelativeLayout.LayoutParams params =
+                                new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                                        RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+
+                        Log.d("COLONNA TEST 3", sede[x]);
+                        final TextView newTV = new TextView(getActivity());
+                        final TextView newTV2 = new TextView(getActivity());
+
+
+
+                        int curTextViewId = prevTextViewId + 1;
+
+                        newTV.setId(curTextViewId);
+                        newTV2.setId(curTextViewId+1);
+                        if (x==0){
+                            params.addRule(RelativeLayout.BELOW, textView.getId());
+                            params.addRule(RelativeLayout.ALIGN_LEFT, textView1.getId());
+
+                            params.topMargin+=20;
+
+                        }else {
+                            params.addRule(RelativeLayout.BELOW, prevTextViewId);
+                            params.addRule(RelativeLayout.ALIGN_LEFT, textView1.getId());
+                        }
+
+                        params.topMargin+=10;
+
+                        newTV.setLayoutParams(params);
+                        newTV.setText(sede[x]);
+
+                        final RelativeLayout.LayoutParams params2 =
+                                new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                                        RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+                        params2.addRule(RelativeLayout.BELOW, curTextViewId);
+                        params2.addRule(RelativeLayout.ALIGN_LEFT, textView1.getId());
+
+
+                        params2.bottomMargin+=20;
+
+
+
+                        newTV2.setLayoutParams(params2);
+                        newTV2.setText(recapito[x]);
+
+                        prevTextViewId = curTextViewId+1;
+                        relativeLayout1.addView(newTV,params);
+                        relativeLayout1.addView(newTV2,params2);
+
+                        newTV2.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        switch (which){
+                                            case DialogInterface.BUTTON_POSITIVE:
+                                                //Yes button clicked
+                                                Toast.makeText(getActivity(),
+                                                        "Sto chiamando " + newTV2.getText().toString() + " ... ",
+                                                        Toast.LENGTH_LONG).show();
+
+                                                Integer pos = newTV2.getText().toString().indexOf(" ");
+
+                                                String toDial = "tel:";
+                                                if (pos>0){
+                                                    toDial = toDial + newTV2.getText().toString().substring(0,pos);
+                                                }else{
+                                                    toDial = toDial + newTV2.getText().toString();
+                                                }
+
+                                                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(toDial)));
+                                                break;
+
+                                            case DialogInterface.BUTTON_NEGATIVE:
+                                                //No button clicked
+                                                break;
+                                        }
+                                    }
+                                };
+
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                builder.setMessage("Vuoi chiamare " + newTV2.getText().toString() + "?").setPositiveButton("Yes", dialogClickListener)
+                                        .setNegativeButton("No", dialogClickListener).show();
+
+                            }
+                        });
+
+
+                        newTV.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                GPSTracker gps;
+                                gps = new GPSTracker(getActivity());
+
+                                if(!gps.canGetLocation()){
+                                    Toast.makeText(getActivity(), "Impossibile trovare la posizione", Toast.LENGTH_LONG).show();
+                                    gps.showSettingsAlert();
+                                }else {
+
+                                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            switch (which) {
+                                                case DialogInterface.BUTTON_POSITIVE:
+                                                    //Yes button clicked
+
+
+                                                    Criteria criteria = new Criteria();
+                                                    criteria.setAccuracy(Criteria.ACCURACY_LOW);
+                                                    criteria.setAltitudeRequired(false);
+                                                    criteria.setBearingRequired(false);
+                                                    criteria.setCostAllowed(true);
+                                                    criteria.setPowerRequirement(Criteria.POWER_LOW);
+                                                    String provider = locationManager.getBestProvider(criteria, true);
+
+
+                                                    if (provider != null) {
+
+                                                        Toast.makeText(getActivity(),
+                                                                "Navigo verso " + newTV.getText().toString() + " ... ",
+                                                                Toast.LENGTH_LONG).show();
+
+                                                        Double Latitude = locationManager.getLastKnownLocation(provider).getLatitude();
+                                                        Double Longitude = locationManager.getLastKnownLocation(provider).getLongitude();
+                                                        //String Location = textView1.getText().toString();
+
+
+                                                        Uri routeUri = Uri.parse("http://maps.google.com/maps?&saddr=" + Latitude + "," + Longitude + "&daddr=" + getLatFromAddress(newTV.getText().toString()) + "," + getLonFromAddress(newTV.getText().toString()));
+
+                                                        Intent i = new Intent(Intent.ACTION_VIEW, routeUri);
+                                                        startActivity(i);
+                                                    } else {
+
+                                                        Toast.makeText(getActivity(),
+                                                                "Attiva il GPS per avviare la navigazione ... ",
+                                                                Toast.LENGTH_LONG).show();
+
+                                                        System.out.println("objectInstance is null, do not attempt to initialize field2");
+                                                    }
+
+
+                                                    break;
+
+                                                case DialogInterface.BUTTON_NEGATIVE:
+                                                    //No button clicked
+                                                    break;
+                                            }
+                                        }
+                                    };
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                    builder.setMessage("Vuoi andare a " + newTV.getText().toString() + "?").setPositiveButton("Yes", dialogClickListener)
+                                            .setNegativeButton("No", dialogClickListener).show();
+                                }
+                            }
+                        });
+
+
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
             Double latDest = Double.valueOf("0");
@@ -530,8 +753,8 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
 
             textView.setText(nominativo);
-            textView1.setText(indirizzo);
-            textView2.setText(telefono);
+            //textView1.setText(indirizzo);
+            //textView2.setText(telefono);
             textView3.setText(sitoWeb);
 
 
@@ -707,7 +930,81 @@ public class SecondActivity extends ActionBarActivity implements ActionBar.TabLi
 
 
 
+        public LatLng getLocationFromAddress(String strAddress) {
 
+            Geocoder coder = new Geocoder(getActivity());
+            List<Address> address;
+            LatLng p1 = null;
+
+            try {
+                address = coder.getFromLocationName(strAddress, 5);
+                if (address == null) {
+                    return null;
+                }
+                Address location = address.get(0);
+                location.getLatitude();
+                location.getLongitude();
+
+                p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+
+            } catch (Exception ex) {
+
+                ex.printStackTrace();
+            }
+
+            return p1;
+        }
+
+
+        public String getLatFromAddress(String strAddress) {
+
+            Geocoder coder = new Geocoder(getActivity());
+            List<Address> address;
+            String p1 = null;
+
+            try {
+                address = coder.getFromLocationName(strAddress, 5);
+                if (address == null) {
+                    return null;
+                }
+                Address location = address.get(0);
+                location.getLatitude();
+                location.getLongitude();
+
+                p1 = String.valueOf(location.getLatitude());
+
+            } catch (Exception ex) {
+
+                ex.printStackTrace();
+            }
+
+            return p1;
+        }
+
+        public String getLonFromAddress(String strAddress) {
+
+            Geocoder coder = new Geocoder(getActivity());
+            List<Address> address;
+            String p1 = null;
+
+            try {
+                address = coder.getFromLocationName(strAddress, 5);
+                if (address == null) {
+                    return null;
+                }
+                Address location = address.get(0);
+                location.getLatitude();
+                location.getLongitude();
+
+                p1 = String.valueOf(location.getLongitude());
+
+            } catch (Exception ex) {
+
+                ex.printStackTrace();
+            }
+
+            return p1;
+        }
 
 
 

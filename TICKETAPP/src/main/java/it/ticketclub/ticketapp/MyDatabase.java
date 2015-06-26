@@ -16,7 +16,7 @@ public class MyDatabase {
     Context mContext;
 
     private static final String DB_NAME="ticketclub.db";//nome del db
-    private static final int DB_VERSION=6; //numero di versione del nostro db
+    private static final int DB_VERSION=9; //numero di versione del nostro db
 
     // GESTIONE DATABASE
     public MyDatabase(Context ctx){
@@ -58,6 +58,11 @@ public class MyDatabase {
         static final String TICKET_PREZZO_CR_KEY  = "prezzoCR";
 
         static final String TICKET_SEO  = "SEO";
+
+        static final String TICKET_RECAPITI  = "recapiti";
+        static final String TICKET_SEDI  = "sedi";
+
+
     }
     static class MyTicketMetaData {  // i metadati della tabella, accessibili ovunque
         static final String MYTICKET_TABLE = "MYTICKET";
@@ -137,7 +142,7 @@ public class MyDatabase {
         //}
 
     }
-    public void insertTicket(int id, String categoria, String codice, String titolo, String titoloSup, float mediaVoti, int scaricati, String descrizione, String indirizzo, String lat, String lon, String nominativo, String telefono, String sito, String dataScadenza, String prezzoCr, String seo, String ordine){ //metodo per inserire i dati
+    public void insertTicket(int id, String categoria, String codice, String titolo, String titoloSup, float mediaVoti, int scaricati, String descrizione, String indirizzo, String lat, String lon, String nominativo, String telefono, String sito, String dataScadenza, String prezzoCr, String seo, String ordine, String recapiti, String sedi){ //metodo per inserire i dati
         ContentValues cv=new ContentValues();
         cv.put(TicketMetaData.ID, id);
         cv.put(TicketMetaData.TICKET_CATEGORIA_KEY , categoria);
@@ -162,6 +167,8 @@ public class MyDatabase {
         cv.put(TicketMetaData.TICKET_SEO, seo);
 
         cv.put(TicketMetaData.TICKET_ORDINE_KEY, ordine);
+        cv.put(TicketMetaData.TICKET_RECAPITI, recapiti);
+        cv.put(TicketMetaData.TICKET_SEDI, sedi);
 
         db.insert(TicketMetaData.TICKET_TABLE, null, cv);
 
@@ -284,8 +291,11 @@ public class MyDatabase {
             + TicketMetaData.TICKET_DATA_SCADENZA_KEY + " text null, "
             + TicketMetaData.TICKET_PREZZO_CR_KEY + " integer not null, "
             + TicketMetaData.TICKET_SEO + " text null, "
-            //+ TicketMetaData.TICKET_PREZZO_KEY + " money null, "
-            + TicketMetaData.TICKET_ORDINE_KEY + " integer not null "
+            + TicketMetaData.TICKET_ORDINE_KEY + " integer not null, "
+            + TicketMetaData.TICKET_SEDI + " text null, "
+            + TicketMetaData.TICKET_RECAPITI + " text null "
+
+
     + ")";
 
     //COMMAND FOR CREATE TABLE
