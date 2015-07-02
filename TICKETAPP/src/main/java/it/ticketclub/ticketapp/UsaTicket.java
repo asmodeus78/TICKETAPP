@@ -28,6 +28,8 @@ import org.json.JSONObject;
 
 import java.util.LinkedList;
 
+import utility.ServiceHandler;
+
 /**
  * Created by Gio on 08/07/2014.
  */
@@ -299,7 +301,7 @@ public class UsaTicket extends Activity
 
 
             if (messaggio.equals("OK")){
-                MyDatabase db=new MyDatabase(getApplicationContext());
+                MyDatabase db= MyDatabase.getInstance(getApplicationContext());
                 db.open();  //apriamo il db
 
                 Log.d("COLONNA5 S",id);

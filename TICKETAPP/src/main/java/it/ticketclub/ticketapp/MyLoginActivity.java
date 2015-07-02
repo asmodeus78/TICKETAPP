@@ -34,6 +34,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 
+import utility.ServiceHandler;
+
 /**
  * Created by Gio on 23/05/2014.
  */
@@ -364,7 +366,7 @@ public class MyLoginActivity extends Activity {
 
 
 
-                            MyDatabase db=new MyDatabase(getApplicationContext());
+                            MyDatabase db= MyDatabase.getInstance(getApplicationContext());
                             db.open();  //apriamo il db
                             Cursor d;
                             d = db.fetchConfig();
@@ -604,7 +606,7 @@ public class MyLoginActivity extends Activity {
                         //Log.d("COLONNA","il mio ticket id è:" + idUtente);
 
 
-                        MyDatabase db=new MyDatabase(getApplicationContext());
+                        MyDatabase db= MyDatabase.getInstance(getApplicationContext());
                         db.open();  //apriamo il db
                         Cursor d;
                         d = db.fetchConfig();

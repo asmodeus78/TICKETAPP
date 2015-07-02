@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f99d1c">
@@ -11,8 +11,9 @@
         android:id="@+id/splash_imageview"
         android:src="@drawable/splash_image"
         android:layout_gravity="center"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"  />
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="50dp" />
 
 
     <TextView
@@ -24,5 +25,12 @@
         android:id="@+id/display"
         android:layout_gravity="left|bottom" />
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_below="@+id/splash_imageview"
+        android:layout_centerHorizontal="true" />
 
-</FrameLayout>
+
+</RelativeLayout>

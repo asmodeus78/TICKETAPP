@@ -1,4 +1,4 @@
-package it.ticketclub.ticketapp;
+package utility;
 
 import android.app.AlertDialog;
 import android.app.Service;
@@ -14,6 +14,8 @@ import android.provider.Settings;
 import android.util.Log;
 
 import com.google.android.gms.location.LocationListener;
+
+import it.ticketclub.ticketapp.Setup;
 
 public class GPSTracker extends Service implements LocationListener, android.location.LocationListener {
 

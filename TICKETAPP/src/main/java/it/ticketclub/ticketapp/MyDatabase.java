@@ -16,13 +16,27 @@ public class MyDatabase {
     Context mContext;
 
     private static final String DB_NAME="ticketclub.db";//nome del db
-    private static final int DB_VERSION=9; //numero di versione del nostro db
+    private static final int DB_VERSION=10; //numero di versione del nostro db
+
+    private static MyDatabase mInstance = null;
 
     // GESTIONE DATABASE
     public MyDatabase(Context ctx){
         mContext = ctx;
         myDbHelper = new DbHelper(ctx,DB_NAME,null,DB_VERSION); //quando istanziamo questa classe, istanziamo anche l'helper (vedi sotto)
     }
+
+    public static MyDatabase getInstance(Context ctx) {
+
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        // See this article for more information: http://bit.ly/6LRzfx
+        if (mInstance == null) {
+            mInstance = new MyDatabase(ctx.getApplicationContext());
+        }
+        return mInstance;
+    }
+
     public void open(){  //il database su cui agiamo è leggibile/scrivibile
         db=myDbHelper.getWritableDatabase();
         //Setup conf = new Setup();
@@ -210,6 +224,12 @@ public class MyDatabase {
 
     public void deleteMyTicketFeedbackOk(String id){
         String sql ="delete from " + MyTicketMetaData.MYTICKET_TABLE + " where " + MyTicketMetaData.ID + "=" + id;
+        db.execSQL(sql);
+        Log.d("COLONNA:",sql);
+    }
+
+    public void deleteSingleTicket(Integer id){
+        String sql ="delete from " + TicketMetaData.TICKET_TABLE + " where " + TicketMetaData.ID + "=" + id;
         db.execSQL(sql);
         Log.d("COLONNA:",sql);
     }

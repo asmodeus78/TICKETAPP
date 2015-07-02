@@ -4,6 +4,8 @@ import android.app.Application;
 import android.os.Environment;
 
 import com.parse.Parse;
+import com.parse.ParseACL;
+import com.parse.ParseUser;
 import com.parse.PushService;
 
 import java.io.File;
@@ -26,6 +28,16 @@ public class Setup extends Application {
     private String tkProfileImageId;
     private String tkProfileCrediti;
     private String tkID;
+
+    public Boolean getTkStatusGps() {
+        return tkStatusGps;
+    }
+
+    public void setTkStatusGps(Boolean tkStatusGps) {
+        this.tkStatusGps = tkStatusGps;
+    }
+
+    private Boolean tkStatusGps = false;
 
     private String tkCitta;
     private String tkCerca;
@@ -59,6 +71,15 @@ public class Setup extends Application {
         instance = this;
 
         Parse.initialize(this, "t8ZFE43JWi0GWw0xv56T4PsQfp2YhUpQfszTuZr3", "GXjxj3LcZTnHZFc3fcy57vCoenQSqMHB4RgfOR3J");
+
+        ParseUser.enableAutomaticUser();
+        ParseACL defaultACL = new ParseACL();
+
+        // If you would like all objects to be private by default, remove this line.
+        defaultACL.setPublicReadAccess(true);
+
+        ParseACL.setDefaultACL(defaultACL, true);
+
         PushService.setDefaultPushCallback(this, SplashActivity.class);
 
     }
@@ -127,5 +148,7 @@ public class Setup extends Application {
     public void setTkCerca(String tkCerca) {
         this.tkCerca = tkCerca;
     }
+
+
 
 }

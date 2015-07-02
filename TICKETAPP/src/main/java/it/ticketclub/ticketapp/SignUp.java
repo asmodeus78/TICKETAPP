@@ -20,6 +20,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.LinkedList;
 
+import utility.ServiceHandler;
+
 /**
  * Created by Gio on 30/05/2014.
  */
@@ -138,7 +140,7 @@ public class SignUp extends Activity {
 
 
 
-                            MyDatabase db=new MyDatabase(getApplicationContext());
+                            MyDatabase db= MyDatabase.getInstance(getApplicationContext());
                             db.open();  //apriamo il db
                             Cursor d;
                             d = db.fetchConfig();

@@ -22,6 +22,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.LinkedList;
 
+import utility.ServiceHandler;
+
 public class LasciaFeedback extends ActionBarActivity {
 
     private static ProgressDialog pDialog;
@@ -200,7 +202,7 @@ public class LasciaFeedback extends ActionBarActivity {
             // Making a request to url and getting response
             String jsonStr = sh.makeServiceCall(url + url2, ServiceHandler.GET);
 
-            MyDatabase db=new MyDatabase(getApplicationContext());
+            MyDatabase db= MyDatabase.getInstance(getApplicationContext());
             db.open();  //apriamo il db
 
             Log.d("Response: ", "> " + jsonStr);
@@ -256,7 +258,7 @@ public class LasciaFeedback extends ActionBarActivity {
             }
 
             if (messaggio.equals("OK")){
-                MyDatabase db=new MyDatabase(getApplicationContext());
+                MyDatabase db= MyDatabase.getInstance(getApplicationContext());
                 db.open();  //apriamo il db
 
                 Log.d("COLONNA5 S",idt);

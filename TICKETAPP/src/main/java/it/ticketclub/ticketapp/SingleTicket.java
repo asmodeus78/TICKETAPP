@@ -76,7 +76,7 @@ public class SingleTicket extends Activity {
     public SingleTicket(String idTicket,Context ctx) {
         this.idTicket = idTicket;
 
-        MyDatabase db2=new MyDatabase(ctx);
+        MyDatabase db2= MyDatabase.getInstance(ctx);
         db2.open();  //apriamo il db
         Cursor c2;
         c2 = db2.fetchSingleTicket(idTicket);

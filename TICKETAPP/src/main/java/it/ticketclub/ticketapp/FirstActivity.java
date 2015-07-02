@@ -25,6 +25,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import utility.GPSTracker;
+
 
 public class FirstActivity extends ActionBarActivity implements ActionBar.TabListener {
 
@@ -60,6 +62,8 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
 
         // Track app opens.
         //ParseAnalytics.trackAppOpened(getIntent());
+
+
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
@@ -100,7 +104,7 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
                 textSearch.setText(RICERCA_HOLD);
             }
         }catch (NullPointerException e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
 
@@ -161,9 +165,11 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
 
         gps = new GPSTracker(this);
 
-        if(!gps.canGetLocation()){
+        if(!gps.canGetLocation() && !application.getTkStatusGps()){
             Toast.makeText(getApplicationContext(), "Impossibile trovare la posizione", Toast.LENGTH_LONG).show();
             gps.showSettingsAlert();
+
+            application.setTkStatusGps(true);
         }
 
 
@@ -249,7 +255,7 @@ public class FirstActivity extends ActionBarActivity implements ActionBar.TabLis
 
             }
         }catch (NullPointerException e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
 

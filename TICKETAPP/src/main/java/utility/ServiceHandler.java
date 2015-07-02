@@ -1,4 +1,4 @@
-package it.ticketclub.ticketapp;
+package utility;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

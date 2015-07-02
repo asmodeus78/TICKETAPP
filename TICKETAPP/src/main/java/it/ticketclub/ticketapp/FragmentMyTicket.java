@@ -4,8 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.location.Criteria;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.LinkedList;
 
@@ -165,7 +162,7 @@ public class FragmentMyTicket extends Fragment {
 
             vista = arg0[0];
 
-            MyDatabase db=new MyDatabase(getActivity().getApplicationContext());
+            MyDatabase db= MyDatabase.getInstance(getActivity().getApplicationContext());
             db.open();  //apriamo il db
 
             Cursor c;

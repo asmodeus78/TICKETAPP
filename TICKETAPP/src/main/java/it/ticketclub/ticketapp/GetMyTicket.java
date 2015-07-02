@@ -11,6 +11,8 @@ import org.json.JSONObject;
 
 import java.util.LinkedList;
 
+import utility.ServiceHandler;
+
 /**
  * Created by Gio on 04/07/2014.
  */
@@ -62,7 +64,7 @@ public class GetMyTicket extends AsyncTask<Void, Void, Void> {
 
 
 
-        MyDatabase db=new MyDatabase(mContext);
+        MyDatabase db= MyDatabase.getInstance(mContext);
         db.open();  //apriamo il db
 
         Log.d("Response: ", "> " + jsonStr);

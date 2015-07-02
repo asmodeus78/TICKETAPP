@@ -1,3 +1,4 @@
+
 package it.ticketclub.ticketapp;
 
 import android.app.Activity;
@@ -14,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
@@ -23,20 +25,19 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.parse.ParseInstallation;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import utility.ServiceHandler;
 
 
 public class SplashActivity extends Activity {
@@ -76,15 +77,13 @@ public class SplashActivity extends Activity {
     private static final String IS_DONE_KEY ="it.ticketclub.ticketapp.key.IS_DONE_KEY";
 
     private static final long MIN_WAIT_INTERVAL = 1500L;
-    private static final long MAX_WAIT_INTERVAL = 2500L;
+    private static final long MAX_WAIT_INTERVAL = 5000L;
     private static final int GO_HEAD_WHAT = 1;
 
 
     private long mStartTime = -1L;
     private boolean mIsDone;
 
-    // Splash screen timer
-    private static int SPLASH_TIME_OUT = 3000;
 
 
     /***************************************************/
@@ -120,12 +119,35 @@ public class SplashActivity extends Activity {
 
 
 
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case GO_HEAD_WHAT:
+                    long elapsedTime = SystemClock.uptimeMillis() - mStartTime;
+                    if (elapsedTime>=MIN_WAIT_INTERVAL && !mIsDone){
+                        mIsDone = true;
+                        Log.d("COLONNA","FORSE INTERNET NON C'E'?");
 
+                        if (!isNetworkAvailable()) {
+
+                            Toast.makeText(getApplication(),
+                                    "Connessione Internet Assente",
+                                    Toast.LENGTH_LONG).show();
+
+                            goAhead();
+                        }
+
+
+
+                    }
+                    break;
+            }
+        }
+    };
 
 
     private void goAhead(){
-
-        Log.d("START SEQUENCE","GO HEAD");
 
         //aggiorno ultima data aggiornamento ticket
         Calendar data = Calendar.getInstance();
@@ -141,20 +163,20 @@ public class SplashActivity extends Activity {
         String filtro = anno + "-" + mese + "-" + giorno;
 
 
-        MyDatabase db=new MyDatabase(getApplicationContext());
+        MyDatabase db= MyDatabase.getInstance(getApplicationContext());
         db.open();  //apriamo il db
         Cursor c;
         c = db.fetchConfig();
 
         if (c.getCount()>0){
             db.updateLastDownload(filtro);
-            
+
             //recuperare dati utente
 
 
             if (userid!="0") {
                 url3 = url3 + userid;
-                Log.d("COLONNA" , url3);
+                //Log.d("COLONNA" , url3);
                 new GetUserInfoSimple().execute();
             }
 
@@ -180,24 +202,9 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        Log.d("START SEQUENCE","CREATE");
+
 
         mDisplay = (TextView) findViewById(R.id.display);
-
-        new Handler().postDelayed(new Runnable() {
-
-            /*
-             * Showing splash screen with a timer. This will be useful when you
-             * want to show case your app logo / company
-             */
-
-            @Override
-            public void run() {
-                // This method will be executed once the timer is over
-                // Start your app main activity
-                goAhead();
-            }
-        }, SPLASH_TIME_OUT);
 
 
 
@@ -210,13 +217,13 @@ public class SplashActivity extends Activity {
             this.mStartTime = savedInstanceState.getLong(START_TIME_KEY);
         }
 
-        MyDatabase db=new MyDatabase(getApplicationContext());
+        MyDatabase db= MyDatabase.getInstance(getApplicationContext());
         db.open();  //apriamo il db
         Cursor c;
 
         //MODIFICA DEL 11/09/2014
         /*CANCELLO TICKET SCADUTI - no tutti*/
-        /*
+
             Calendar data = Calendar.getInstance();
 
             String anno = String.valueOf(data.get(Calendar.YEAR));
@@ -230,13 +237,12 @@ public class SplashActivity extends Activity {
             Log.d("COLONNA","DATA OGGI " +filtro);
 
             db.deleteTicketByData(filtro);
-        */
+
         //MODIFICATA IN DATA 11/09/2014
-        db.deleteTicket();
-        Log.d("START SEQUENCE","TICKET ELIMINATI");
+        /////db.deleteTicket();
 
 
-        /****
+
 
         c = db.fetchConfig();
         String lastUpdate = "";
@@ -244,7 +250,7 @@ public class SplashActivity extends Activity {
         if (c.moveToFirst()) {
             do {
                 userid = c.getString(0);
-                //lastUpdate = c.getString(5);
+                lastUpdate = c.getString(5);
             } while (c.moveToNext());
         }
 
@@ -261,7 +267,7 @@ public class SplashActivity extends Activity {
 
 
         db.close();
-******/
+
         if (!isNetworkAvailable()) {
 
             Toast.makeText(getApplication(),
@@ -292,8 +298,6 @@ public class SplashActivity extends Activity {
      * the Google Play Store or enable it in the device's system settings.
      */
     private boolean checkPlayServices() {
-        Log.d("START SEQUENCE","checkPlayServices");
-
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
@@ -325,7 +329,6 @@ public class SplashActivity extends Activity {
      *         registration ID.
      */
     private String getRegistrationId(Context context) {
-        Log.d("START SEQUENCE","getRegistrationId");
         final SharedPreferences prefs = getGCMPreferences(context);
         String registrationId = prefs.getString(PROPERTY_REG_ID, "");
         if (registrationId.isEmpty()) {
@@ -350,7 +353,6 @@ public class SplashActivity extends Activity {
     private SharedPreferences getGCMPreferences(Context context) {
         // This sample app persists the registration ID in shared preferences, but
         // how you store the regID in your app is up to you.
-        Log.d("START SEQUENCE","getGCMPreferences");
         return getSharedPreferences(SplashActivity.class.getSimpleName(),
                 Context.MODE_PRIVATE);
     }
@@ -359,7 +361,6 @@ public class SplashActivity extends Activity {
      * @return Application's version code from the {@code PackageManager}.
      */
     private static int getAppVersion(Context context) {
-        Log.d("START SEQUENCE","getAppVersion");
         try {
             PackageInfo packageInfo = context.getPackageManager()
                     .getPackageInfo(context.getPackageName(), 0);
@@ -379,9 +380,10 @@ public class SplashActivity extends Activity {
      * device sends upstream messages to a server that echoes back the message
      * using the 'from' address in the message.
      */
+    /*
     private void sendRegistrationIdToBackend() {
         // Your implementation here.
-        Log.d("START SEQUENCE","sendRegistrationIdToBackend");
+
         String MyRegistrationUrl = "http://www.ticketclub.it/APP/gcm/register.php";
 
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
@@ -401,17 +403,10 @@ public class SplashActivity extends Activity {
 
 
 
-    }
+    }*/
 
-    /**
-     * Stores the registration ID and app versionCode in the application's
-     * {@code SharedPreferences}.
-     *
-     * @param context application's context.
-     * @param regId registration ID
-     */
+   /*
     private void storeRegistrationId(Context context, String regId) {
-        Log.d("START SEQUENCE","storeRegistrationId");
         final SharedPreferences prefs = getGCMPreferences(context);
         int appVersion = getAppVersion(context);
         Log.i("PUSHNOTIFY", "Saving regId on app version " + appVersion);
@@ -419,12 +414,12 @@ public class SplashActivity extends Activity {
         editor.putString(PROPERTY_REG_ID, regId);
         editor.putInt(PROPERTY_APP_VERSION, appVersion);
         editor.commit();
-    }
+    }*/
 
     @Override
     protected void onStart(){
         super.onStart();
-        Log.d("START SEQUENCE","onStart");
+
         if(isExternalStorageWritable()){
             File path = new File(root.getAbsolutePath()+ "/Android/data/" + getApplicationInfo().packageName + "/cache/");
             path.mkdirs();
@@ -442,13 +437,13 @@ public class SplashActivity extends Activity {
         if(mStartTime==-1){
             mStartTime = SystemClock.uptimeMillis();
         }
-        //final Message goAheadMessage = mHandler.obtainMessage(GO_HEAD_WHAT);
+        final Message goAheadMessage = mHandler.obtainMessage(GO_HEAD_WHAT);
 
         /*final Intent updateIntent = new Intent(this,UpdateTicketList.class);
         startActivityForResult(updateIntent,UPDATE_REQUEST_ID);*/
 
 
-       // mHandler.sendMessageAtTime(goAheadMessage, mStartTime + MAX_WAIT_INTERVAL);
+        mHandler.sendMessageAtTime(goAheadMessage, mStartTime + MAX_WAIT_INTERVAL);
         Log.d("COLONNA", "Handler message sent!");
     }
 
@@ -488,21 +483,18 @@ public class SplashActivity extends Activity {
 
     private class GetTickets extends AsyncTask<Void, Void, Void> {
 
-
-
         LinkedList list;
         View vista;
 
         public GetTickets() {
             this.list = list;
             this.vista = null;
-            Log.d("START SEQUENCE","GetTickets");
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            //goAhead();
+
             // Showing progress dialog
         }
 
@@ -517,7 +509,7 @@ public class SplashActivity extends Activity {
             // Making a request to url and getting response
             String jsonStr = sh.makeServiceCall(url, ServiceHandler.GET);
 
-            MyDatabase db=new MyDatabase(getApplicationContext());
+            MyDatabase db = MyDatabase.getInstance (getApplicationContext());
             db.open();  //apriamo il db
 
             Log.d("Response: ", "> " + jsonStr);
@@ -560,12 +552,11 @@ public class SplashActivity extends Activity {
                         String seo = c.getString("SEO").toUpperCase();
 
                         String ordine = c.getString("ordine");
+
                         String sedi = c.getString("sedi");
                         String recapiti = c.getString("recapiti");
 
-
-
-                        Log.d("COLONNA",seo);
+                        //Log.d("COLONNA",seo);
 
 
 
@@ -595,10 +586,12 @@ public class SplashActivity extends Activity {
                             new DownloadImageTask2().execute(photo);
                         }*/
 
-                        Log.d("Loading",""+i);
+                        //Log.d("Loading",""+i);
 
+                        db.deleteSingleTicket(id);
 
                         db.insertTicket(id,categoria,codice,titolo,titoloSup,Float.parseFloat(mediaVoto),Integer.parseInt(scaricati),descrizione,indirizzo,lat,lon,nominativo,telefono,sito,dataScadenza,prezzoCr,seo,ordine,recapiti,sedi);
+
                         Log.d("COLONNA","Inserito " + i);
 
 
@@ -611,6 +604,8 @@ public class SplashActivity extends Activity {
                 Log.e("ServiceHandler", "Couldn't get any data from the url");
             }
 
+            db.close();
+
             return null;
         }
 
@@ -618,12 +613,13 @@ public class SplashActivity extends Activity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
+            goAhead();
 
             // Dismiss the progress dialog
             //if (pDialog.isShowing())
-           //     pDialog.dismiss();
+            //     pDialog.dismiss();
 
-           // list = result;
+            // list = result;
         }
     }
 
@@ -635,7 +631,6 @@ public class SplashActivity extends Activity {
         public GetUserInfoSimple() {
             this.list = list;
             this.vista = null;
-            Log.d("START SEQUENCE","GetUserInfoSimple");
         }
 
         @Override
@@ -652,7 +647,7 @@ public class SplashActivity extends Activity {
             // Making a request to url and getting response
             String jsonStr = sh.makeServiceCall(url3, ServiceHandler.GET);
 
-            Log.d("Response: ", "> " + jsonStr);
+            //Log.d("Response: ", "> " + jsonStr);
 
             Setup application = (Setup) getApplication();
 
@@ -678,11 +673,11 @@ public class SplashActivity extends Activity {
                             String uid = c.getString("idImg");
 
 
-                            Log.d("COLONNA", "mia email:" + email);
+                            //Log.d("COLONNA", "mia email:" + email);
 
 
 
-                            MyDatabase db=new MyDatabase(getApplicationContext());
+                            MyDatabase db= MyDatabase.getInstance(getApplicationContext());
                             db.open();  //apriamo il db
                             Cursor d;
                             d = db.fetchConfig();
@@ -735,6 +730,14 @@ public class SplashActivity extends Activity {
                 CharSequence text = "Ciao, " + application.getTkProfileName() ;
                 int duration = Toast.LENGTH_SHORT;
 
+                //Salvo la mail in parse
+                //Log.d("COLONNA MELA",application.getTkProfileEmail());
+                ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                if (application.getTkProfileEmail().length()>0) {
+                    installation.put("email", application.getTkProfileEmail());
+                }
+                installation.saveInBackground();
+
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
             }
@@ -744,15 +747,13 @@ public class SplashActivity extends Activity {
 
     public boolean isNetworkAvailable() {
 
-        Log.d("START SEQUENCE","isNetworkAvailable");
-
         Context context = getApplicationContext();
         ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         if (connectivity == null) {
 
             //boitealerte(this.getString(R.string.alert),"getSystemService rend null");
-            Log.d("COLONNA","getSystemService rend null");
+            //Log.d("COLONNA","getSystemService rend null");
 
         } else {
             NetworkInfo[] info = connectivity.getAllNetworkInfo();
@@ -776,3 +777,9 @@ public class SplashActivity extends Activity {
 
 
 }
+
+
+
+
+
+

@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import java.util.LinkedList;
 
+import utility.ServiceHandler;
 
 
 public class MapsActivity extends FragmentActivity {

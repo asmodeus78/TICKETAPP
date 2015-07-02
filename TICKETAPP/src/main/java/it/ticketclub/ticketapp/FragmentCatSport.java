@@ -143,7 +143,7 @@ public class FragmentCatSport extends Fragment {
 
             vista = arg0[0];
 
-            MyDatabase db=new MyDatabase(getActivity().getApplicationContext());
+            MyDatabase db= MyDatabase.getInstance(getActivity().getApplicationContext());
             db.open();  //apriamo il db
 
             Cursor c;

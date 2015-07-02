@@ -1,17 +1,12 @@
 package it.ticketclub.ticketapp;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationManager;
-import android.media.RingtoneManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -145,7 +140,7 @@ public class FragmentCatRistorazione extends Fragment {
 
             vista = arg0[0];
 
-            MyDatabase db=new MyDatabase(getActivity().getApplicationContext());
+            MyDatabase db= MyDatabase.getInstance(getActivity().getApplicationContext());
             db.open();  //apriamo il db
 
             Cursor c;
