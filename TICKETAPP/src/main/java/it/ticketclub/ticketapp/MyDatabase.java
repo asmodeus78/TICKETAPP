@@ -16,7 +16,7 @@ public class MyDatabase {
     Context mContext;
 
     private static final String DB_NAME="ticketclub.db";//nome del db
-    private static final int DB_VERSION=10; //numero di versione del nostro db
+    private static final int DB_VERSION=11; //numero di versione del nostro db
 
     private static MyDatabase mInstance = null;
 
@@ -75,6 +75,8 @@ public class MyDatabase {
 
         static final String TICKET_RECAPITI  = "recapiti";
         static final String TICKET_SEDI  = "sedi";
+
+        static final String TICKET_ZONA = "zona";
 
 
     }
@@ -156,7 +158,7 @@ public class MyDatabase {
         //}
 
     }
-    public void insertTicket(int id, String categoria, String codice, String titolo, String titoloSup, float mediaVoti, int scaricati, String descrizione, String indirizzo, String lat, String lon, String nominativo, String telefono, String sito, String dataScadenza, String prezzoCr, String seo, String ordine, String recapiti, String sedi){ //metodo per inserire i dati
+    public void insertTicket(int id, String categoria, String codice, String titolo, String titoloSup, float mediaVoti, int scaricati, String descrizione, String indirizzo, String lat, String lon, String nominativo, String telefono, String sito, String dataScadenza, String prezzoCr, String seo, String ordine, String recapiti, String sedi, String zona){ //metodo per inserire i dati
         ContentValues cv=new ContentValues();
         cv.put(TicketMetaData.ID, id);
         cv.put(TicketMetaData.TICKET_CATEGORIA_KEY , categoria);
@@ -183,6 +185,7 @@ public class MyDatabase {
         cv.put(TicketMetaData.TICKET_ORDINE_KEY, ordine);
         cv.put(TicketMetaData.TICKET_RECAPITI, recapiti);
         cv.put(TicketMetaData.TICKET_SEDI, sedi);
+        cv.put(TicketMetaData.TICKET_ZONA, zona);
 
         db.insert(TicketMetaData.TICKET_TABLE, null, cv);
 
@@ -250,17 +253,17 @@ public class MyDatabase {
     }
     public Cursor fetchTicketByCategCity(String categoria, String citta){
         Log.d("COLONNA",citta);
-        return db.query(TicketMetaData.TICKET_TABLE, null,"categoria like '%" + categoria + "%' and " + TicketMetaData.TICKET_SEO + " LIKE '%" + citta + "%'",null,null,null,TicketMetaData.TICKET_ORDINE_KEY);
+        return db.query(TicketMetaData.TICKET_TABLE, null,"categoria like '%" + categoria + "%' and " + TicketMetaData.TICKET_ZONA + " LIKE '%" + citta + "%'",null,null,null,TicketMetaData.TICKET_ORDINE_KEY);
     }
 
     public Cursor fetchTicketByRicerca(String cerca){
         return db.query(TicketMetaData.TICKET_TABLE, null,"seo like '%" + cerca + "%'",null,null,null,TicketMetaData.TICKET_ORDINE_KEY);
     }
     public Cursor fetchTicketByRicercaCitta(String cerca, String citta){
-        return db.query(TicketMetaData.TICKET_TABLE, null,"seo like '%" + cerca + "%' and seo LIKE '%" + citta + "%'",null,null,null,TicketMetaData.TICKET_ORDINE_KEY);
+        return db.query(TicketMetaData.TICKET_TABLE, null,"seo like '%" + cerca + "%' and zona LIKE '%" + citta + "%'",null,null,null,TicketMetaData.TICKET_ORDINE_KEY);
     }
     public Cursor fetchTicketByCategRicercaCitta(String categoria, String cerca, String citta){
-        return db.query(TicketMetaData.TICKET_TABLE, null,"categoria like '%" + categoria + "%' and seo like '%" + cerca + "%' and " + TicketMetaData.TICKET_SEO + " LIKE '%" + citta + "%'",null,null,null,TicketMetaData.TICKET_ORDINE_KEY);
+        return db.query(TicketMetaData.TICKET_TABLE, null,"categoria like '%" + categoria + "%' and seo like '%" + cerca + "%' and " + TicketMetaData.TICKET_ZONA + " LIKE '%" + citta + "%'",null,null,null,TicketMetaData.TICKET_ORDINE_KEY);
     }
 
 
@@ -313,7 +316,8 @@ public class MyDatabase {
             + TicketMetaData.TICKET_SEO + " text null, "
             + TicketMetaData.TICKET_ORDINE_KEY + " integer not null, "
             + TicketMetaData.TICKET_SEDI + " text null, "
-            + TicketMetaData.TICKET_RECAPITI + " text null "
+            + TicketMetaData.TICKET_RECAPITI + " text null, "
+            + TicketMetaData.TICKET_ZONA + " text null "
 
 
     + ")";

@@ -6,7 +6,8 @@
       <module fileurl="file://$PROJECT_DIR$/TICKETAPP.iml" filepath="$PROJECT_DIR$/TICKETAPP.iml" />
       <module fileurl="file://$PROJECT_DIR$/TICKETAPP/TICKETAPP-TICKETAPP.iml" filepath="$PROJECT_DIR$/TICKETAPP/TICKETAPP-TICKETAPP.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/facebook/facebook.iml" filepath="$PROJECT_DIR$/libraries/facebook/facebook.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/libraries.iml" filepath="$PROJECT_DIR$/libraries/libraries.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/facebook/libraries-facebook.iml" filepath="$PROJECT_DIR$/libraries/facebook/libraries-facebook.iml" />
     </modules>
   </component>
 </project>
-

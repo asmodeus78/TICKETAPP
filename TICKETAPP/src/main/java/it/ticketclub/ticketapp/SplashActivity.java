@@ -555,6 +555,7 @@ public class SplashActivity extends Activity {
 
                         String sedi = c.getString("sedi");
                         String recapiti = c.getString("recapiti");
+                        String zona = c.getString("zona");
 
                         //Log.d("COLONNA",seo);
 
@@ -590,7 +591,7 @@ public class SplashActivity extends Activity {
 
                         db.deleteSingleTicket(id);
 
-                        db.insertTicket(id,categoria,codice,titolo,titoloSup,Float.parseFloat(mediaVoto),Integer.parseInt(scaricati),descrizione,indirizzo,lat,lon,nominativo,telefono,sito,dataScadenza,prezzoCr,seo,ordine,recapiti,sedi);
+                        db.insertTicket(id,categoria,codice,titolo,titoloSup,Float.parseFloat(mediaVoto),Integer.parseInt(scaricati),descrizione,indirizzo,lat,lon,nominativo,telefono,sito,dataScadenza,prezzoCr,seo,ordine,recapiti,sedi,zona);
 
                         Log.d("COLONNA","Inserito " + i);
 
